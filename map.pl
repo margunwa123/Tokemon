@@ -1,17 +1,17 @@
-batasAtas(_,Y) :-
-    Y=:=0
-    ,!.
-batasKiri(X,_) :-
-    X=:=0,
-    !.
-batasBawah(_,Y) :-
-    YMax is 16,
-    Y=:=YMax,
-    !.
-batasKanan(X,_) :-
-    XMax is 21,
-    X=:=XMax,
-    !.
+tinggiMap(10).
+lebarMap(10).
+posGym(5,5).
+posPlayer(1,2).
+
+/* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
+batasAtas(T,_) :- T=:=0.
+batasKiri(_,L) :- L=:=0.
+batasBawah(T,_) :-
+    Z is T-1,
+    lebarMap(Z),!. % ditambah 1 supaya bordernya pas
+batasKanan(_,L) :-
+    Z is L-1,
+    lebarMap(Z),!.
 	
 /* OptionalMap	
 midBorder(5,4).
@@ -22,25 +22,51 @@ midBorder(7,4).
 midBorder(7,5).
 midBorder(7,6).
 */
-	
-gym(10,10).
-player(10,11).
-
-printMap(X,Y) :-
-    batasKanan(X,Y), !, write('X').
-printMap(X,Y) :-
-    batasKiri(X,Y), !, write('X').
-printMap(X,Y) :-
-    batasAtas(X,Y), !, write('X').
-printMap(X,Y) :-
-    batasBawah(X,Y), !, write('X').
 /*
-printMap(X,Y) :-
-	midBorder(X,Y), !, write('X').
+writeBorder(-1) :- write('X'),nl,!.
+writeBorder(X) :- write('X'),Z is X-1, writeBorder(Z).
 */
-printMap(X,Y) :-
-    player(X,Y), !, write('P').
-printMap(X,Y) :-
-	gym(X,Y), !, write('G').
-printMap(_,_) :-
-	write('-').
+
+/* T untuk lebar peta, L untuk tinggi peta */
+printIdx(T,L) :-
+    batasBawah(T,L),
+    batasKanan(T,L),
+    write('X'),nl,!.
+printIdx(T,L) :-
+    batasKanan(T,L),
+    write('X'),nl,
+    !.
+printIdx(T,L) :-
+    batasAtas(T,L), 
+    write('X'),!.
+printIdx(T,L) :-
+    batasKiri(T,L),
+    write('X'),!.
+printIdx(T,L) :-
+    batasBawah(T,L),
+    write('X'),!.
+
+/*
+printIdx(T,L) :-
+	midBorder(T,L), !, write('T').
+*/
+
+printIdx(T,L) :- posPlayer(T,L), write('P'), !.
+printIdx(T,L) :- posGym(T,L), !,write('G'),!.
+printIdx(_,_) :- write('-'),!.
+
+peta(TPeta,LPeta) :- 
+    batasBawah(TPeta,LPeta),
+    batasKanan(TPeta,LPeta),
+    printIdx(TPeta,LPeta),!.
+peta(TPeta,LPeta) :- 
+    batasKanan(TPeta,LPeta), 
+    printIdx(TPeta,LPeta),
+    Z is TPeta + 1, 
+    peta(Z,0),!.
+peta(TPeta,LPeta) :-
+    printIdx(TPeta,LPeta),
+    Z is LPeta + 1,
+    peta(TPeta,Z),!.
+
+map :- peta(0,0).
