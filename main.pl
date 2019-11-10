@@ -129,7 +129,7 @@ status :-
 			write('       Hp : '),write(B),nl,
 			write('Basic Att : '),write(C),nl,
 			write('Skill Att : '),write(D),nl,
-			write('     Type : '),write(E),nl,nl,
+			write('     Type : '),write(E),nl,nl
 		));(
 			write('Belum ada Tokemon yang dimiliki.')
 		)),!.
