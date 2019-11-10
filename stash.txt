@@ -1,0 +1,14 @@
+
+peta(TPeta,LPeta) :- 
+    batasBawah(TPeta,LPeta),
+    batasKanan(TPeta,LPeta),
+    printIdx(TPeta,LPeta),!.
+peta(TPeta,LPeta) :- 
+    batasKanan(TPeta,LPeta), 
+    printIdx(TPeta,LPeta),
+    Z is TPeta + 1, 
+    peta(Z,0),!.
+peta(TPeta,LPeta) :-
+    printIdx(TPeta,LPeta),
+    Z is LPeta + 1,
+    peta(TPeta,Z),!.

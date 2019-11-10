@@ -148,9 +148,9 @@ map :-
 	XMax is 21,
 	YMin is 0,
 	YMax is 16,
-	forall(between(YMin,YMax,J), (
-		forall(between(XMin,XMax,I), (
-			printMap(I,J)
+	forall(between(YMin,YMax,I), (
+		forall(between(XMin,XMax,J), (
+			printIdx(I,J)
 		)),
 		nl
 	)),
