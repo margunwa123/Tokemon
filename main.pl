@@ -1,6 +1,8 @@
 :- dynamic(avChoose/1).
 :- dynamic(toke/5).
+:- dynamic(player/2).
 :- include('tokemon.pl').
+:- include('map.pl').
 
 /* Tampilan Awal */
 start :-
@@ -101,7 +103,8 @@ help :-
 	write('9. status  : Menampilkan status player'),nl,
 	write('10.quit    : Keluar dari permainan'),nl,!.
 
-choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D).
+choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),!.
+choose(X) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
 addToke(_,_,_,_,_) :-
 	cekToke(Banyak),
@@ -118,7 +121,7 @@ addToke(A,B,C,D,E) :-
 cekToke(Banyak) :-
 	findall(T,toke(T,_,_,_,_),ListBanyak),
 	length(ListBanyak,Banyak).
-	
+ 	
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
@@ -133,11 +136,73 @@ status :-
 		));(
 			write('Belum ada Tokemon yang dimiliki.')
 		)),!.
-/* Coming soon
+		
+/*
+Coming soon
 	write('Masih ada '),cekMusuh(X),write(X),write(' Tokemon Legendary yang harus dikalahkan.'),nl,nl,
 */	
 	
-	
-	
+% Map
+map :-
+	XMin is 0,
+	XMax is 21,
+	YMin is 0,
+	YMax is 16,
+	forall(between(YMin,YMax,J), (
+		forall(between(XMin,XMax,I), (
+			printMap(I,J)
+		)),
+		nl
+	)),
+	write('Keterangan Simbol :'), nl,
+	write('P    :    Player'), nl,
+	write('X    :    Border'), nl,
+	write('G    :    Gym'), nl,
+	write('-    :    Nothing of interest'), nl,
+	!.
 
-
+%Movement
+w :- 
+	player(_,Y),
+	Y=:=1,
+	write('Kamu tidak dapat melewati batas.'),nl,
+	write('Silahkan ambil jalan lain'),nl,!.
+w :-
+	retract(player(X,Y)),
+	Y > 1,
+	YBaru is Y-1,
+	write([X,YBaru]),nl,
+	asserta(player(X,YBaru)),!.
+s :- 
+	player(_,Y),
+	Y=:=15,
+	write('Kamu tidak dapat melewati batas.'),nl,
+	write('Silahkan ambil jalan lain'),nl,!.
+s :-
+	retract(player(X,Y)),
+	Y < 15,
+	YBaru is Y+1,
+	write([X,YBaru]),nl,
+	asserta(player(X,YBaru)),!.
+a :- 
+	player(X,_),
+	X=:=1,
+	write('Kamu tidak dapat melewati batas.'),nl,
+	write('Silahkan ambil jalan lain'),nl,!.
+a :-
+	retract(player(X,Y)),
+	X > 1,
+	XBaru is X-1,
+	write([XBaru,Y]),nl,
+	asserta(player(XBaru,Y)),!.	
+d :- 
+	player(X,_),
+	X=:=20,
+	write('Kamu tidak dapat melewati batas.'),nl,
+	write('Silahkan ambil jalan lain'),nl,!.
+d :-
+	retract(player(X,Y)),
+	X < 20,
+	XBaru is X+1,
+	write([XBaru,Y]),nl,
+	asserta(player(XBaru,Y)),!.
