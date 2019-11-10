@@ -87,6 +87,14 @@ play :-
 	write('1. tokemon_x'),nl,
 	write('2. tokemon_y'),nl,
 	write('3. tokemon_z'),nl,!,
+    init_map,
+    tinggiPeta(T),
+    write(T),nl,
+    lebarPeta(L),
+    write(L),nl,
+    player(P1,P2),
+    write(P1),nl,
+    write(P2),nl,
 	asserta(avChoose(1)).
 
 /* Help */
@@ -141,18 +149,18 @@ status :-
 Coming soon
 	write('Masih ada '),cekMusuh(X),write(X),write(' Tokemon Legendary yang harus dikalahkan.'),nl,nl,
 */	
-	
 % Map
 map :-
-	XMin is 0,
-	XMax is 21,
-	YMin is 0,
-	YMax is 16,
-	forall(between(YMin,YMax,I), (
-		forall(between(XMin,XMax,J), (
+	TMin is 0,
+	LMin is 0,
+    lebarPeta(L),
+    L1 is L+1,
+    tinggiPeta(T),
+    T1 is T+1,
+	forall(between(TMin,T1,I), (
+		forall(between(LMin,L1,J), (
 			printIdx(I,J)
-		)),
-		nl
+		))
 	)),
 	write('Keterangan Simbol :'), nl,
 	write('P    :    Player'), nl,

@@ -1,17 +1,27 @@
-tinggiMap(10).
-lebarMap(10).
-posGym(5,5).
-posPlayer(1,2).
+:- dynamic(lebarPeta/1).
+:- dynamic(tinggiPeta/1).
+gym(5,5).
+:- dynamic(player/2).
 
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
+init_map :-
+    random(10,15,T),
+    random(10,15,L),
+    asserta(lebarPeta(T)),asserta(tinggiPeta(L)),
+    T1 is T-1,
+    L1 is L-1,
+    random(1,T1,PT),
+    random(1,L1,PL),
+    asserta(player(PT,PL)).
+
 batasAtas(T,_) :- T=:=0.
 batasKiri(_,L) :- L=:=0.
 batasBawah(T,_) :-
     Z is T-1,
-    lebarMap(Z),!. % ditambah 1 supaya bordernya pas
+    tinggiPeta(Z),!. % ditambah 1 supaya bordernya pas
 batasKanan(_,L) :-
     Z is L-1,
-    lebarMap(Z),!.
+    lebarPeta(Z),!.
 	
 /* OptionalMap	
 midBorder(5,4).
@@ -51,6 +61,6 @@ printIdx(T,L) :-
 	midBorder(T,L), !, write('T').
 */
 
-printIdx(T,L) :- posPlayer(T,L), write('P'), !.
-printIdx(T,L) :- posGym(T,L), !,write('G'),!.
+printIdx(T,L) :- player(T,L), write('P'), !.
+printIdx(T,L) :- gym(T,L), !,write('G'),!.
 printIdx(_,_) :- write('-'),!.
