@@ -119,6 +119,7 @@ help :-
 checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
     toke(A,_,_,_,_), legendary(A),
     toke(B,_,_,_,_), legendary(B),
+    A \= B,
     winGame.
 checkLose :-
     cekToke(X), X =:= 0,
@@ -214,3 +215,14 @@ d :-
     cekGelut,!.
 quit :- halt.
 restart :- consult('C:/Users/Asus/Documents/GitHub/Tokemon/main.pl').
+
+heal :-
+    gym(T,L),
+    player(T,L),!,
+    toke(Nama, _,C,D,E),
+    forall(tokemona(Nama, Hil,C,D,E),(
+        toke(Nama,Hil,C,D,E),
+        write('Tokemon '),write(Nama),write(' telah berhasil kamu sembuhkan'),nl
+    )).
+heal :-
+    write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan pokemonmu!').
