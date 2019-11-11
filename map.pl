@@ -43,7 +43,8 @@ batasBawah(T,_) :-
 batasKanan(_,L) :-
     Z is L-1,
     lebarPeta(Z),!.
-	
+
+
 /* OptionalMap	
 midBorder(5,4).
 midBorder(5,5).
@@ -95,3 +96,23 @@ cekGelut :-
     write('1. Attack'),nl,
     write('2. Run'),nl,
     inbattle,!.
+    
+/* Zoom membesarkan suatu petak di T,L dgn idx
+ 0,0 0,1 0,2
+ 1,0 1,1 1,2
+ 2,0 2,1 2,2
+*/
+printToke(T,L) :-
+    posToke(T,L),
+    write('T'),!.
+printToke(T,L) :-
+    printIdx(T,L),!.
+zoom(T,L) :-
+    T1 is T-1,
+    T2 is T+1,
+    L1 is L-1,
+    L2 is L+1,
+    printToke(T1,L1),printToke(T1,L),printToke(T1,L2),nl,
+    printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
+    printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
+***** ZOOM BELOM BERES ******/
