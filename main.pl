@@ -124,7 +124,7 @@ checkLose :-
     cekToke(X), X =:= 0,
     loseGame.
 
-choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),!.
+choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),cekGelut,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
 status :- 
@@ -175,7 +175,8 @@ w :-
 	retract(player(T,L)),
 	TBaru is T-1,
 	write([TBaru,L]),nl,
-	asserta(player(TBaru,L)),!.
+	asserta(player(TBaru,L)),
+    cekGelut,!.
 s :- 
 	player(T,_),
     tinggiPeta(TPeta),
@@ -186,7 +187,8 @@ s :-
 	retract(player(T,L)),
 	TBaru is T+1,
 	write([TBaru,L]),nl,
-	asserta(player(TBaru,L)),!.
+	asserta(player(TBaru,L)),
+    cekGelut,!.
 a :- 
 	player(_,L),
 	L=:=1,
@@ -196,7 +198,8 @@ a :-
 	retract(player(T,L)),
 	LBaru is L-1,
 	write([T,LBaru]),nl,
-	asserta(player(T,LBaru)),!.	
+	asserta(player(T,LBaru)),
+    cekGelut,!.	
 d :- 
 	player(_,L),
     lebarPeta(LPeta),
@@ -207,6 +210,7 @@ d :-
 	retract(player(T,L)),
 	LBaru is L+1,
 	write([T,LBaru]),nl,
-	asserta(player(T,LBaru)),!.
+	asserta(player(T,LBaru)),
+    cekGelut,!.
 quit :- halt.
 restart :- consult('C:/Users/Asus/Documents/GitHub/Tokemon/main.pl').
