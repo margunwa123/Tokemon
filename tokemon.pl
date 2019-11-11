@@ -34,7 +34,11 @@ strong(water,fire).
 cekToke(Banyak) :-
 	findall(T,toke(T,_,_,_,_),ListBanyak),
 	length(ListBanyak,Banyak).
-
+/*
+cekLegend(Banyak) :-
+	findall(legendary(X),toke(X,_,_,_,_),ListBanyak),
+	length(ListBanyak,Banyak).
+*/
 addToke(_,_,_,_,_) :-
 	cekToke(Banyak),
 	(Banyak+1) > 6,!,
@@ -46,3 +50,9 @@ addToke(A,B,C,D,E) :-
 	asserta(toke(A,B,C,D,E)),!,
 	write('Tokemon '),write(A),write(' berhasil kamu bawa'),
 	retract(avChoose(1)).
+/*
+addToke(A,B,C,D,E) :-
+	tokemon(A,B,C,D,E),
+	asserta(toke(A,B,C,D,E)),!,
+	write('Tokemon '),write(A),write(' berhasil kamu bawa').
+*/

@@ -88,9 +88,9 @@ play :-
 	write('Kamu pasti penjelajah yang akan membantu kami menghilangkan wabah yang menyerang Tokemon-tokemon di sini, ya.'),nl,
 	write('Kalau memang benar, silahkan pilih satu dari ketiga Tokemon milikku untuk kamu bawa pergi.'),nl,nl,
 	write('Pilihlah satu pokemon dengan memberi perintah choose(NamaTokemon).'),nl,
-	write('1. tokemon_x'),nl,
-	write('2. tokemon_y'),nl,
-	write('3. tokemon_z'),nl,!,
+	write('1. wow'),nl,
+	write('2. mamet'),nl,
+	write('3. danlap'),nl,!,
     initialize_map,
     asserta(inGame),
     /*tinggiPeta(T),
@@ -105,16 +105,22 @@ play :-
 /* Help */
 help :-
 	write('Daftar Command: '),nl,
-	write('1. w       : Bergerak ke arah atas'),nl,
-	write('2. a       : Bergerak ke arah kiri'),nl,
-	write('3. s       : Bergerak ke arah bawah'),nl,
-	write('4. d       : Bergerak ke arah kanan'),nl,
-	write('5. map     : Menampilkan map'),nl,
-	write('6. heal    : Menyembuhkan Tokemon(hanya dapat dilakukan di Gym)'),nl,
-	write('7. load    : Melanjutkan permainan yang pernah disimpan'),nl,
-	write('8. save    : Menyimpan permainan'),nl,
-	write('9. status  : Menampilkan status player'),nl,
-	write('10.quit    : Keluar dari permainan'),nl,!.
+	write('1. w            : Bergerak ke arah atas'),nl,
+	write('2. a            : Bergerak ke arah kiri'),nl,
+	write('3. s            : Bergerak ke arah bawah'),nl,
+	write('4. d            : Bergerak ke arah kanan'),nl,
+	write('5. map          : Menampilkan map'),nl,
+	write('6. heal         : Menyembuhkan Tokemon(hanya dapat dilakukan di Gym)'),nl,
+	write('7. load         : Melanjutkan permainan yang pernah disimpan'),nl,
+	write('8. save         : Menyimpan permainan'),nl,
+	write('9. status       : Menampilkan status player'),nl,
+	write('10.pick         : Memilih pokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
+	write('11.attack       : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl, 
+	write('12.specialAtack : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
+	write('13.run          : Memilih untuk lari dari bertanding(hanya dapat dilakukan pada battle)'),nl,
+	write('14.drop         : Menghilangkan pokemon dari inventory'),nl,
+	write('15.help         : Menampilkan semua perintah yang dapat dijalankan'),nl,
+	write('16.quit         : Keluar dari permainan'),nl,!.
 
 checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
     toke(A,_,_,_,_), legendary(A),
@@ -131,7 +137,7 @@ status :-
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
 	toke(A,B,C,D,E) -> (
-		forall(toke(A,B,C,D,E),
+		forall(toke(_,_,_,_,_),
 		(
 			write('    -'),write(A),nl,
 			write('       Hp : '),write(B),nl,
@@ -140,11 +146,11 @@ status :-
 			write('     Type : '),write(E),nl,nl
 		));(
 			write('Belum ada Tokemon yang dimiliki.')
-		)),!.
-/*
-Coming soon
-	write('Masih ada '),cekMusuh(X),write(X),write(' Tokemon Legendary yang harus dikalahkan.'),nl,nl,
-*/	
+		)),nl,nl,
+	write('Ada '),
+	cekLegend(X),
+	write(X),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,!.
+	
 % Map
 map :-
 	TMin is 0,
@@ -213,4 +219,4 @@ d :-
 	asserta(player(T,LBaru)),
     cekGelut,!.
 quit :- halt.
-restart :- consult('C:/Users/Asus/Documents/GitHub/Tokemon/main.pl').
+restart :- start.

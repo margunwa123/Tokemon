@@ -91,7 +91,7 @@ cekGelut :-
     player(X,Y),
     tokemon(Nama,_,_,_,Type),
     write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
-    write('apa yang akan kamu lakukan???'),nl,
+    write('Apa yang akan kamu lakukan???'),nl,
     write('1. Attack'),nl,
     write('2. Run'),nl,
     inbattle,!.
