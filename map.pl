@@ -2,18 +2,39 @@
 :- dynamic(tinggiPeta/1).
 gym(5,5).
 :- dynamic(player/2).
+:- dynamic(posToke/3).
+:- dynamic(inbattle/0).
+:- include('tokemon.pl').
+/* posToke adalah representasi dari posisi tokemon pada map, yaitu posToke(Nama,T,L) */
 
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
-init_map :-
+initialize_map :-
     random(10,15,T),
     random(10,15,L),
     asserta(lebarPeta(T)),asserta(tinggiPeta(L)),
-    T1 is T-1,
-    L1 is L-1,
-    random(1,T1,PT),
-    random(1,L1,PL),
-    asserta(player(PT,PL)).
-
+    random(1,T,PT),
+    random(1,L,PL),
+    asserta(player(PT,PL)),
+    asserta(posToke(zigzogaan,8,4)),
+    asserta(posToke(momon,5,3)).
+    %randomToke(1).
+/*
+Belom beres, pengen ngebikin random tokemon positions
+randomToke(6) :-
+    lebarPeta(LPeta),
+    tinggiPeta(TPeta),
+    random(1,TPeta,TokeT),
+    random(1,LPeta,TokeL),
+    asserta(posToke(6,TokeT,TokeL)),!.
+randomToke(ID) :-
+    lebarPeta(LPeta),
+    tinggiPeta(TPeta),
+    random(1,TPeta,TokeT),
+    random(1,LPeta,TokeL),
+    asserta(posToke(ID,TokeT,TokeL)),
+    Z is ID + 1,
+    randomToke(Z),!.
+*/
 batasAtas(T,_) :- T=:=0.
 batasKiri(_,L) :- L=:=0.
 batasBawah(T,_) :-
@@ -64,3 +85,13 @@ printIdx(T,L) :-
 printIdx(T,L) :- player(T,L), write('P'), !.
 printIdx(T,L) :- gym(T,L), !,write('G'),!.
 printIdx(_,_) :- write('-'),!.
+
+cekGelut :- 
+    posToke(Nama,X,Y),
+    player(X,Y),
+    tokemon(Nama,_,_,_,Type),
+    write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('apa yang akan kamu lakukan???'),nl,
+    write('1. Attack'),nl,
+    write('2. Run'),nl,
+    inbattle,!.

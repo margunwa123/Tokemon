@@ -1,7 +1,8 @@
-:- dynamic(avChoose/1).
-:- dynamic(toke/5).
+
 :- dynamic(player/2).
-:- include('tokemon.pl').
+:- dynamic(inGame/0).
+:- dynamic(winGame/0).
+:- dynamic(loseGame/0).
 :- include('map.pl').
 
 /* Tampilan Awal */
@@ -20,7 +21,7 @@ start :-
 	write('2. load'),nl,
 	write('3. save'),nl,
 	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command.'),nl,!.
-	
+
 %Command
 /* Belum kelar
 loads(_) :-
@@ -69,6 +70,9 @@ save(FileName):-
 */
 
 %Opening
+play :-
+    inGame,
+    write('Kamu tidak bisa memulai game yang sudah dimulai'),!.
 play :- 
 	write('Sudah sejak dulu, tokemon hidup berdampingan dengan manusia secara baik.'),nl,
 	write('Hingga pada suatu waktu, sebuah desa terserang wabah aneh yang menyebabkan para Tokemon mendadak menjadi liar dan tak terkendali.'),nl,
@@ -87,15 +91,16 @@ play :-
 	write('1. tokemon_x'),nl,
 	write('2. tokemon_y'),nl,
 	write('3. tokemon_z'),nl,!,
-    init_map,
-    tinggiPeta(T),
+    initialize_map,
+    asserta(inGame),
+    /*tinggiPeta(T),
     write(T),nl,
     lebarPeta(L),
     write(L),nl,
     player(P1,P2),
     write(P1),nl,
-    write(P2),nl,
-	asserta(avChoose(1)).
+    write(P2),nl,*/
+	asserta(avChoose(1)),!.
 
 /* Help */
 help :-
@@ -111,25 +116,17 @@ help :-
 	write('9. status  : Menampilkan status player'),nl,
 	write('10.quit    : Keluar dari permainan'),nl,!.
 
-choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),!.
-choose(X) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
+checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
+    toke(A,_,_,_,_), legendary(A),
+    toke(B,_,_,_,_), legendary(B),
+    winGame.
+checkLose :-
+    cekToke(X), X =:= 0,
+    loseGame.
 
-addToke(_,_,_,_,_) :-
-	cekToke(Banyak),
-	(Banyak+1) > 6,!,
-	write('Tokemon kamu sudah mencapai batas maksimal.'),fail.
-	
-addToke(A,B,C,D,E) :-
-	/*Toke muat*/
-	tokemona(A,B,C,D,E),
-	asserta(toke(A,B,C,D,E)),!,
-	write('Tokemon '),write(A),write(' berhasil kamu bawa'),
-	retract(avChoose(1)).
-	
-cekToke(Banyak) :-
-	findall(T,toke(T,_,_,_,_),ListBanyak),
-	length(ListBanyak,Banyak).
- 	
+choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),!.
+choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
+
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
@@ -144,7 +141,6 @@ status :-
 		));(
 			write('Belum ada Tokemon yang dimiliki.')
 		)),!.
-		
 /*
 Coming soon
 	write('Masih ada '),cekMusuh(X),write(X),write(' Tokemon Legendary yang harus dikalahkan.'),nl,nl,
@@ -171,46 +167,46 @@ map :-
 
 %Movement
 w :- 
-	player(_,Y),
-	Y=:=1,
+	player(T,_),
+	T=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 w :-
-	retract(player(X,Y)),
-	Y > 1,
-	YBaru is Y-1,
-	write([X,YBaru]),nl,
-	asserta(player(X,YBaru)),!.
+	retract(player(T,L)),
+	TBaru is T-1,
+	write([TBaru,L]),nl,
+	asserta(player(TBaru,L)),!.
 s :- 
-	player(_,Y),
-	Y=:=15,
+	player(T,_),
+    tinggiPeta(TPeta),
+	T=:=TPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 s :-
-	retract(player(X,Y)),
-	Y < 15,
-	YBaru is Y+1,
-	write([X,YBaru]),nl,
-	asserta(player(X,YBaru)),!.
+	retract(player(T,L)),
+	TBaru is T+1,
+	write([TBaru,L]),nl,
+	asserta(player(TBaru,L)),!.
 a :- 
-	player(X,_),
-	X=:=1,
+	player(_,L),
+	L=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 a :-
-	retract(player(X,Y)),
-	X > 1,
-	XBaru is X-1,
-	write([XBaru,Y]),nl,
-	asserta(player(XBaru,Y)),!.	
+	retract(player(T,L)),
+	LBaru is L-1,
+	write([T,LBaru]),nl,
+	asserta(player(T,LBaru)),!.	
 d :- 
-	player(X,_),
-	X=:=20,
+	player(_,L),
+    lebarPeta(LPeta),
+	L=:=LPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 d :-
-	retract(player(X,Y)),
-	X < 20,
-	XBaru is X+1,
-	write([XBaru,Y]),nl,
-	asserta(player(XBaru,Y)),!.
+	retract(player(T,L)),
+	LBaru is L+1,
+	write([T,LBaru]),nl,
+	asserta(player(T,LBaru)),!.
+quit :- halt.
+restart :- consult('C:/Users/Asus/Documents/GitHub/Tokemon/main.pl').
