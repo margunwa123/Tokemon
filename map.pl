@@ -43,7 +43,18 @@ batasBawah(T,_) :-
 batasKanan(_,L) :-
     Z is L-1,
     lebarPeta(Z),!.
-	
+
+/* Zoom membesarkan suatu petak di T,L dgn idx
+ 0,0 0,1 0,2
+ 1,0 1,1 1,2
+ 2,0 2,1 2,2
+
+zoom(2,2) :-
+
+zoom(T,L) :-
+    player(T,L),
+    posToke(N,).
+***** ZOOM BELOM BERES ******/
 /* OptionalMap	
 midBorder(5,4).
 midBorder(5,5).
