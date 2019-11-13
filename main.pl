@@ -159,24 +159,30 @@ choose(X) :- avChoose, tokemon(X,A,B,C,D), awal(X), firstPick(X,A,B,C,D),!.
 choose(X) :- avChoose, \+(awal(X)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
+status :-
+	\+(inGame),
+    	write('Kamu harus memulai game terlebih dahulu untuk dapat mengecek status.'),!.
+
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
-	toke(A,B,C,D,E) -> (
-		forall(toke(_,_,_,_,_),
+	toke(_,_,_,_,_) -> (
+		forall(toke(A,B,C,D,E),
 		(
 			write('    -'),write(A),nl,
 			write('       Hp : '),write(B),nl,
 			write('Basic Att : '),write(C),nl,
 			write('Skill Att : '),write(D),nl,
 			write('     Type : '),write(E),nl,nl
-		));(
-			write('Belum ada Tokemon yang dimiliki.')
-		)),nl,nl,
+		))
+	),
 	write('Ada '),
-	cekLegend(X),
-	write(X),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,!.
-	
+	cekLegend(Y),
+	write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl
+	;(
+			write('Belum ada Tokemon yang dimiliki.')
+		),nl,!.
+		
 % Map
 map :-
 	TMin is 0,

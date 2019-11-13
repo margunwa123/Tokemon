@@ -37,17 +37,36 @@ strong(water,fire).
 cekToke(Banyak) :-
 	findall(T,toke(T,_,_,_,_),ListBanyak),
 	length(ListBanyak,Banyak).
-/*
+
 cekLegend(Banyak) :-
-	findall(legendary(X),toke(X,_,_,_,_),ListBanyak),
+	legendary(X),
+	findall(X,toke(X,_,_,_,_),ListBanyak),
 	length(ListBanyak,Banyak).
-*/
+
 firstPick(A,B,C,D,E) :-
     asserta(toke(A,B,C,D,E)),
     write('Kamu telah berhasil memilih '),write(A),write(' sebagai tokemon pertamamu'),nl,
     write('Game telah dimulai'),
     initialize_map,
     asserta(inGame).
+
+dropToke(X) :-
+	\+(toke(X,_,_,_,_)),
+	write('Tidak ada Tokemon '),write(X),write(' dalam daftar Tokemon kamu.'),nl,
+	write('Pastikan nama Tokemon yang kamu masukkan benar.'),nl,!.
+
+dropToke(X) :-
+	cekToke(Y),
+	Y > 1,
+	toke(X,_,_,_,_),
+	retract(toke(X,_,_,_,_)),
+	write('Tokemon '),write(X),write(' berhasil didrop.'),nl,!.
+	
+dropToke(X) :-
+	cekToke(Y),
+	Y =:= 1,
+	toke(X,_,_,_,_),
+	write('Kamu tidak dapat melakukan drop pada satu-satunya Tokemon yang kamu punya!'),nl,!.	
 
 addToke(_,_,_,_,_) :-
 	cekToke(Banyak),
