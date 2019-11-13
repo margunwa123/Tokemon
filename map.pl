@@ -1,42 +1,20 @@
 :- dynamic(lebarPeta/1).
 :- dynamic(tinggiPeta/1).
 :- dynamic(player/2).
-:- dynamic(posToke/3).
 :- dynamic(inbattle/0).
 :- include('tokemon.pl').
 
 gym(5,5). %gym fixed place
 
-/* posToke adalah representasi dari posisi tokemon pada map, yaitu posToke(Nama,T,L) */
-
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
 initialize_map :-
     random(10,15,T),
     random(10,15,L),
-    asserta(lebarPeta(T)),asserta(tinggiPeta(L)),
+    asserta(lebarPeta(T)),asserta(tinggiPeta(L)), %ngeassert tinggi peta secara random
     random(1,T,PT),
-    random(1,L,PL),
-    asserta(player(PT,PL)),
-    asserta(posToke(zigzogaan,8,4)),
-    asserta(posToke(momon,5,3)).
-    %randomToke(1).
-/*
-Belom beres, pengen ngebikin random tokemon positions
-randomToke(6) :-
-    lebarPeta(LPeta),
-    tinggiPeta(TPeta),
-    random(1,TPeta,TokeT),
-    random(1,LPeta,TokeL),
-    asserta(posToke(6,TokeT,TokeL)),!.
-randomToke(ID) :-
-    lebarPeta(LPeta),
-    tinggiPeta(TPeta),
-    random(1,TPeta,TokeT),
-    random(1,LPeta,TokeL),
-    asserta(posToke(ID,TokeT,TokeL)),
-    Z is ID + 1,
-    randomToke(Z),!.
-*/
+    random(1,L,PL),         
+    asserta(player(PT,PL)). %ngeassert player di posisi random
+
 batasAtas(T,_) :- T=:=0.
 batasKiri(_,L) :- L=:=0.
 batasBawah(T,_) :-
@@ -45,7 +23,6 @@ batasBawah(T,_) :-
 batasKanan(_,L) :-
     Z is L-1,
     lebarPeta(Z),!.
-
 
 /* OptionalMap	
 midBorder(5,4).
@@ -94,9 +71,11 @@ printIdx(_,_) :- write('-'),!.
  1,0 1,1 1,2
  2,0 2,1 2,2
 */
-printToke(T,L) :-
-    posToke(_,T,L),
-    write('T'),!.
+/*printToke(T,L) :-
+    item(_,T,L),
+    write('I'),!.
+incoming : misal ada item, bakal ditulis I di peta
+*/
 printToke(T,L) :-
     printIdx(T,L),!.
 zoom(T,L) :-
@@ -110,6 +89,7 @@ zoom(T,L) :-
 
 cekKondisi :- 
     get_random_number,
+    random_reroll,
     randomNum(X),
     id(Nama,X),
     tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
@@ -121,6 +101,6 @@ cekKondisi :-
 cekKondisi :-
     player(T,L),
     gym(T,L),
-    write('Kamu sekarang berada dalam Gym, ketik "gym." untuk menyembuhkan semua tokemonmu.'),!.
+    write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
