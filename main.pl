@@ -3,18 +3,43 @@
 :- dynamic(inGame/0).
 :- dynamic(winGame/0).
 :- dynamic(loseGame/0).
+:- dynamic(healonce/0).
+:- include('gui.pl').
 :- include('map.pl').
+:- initialization(start).
 
 /* Tampilan Awal */
 start :-
-	write('  ____  _____  _  _  ____  __  __  _____  _  _ '),nl,
-	write(' |_  _||  _  || |/ || ___||  \\/  ||  _  || \\| | '),nl,
-	write('   ||   ||_||  |  |  |__|  |    |  ||_||  |  | '),nl,    
-	write('  |__| |_____||_|\\_||____||_/\\/\\_||_____||_|\\_| '),nl,   
-	write('  ____  ____  _____     _     __    _____  ___  '),nl,  
-	write(' |  _ \\|  _ \\|  _  |   | |   |  |  |  _  |/ __| '),nl,   
-	write('  |___/ |   / ||_||    /_\\/   ||__  ||_||| |_-. '),nl, 
-	write(' |__|  |_|\\_||_____|  |__/\\  |____||_____|\\___/ '),nl,nl,
+    write('    .y/:::::::::::::://-                                      .:://::::::::::::hhy'),nl,
+    write('     `o/::::::::::::::::+:`                               .:/+/:::::::::::::::odo`'),nl,
+    write('        //:::::::::::::::::+:                          -:/+:::::::::::::::::::/h/ '),nl,
+    write('         :+::::::::::::::::::+:::::///////++////+/////+::::::::::::::::::::::/s.  '),nl,
+    write('          .+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://    '),nl,
+    write('            :+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::+.     '),nl,
+    write('            `/+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::+:        '),nl,
+    write('            `/+/++::::::::::::::::::::::::::::::::::::::::::::::::://:            '),nl,
+    write('                :o:::::::::::::::::::::::::::::::::::::::::::::/++//:.            '),nl,
+    write('                .+::::::::::::::::::::::::::::::::::::::::::::::::/o`             '),nl,
+    write('               `o::::::::/oss+::::::::::::::::::::::+oso/:::::::::::+`            '),nl,
+    write('               +::::::::+o`.yds::::::::::::::::::::yyhhhh/:::::::::::+            '),nl,
+    write('              :/::::::::ohyyhhy::::::::::::::::::::dy. `/:::::::::::/-           '),nl,
+    write('            `o::::::::::shdhs/::::::::::::::::::::+yhdy+:::::::::::::+            '),nl,
+    write('            +:::::::::::::::::::::::+++::::::::::::::::::::::::::::::/:           '),nl,
+    write('           `o:::///::::::::::::::::/syyo:::::::::::::::::::///::::::::o`          '),nl,
+    write('           /:/ossssso/::::::::::::::::::::::::::::::::::/ossssso+::::::/          '),nl,
+    write('           o:sssssssss:::::::::::::::::::::::::::::::::/ssssssssso:::::+`         '),nl,
+    write('           o:ossssssso::::::::::::/ooooooooo/::::::::::/ssssssssso::::::/         '),nl,
+    write('            o::/++o++/:::::::::::::y/////////y:::::::::::/+osssso+:::::::o`       '),nl,
+    write('            :/:::::::::::::::::::::s+////////y::::::::::::::::::::::::::::/       '),nl,
+    write('             :/:::::::::::::::::::::s+/////y:::::::::::::::::::::::::::::::/      '),nl,
+    write('              :/:::::::::::::::::::::::sy::::::::::::::::::::::::::::::::::::/    '),nl,
+    write('                  o:/:::::::::::::::/::::/:::::::/:::::::::::://:::::::::/::+-    '),nl,
+    write('                  -+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::/   '),nl,
+    write('                   o:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::+  '),nl,
+    tab,tab,tab,write('       :::: ____  _____  _  _  ____  __  __  _____  _  _  ::::::::::'),nl,
+	tab,tab,tab,write('        :::|_  _||  _  || |/ || ___||  \\/  ||  _  || \\| | ::::::::::'),nl,
+	tab,tab,tab,write('         ::  ||   ||_|| |   |  |__|  |    |  ||_||  |  |  ::::::::::'),nl,    
+	tab,tab,tab,write('            |__| |_____||_|\\_||____||_/\\/\\_||_____||_|\\_| ::::::::::'),nl,nl,
 	write('Selamat Datang di Game Tokemon!'),nl,
 	write('Silahkan ketikkan command berikut untuk memberi perintah'),nl,
 	write('1. play'),nl,
@@ -91,8 +116,7 @@ play :-
 	write('1. wow'),nl,
 	write('2. mamet'),nl,
 	write('3. danlap'),nl,!,
-    initialize_map,
-    asserta(inGame),
+    
     /*tinggiPeta(T),
     write(T),nl,
     lebarPeta(L),
@@ -100,7 +124,7 @@ play :-
     player(P1,P2),
     write(P1),nl,
     write(P2),nl,*/
-	asserta(avChoose(1)),!.
+	asserta(avChoose),!.
 
 /* Help */
 help :-
@@ -120,7 +144,7 @@ help :-
 	write('13.run          : Memilih untuk lari dari bertanding(hanya dapat dilakukan pada battle)'),nl,
 	write('14.drop         : Menghilangkan pokemon dari inventory'),nl,
 	write('15.help         : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('16.quit         : Keluar dari permainan'),nl,!.
+	write('16.quit         : Keluar dari permainan'),nl.
 
 checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
     toke(A,_,_,_,_), legendary(A),
@@ -131,7 +155,8 @@ checkLose :-
     cekToke(X), X =:= 0,
     loseGame.
 
-choose(X) :- avChoose(1), tokemona(X,A,B,C,D), addToke(X,A,B,C,D),cekGelut,!.
+choose(X) :- avChoose, tokemon(X,A,B,C,D), awal(X), firstPick(X,A,B,C,D),!.
+choose(X) :- avChoose, \+(tokemon(X,_,_,_,_)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
 status :- 
@@ -183,7 +208,7 @@ w :-
 	TBaru is T-1,
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
-    cekGelut,!.
+    cekKondisi,!.
 s :- 
 	player(T,_),
     tinggiPeta(TPeta),
@@ -195,7 +220,7 @@ s :-
 	TBaru is T+1,
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
-    cekGelut,!.
+    cekKondisi,!.
 a :- 
 	player(_,L),
 	L=:=1,
@@ -206,7 +231,7 @@ a :-
 	LBaru is L-1,
 	write([T,LBaru]),nl,
 	asserta(player(T,LBaru)),
-    cekGelut,!.	
+    cekKondisi,!.	
 d :- 
 	player(_,L),
     lebarPeta(LPeta),
@@ -218,18 +243,33 @@ d :-
 	LBaru is L+1,
 	write([T,LBaru]),nl,
 	asserta(player(T,LBaru)),
-    cekGelut,!.
-quit :- halt.
-
-restart :- start.
+    cekKondisi,!.
 
 heal :-
     gym(T,L),
-    player(T,L),!,
+    player(T,L),
+    healonce,
+    write('Kamu hanya bisa menyembuhkan tokemonmu sekali dalam gym'),!.
+heal :-
+    gym(T,L),
+    player(T,L),
     toke(Nama, _,C,D,E),
     forall(tokemona(Nama, Hil,C,D,E),(
         toke(Nama,Hil,C,D,E),
         write('Tokemon '),write(Nama),write(' telah berhasil kamu sembuhkan'),nl
-    )).
+    )),
+    asserta(healonce),!.
 heal :-
-    write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan pokemonmu!').
+    \+(toke(_,_,_,_,_)),
+    write('Kamu belum memilih tokemon!'),!.
+heal :-
+    write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan tokemonmu!').
+
+
+look :-
+    player(T,L),
+    zoom(T,L).
+
+/* PROSEDUR KELUAR/ RELOAD FILE */
+quit :- halt.
+restart :- consult('main.pl').

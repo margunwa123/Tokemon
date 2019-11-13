@@ -87,7 +87,7 @@ printIdx(T,L) :- player(T,L), write('P'), !.
 printIdx(T,L) :- gym(T,L), !,write('G'),!.
 printIdx(_,_) :- write('-'),!.
 
-cekGelut :- 
+cekKondisi :- 
     posToke(Nama,X,Y),
     player(X,Y),
     tokemon(Nama,_,_,_,Type),
@@ -95,15 +95,20 @@ cekGelut :-
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Attack'),nl,
     write('2. Run'),nl,
-    inbattle,!.
-    
+    asserta(inbattle),!.
+cekKondisi :-
+    player(T,L),
+    gym(T,L),
+    write('Kamu sekarang berada dalam Gym, ketik "gym." untuk menyembuhkan semua tokemonmu.'),!.
+cekKondisi :-
+    write('Kamu tidak menemukan apa apa di petak ini'),!.
 /* Zoom membesarkan suatu petak di T,L dgn idx
  0,0 0,1 0,2
  1,0 1,1 1,2
  2,0 2,1 2,2
 */
 printToke(T,L) :-
-    posToke(T,L),
+    posToke(_,T,L),
     write('T'),!.
 printToke(T,L) :-
     printIdx(T,L),!.
@@ -115,4 +120,3 @@ zoom(T,L) :-
     printToke(T1,L1),printToke(T1,L),printToke(T1,L2),nl,
     printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
     printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
-***** ZOOM BELOM BERES ******/
