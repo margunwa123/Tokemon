@@ -1,10 +1,12 @@
 :- dynamic(lebarPeta/1).
 :- dynamic(tinggiPeta/1).
-gym(5,5).
 :- dynamic(player/2).
 :- dynamic(posToke/3).
 :- dynamic(inbattle/0).
 :- include('tokemon.pl').
+
+gym(5,5). %gym fixed place
+
 /* posToke adalah representasi dari posisi tokemon pada map, yaitu posToke(Nama,T,L) */
 
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
@@ -87,21 +89,6 @@ printIdx(T,L) :- player(T,L), write('P'), !.
 printIdx(T,L) :- gym(T,L), !,write('G'),!.
 printIdx(_,_) :- write('-'),!.
 
-cekKondisi :- 
-    posToke(Nama,X,Y),
-    player(X,Y),
-    tokemon(Nama,_,_,_,Type),
-    write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
-    write('Apa yang akan kamu lakukan???'),nl,
-    write('1. Attack'),nl,
-    write('2. Run'),nl,
-    asserta(inbattle),!.
-cekKondisi :-
-    player(T,L),
-    gym(T,L),
-    write('Kamu sekarang berada dalam Gym, ketik "gym." untuk menyembuhkan semua tokemonmu.'),!.
-cekKondisi :-
-    write('Kamu tidak menemukan apa apa di petak ini'),!.
 /* Zoom membesarkan suatu petak di T,L dgn idx
  0,0 0,1 0,2
  1,0 1,1 1,2
@@ -120,3 +107,20 @@ zoom(T,L) :-
     printToke(T1,L1),printToke(T1,L),printToke(T1,L2),nl,
     printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
     printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
+
+cekKondisi :- 
+    get_random_number,
+    randomNum(X),
+    id(Nama,X),
+    tokemon(Nama,_,_,_,Type),
+    write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('Apa yang akan kamu lakukan???'),nl,
+    write('1. Attack. - Bertarung melawan tokemon liar'),nl,
+    write('2. Run.    - Melarikan diri dari tokemon'),nl,
+    asserta(inbattle),!.
+cekKondisi :-
+    player(T,L),
+    gym(T,L),
+    write('Kamu sekarang berada dalam Gym, ketik "gym." untuk menyembuhkan semua tokemonmu.'),!.
+cekKondisi :-
+    write('Kamu tidak menemukan apa apa di petak ini'),!.

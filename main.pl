@@ -156,7 +156,7 @@ checkLose :-
     loseGame.
 
 choose(X) :- avChoose, tokemon(X,A,B,C,D), awal(X), firstPick(X,A,B,C,D),!.
-choose(X) :- avChoose, \+(tokemon(X,_,_,_,_)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
+choose(X) :- avChoose, \+(awal(X)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
 status :- 
