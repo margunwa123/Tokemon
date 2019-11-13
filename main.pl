@@ -9,43 +9,6 @@
 :- initialization(start).
 
 /* Tampilan Awal */
-start :-
-    write('    .y/:::::::::::::://-                                      .:://::::::::::::hhy'),nl,
-    write('     `o/::::::::::::::::+:`                               .:/+/:::::::::::::::odo`'),nl,
-    write('        //:::::::::::::::::+:                          -:/+:::::::::::::::::::/h/ '),nl,
-    write('         :+::::::::::::::::::+:::::///////++////+/////+::::::::::::::::::::::/s.  '),nl,
-    write('          .+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::://    '),nl,
-    write('            :+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::+.     '),nl,
-    write('            `/+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::+:        '),nl,
-    write('            `/+/++::::::::::::::::::::::::::::::::::::::::::::::::://:            '),nl,
-    write('                :o:::::::::::::::::::::::::::::::::::::::::::::/++//:.            '),nl,
-    write('                .+::::::::::::::::::::::::::::::::::::::::::::::::/o`             '),nl,
-    write('               `o::::::::/oss+::::::::::::::::::::::+oso/:::::::::::+`            '),nl,
-    write('               +::::::::+o`.yds::::::::::::::::::::yyhhhh/:::::::::::+            '),nl,
-    write('              :/::::::::ohyyhhy::::::::::::::::::::dy. `/:::::::::::/-           '),nl,
-    write('            `o::::::::::shdhs/::::::::::::::::::::+yhdy+:::::::::::::+            '),nl,
-    write('            +:::::::::::::::::::::::+++::::::::::::::::::::::::::::::/:           '),nl,
-    write('           `o:::///::::::::::::::::/syyo:::::::::::::::::::///::::::::o`          '),nl,
-    write('           /:/ossssso/::::::::::::::::::::::::::::::::::/ossssso+::::::/          '),nl,
-    write('           o:sssssssss:::::::::::::::::::::::::::::::::/ssssssssso:::::+`         '),nl,
-    write('           o:ossssssso::::::::::::/ooooooooo/::::::::::/ssssssssso::::::/         '),nl,
-    write('            o::/++o++/:::::::::::::y/////////y:::::::::::/+osssso+:::::::o`       '),nl,
-    write('            :/:::::::::::::::::::::s+////////y::::::::::::::::::::::::::::/       '),nl,
-    write('             :/:::::::::::::::::::::s+/////y:::::::::::::::::::::::::::::::/      '),nl,
-    write('              :/:::::::::::::::::::::::sy::::::::::::::::::::::::::::::::::::/    '),nl,
-    write('                  o:/:::::::::::::::/::::/:::::::/:::::::::::://:::::::::/::+-    '),nl,
-    write('                  -+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::/   '),nl,
-    write('                   o:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::+  '),nl,
-    tab,tab,tab,write('       :::: ____  _____  _  _  ____  __  __  _____  _  _  ::::::::::'),nl,
-	tab,tab,tab,write('        :::|_  _||  _  || |/ || ___||  \\/  ||  _  || \\| | ::::::::::'),nl,
-	tab,tab,tab,write('         ::  ||   ||_|| |   |  |__|  |    |  ||_||  |  |  ::::::::::'),nl,    
-	tab,tab,tab,write('            |__| |_____||_|\\_||____||_/\\/\\_||_____||_|\\_| ::::::::::'),nl,nl,
-	write('Selamat Datang di Game Tokemon!'),nl,
-	write('Silahkan ketikkan command berikut untuk memberi perintah'),nl,
-	write('1. play'),nl,
-	write('2. load'),nl,
-	write('3. save'),nl,
-	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command.'),nl,!.
 
 %Command
 /* Belum kelar
@@ -205,6 +168,8 @@ map :-
 
 %Movement
 w :- 
+    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+w :- 
 	player(T,_),
 	T=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
@@ -215,6 +180,8 @@ w :-
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
     cekKondisi,!.
+s :-
+    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 s :- 
 	player(T,_),
     tinggiPeta(TPeta),
@@ -227,6 +194,8 @@ s :-
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
     cekKondisi,!.
+a :-
+    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
 	player(_,L),
 	L=:=1,
@@ -238,6 +207,8 @@ a :-
 	write([T,LBaru]),nl,
 	asserta(player(T,LBaru)),
     cekKondisi,!.	
+d :-
+    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
 	player(_,L),
     lebarPeta(LPeta),

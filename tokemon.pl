@@ -48,7 +48,8 @@ firstPick(A,B,C,D,E) :-
     write('Kamu telah berhasil memilih '),write(A),write(' sebagai tokemon pertamamu'),nl,
     write('Game telah dimulai'),
     initialize_map,
-    asserta(inGame).
+    asserta(inGame),
+    initialize_tokemon.
 
 dropToke(X) :-
 	\+(toke(X,_,_,_,_)),
