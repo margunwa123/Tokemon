@@ -93,7 +93,7 @@ cekKondisi :-
     get_normal_number,
     randomNum(X),
     id(Nama,X),
-    tokemon(Nama,_,_,_,Type),
+    tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
     write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Attack. - Bertarung melawan tokemon liar'),nl,
