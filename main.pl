@@ -69,7 +69,7 @@ play :-
 	write('Kepala Desa :'),nl,
 	write('Selamat datang, anak muda.'),nl,
 	write('Saya di sini selaku Kepala Desa sangat mengaharapkan bantuan dari kamu dalam mengatasi wabah yang menyerang Tokemon-tokemon di desa ini.'),nl,
-	write('Ada satu cara untuk mengentikan wabah ini, yaitu dengan menghancurkan sebuah kristal biru yang dijaga oleh <jumlah> Tokemon legendary.'),nl,
+	write('Ada satu cara untuk mengentikan wabah ini, yaitu dengan menghancurkan sebuah kristal biru yang dijaga oleh 2 Tokemon legendary.'),nl,
 	write('Setelah ini kamu akan bertemu dengan Professor Tokemon untuk memilih satu Tokemon yang akan menemanimu memerangi wabah ini.'),nl,nl,
 	write('Tidak lama setelah itu, Kepala Desa mengajak penjelajah ke GYM, tempat professor Tokemon bekerja.'),nl,nl,
 	write('Professor :'),nl,
@@ -79,15 +79,8 @@ play :-
 	write('1. wow'),nl,
 	write('2. mamet'),nl,
 	write('3. danlap'),nl,!,
-    
-    /*tinggiPeta(T),
-    write(T),nl,
-    lebarPeta(L),
-    write(L),nl,
-    player(P1,P2),
-    write(P1),nl,
-    write(P2),nl,*/
-	asserta(avChoose),!.
+    asserta(inGame),
+	asserta(avChoose),!. %player memilih tokemon
 
 /* Help */
 help :-
@@ -124,7 +117,7 @@ choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.')
 
 status :-
 	\+(inGame),
-    	write('Kamu harus memulai game terlebih dahulu untuk dapat mengecek status.'),!.
+    	write('Kamu harus mmemilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
 
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
@@ -147,6 +140,8 @@ status :-
 		),nl,!.
 		
 % Map
+map :- \+(inGame), write('Harap memulai game terlebih dahulu'),!.
+map :- avChoose, write('Pilih tokemon awal terlebih dahulu!'),!.
 map :-
 	TMin is 0,
 	LMin is 0,
@@ -237,7 +232,7 @@ heal :-
     )),
     asserta(healonce),!.
 heal :-
-    \+(toke(_,_,_,_,_)),
+    avChoose,
     write('Kamu belum memilih tokemon!'),!.
 heal :-
     write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan tokemonmu!').

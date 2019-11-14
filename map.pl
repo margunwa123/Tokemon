@@ -88,14 +88,26 @@ zoom(T,L) :-
     printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
 
 cekKondisi :- 
-    get_random_number,
-    random_reroll,
+    cekToke(Byk),
+    Byk < 3,
+    get_normal_number,
     randomNum(X),
     id(Nama,X),
     tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
     write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
+    write('2. Run.    - Melarikan diri dari tokemon'),nl,
+    asserta(inbattle),!.
+%player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
+cekKondisi :- 
+    get_random_number,
+    randomNum(X),
+    id(Nama,X),!,
+    tokemon(Nama,_,_,_,Type),
+    write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('Apa yang akan kamu lakukan???'),nl,
+    write('1. Attack. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
     asserta(inbattle),!.
 cekKondisi :-
