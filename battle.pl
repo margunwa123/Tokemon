@@ -1,8 +1,6 @@
 /* File untuk saat pokemon bertarung */
-:- dynamic(inbattle/0).
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
-:- include('map.pl').
 :- include('tokemon.pl').
  
 pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
@@ -10,52 +8,48 @@ pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)),
 pick(X) :- inbattle, \+toke(X,_,_,_,_), write('Kamu tidak memiliki pokemon tersebut!'), nl.
 pick(X) :- \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.
 
-attack :- inbattle, chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
-          strong(TypeM, TypeL), Z is div((HP - Att) * 3, 2),
-          write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl   
-          retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),cekhealthL,!.
-attack :- inbattle, chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
-          strong(TypeL, TypeM), Z is div((HP - Att), 2), 
-          write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl
-          retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),cekhealthL,!.   
-attack :- inbattle, chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
-          Z is (HP - Att), 
-          write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl
-          retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),cekhealthL,!.
-attack :- \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.         
+attack:-chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
+        strong(TypeM, TypeL), Z is div((HP - Att) * 3, 2),
+        write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,   
+        retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),!.
+attack:-chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
+        strong(TypeL, TypeM), Z is div((HP - Att), 2), 
+        write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,
+        retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),!.   
+attack:-chosenToke(X,_), toke(X,_,Att,_,_), lawan(A,HP,B,C,TypeL),
+        Z is (HP - Att), 
+        write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,
+        retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),!.
 
-specialAttack :- inbattle, chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
-                 strong(TypeM, TypeL), Z is div((HP - Skill) * 3, 2),
-                 write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl   
-                 retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
-                 retract(chosenToke(X,1)), asserta(chosenToke(X,0)),cekhealthL,!.              
-specialAttack :- inbattle, chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
-                 strong(TypeL, TypeM), Z is div((HP - Skill), 2),
-                 write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl   
-                 retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
-                 retract(chosenToke(X,1)), asserta(chosenToke(X,0)),cekhealthL,!.
-specialAttack :- inbattle, chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
-                 Z is (HP - Skill),
-                 write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl   
-                 retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
-                 retract(chosenToke(X,1)), asserta(chosenToke(X,0)),cekhealthL,!.
-specialAttack :- inbattle, \+chosenToke(X,1), write(X), write(' sudah memakai Skill Attack!'), nl.
-specialAttack :- \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.
+specialAttack:-chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
+               strong(TypeM, TypeL), Z is div((HP - Skill) * 3, 2),
+               write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,   
+               retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
+               retract(chosenToke(X,1)), asserta(chosenToke(X,0)),!.              
+specialAttack:-chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
+               strong(TypeL, TypeM), Z is div((HP - Skill), 2),
+               write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,   
+               retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
+               retract(chosenToke(X,1)), asserta(chosenToke(X,0)),!.
+specialAttack:-chosenToke(X,1), toke(X,_,_,Skill,_), lawan(A,HP,B,C,TypeL),
+               Z is (HP - Skill),
+               write('Kamu menyebabkan '), write(Z), write(' damage pada '), write(A),nl,nl,   
+               retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
+               retract(chosenToke(X,1)), asserta(chosenToke(X,0)),!.
+specialAttack: - \+(chosenToke(X,1)) , write(X), write(' sudah memakai Skill Attack!'), nl.
 
-
-attacked :- inbattle, chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
-            strong(TypeM, TypeL), Z is div((HP - Att), 2),
-            write(C), write(' menyebabkan'), write(Z), write(' damage pada '), write(X), nl, nl
-            retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),cekhealthP,!.            
-attacked :- inbattle, chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
-            strong(TypeL, TypeM), Z is div((HP - Att) * 3, 2),
-            write(C), write(' menyebabkan'), write(Z), write(' damage pada '), write(X), nl, nl   
-            retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),cekhealthP,!.
-attacked :- inbattle, chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
-            Z is (HP - Att),
-            write(C), write(' menyebabkan'), write(Z), write(' damage pada '), write(X), nl, nl   
-            retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),cekhealthP,!. 
-
+attacked:-chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
+          strong(TypeM, TypeL), Z is div((HP - Att), 2),
+          write(C), write(' menyebabkan '), write(Z), write(' damage pada '), write(X), nl, nl,
+          retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),!.            
+attacked:-chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
+          strong(TypeL, TypeM), Z is div((HP - Att) * 3, 2),
+          write(C), write(' menyebabkan '), write(Z), write(' damage pada '), write(X), nl, nl,   
+          retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),!.
+attacked:-chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,_),
+          Z is (HP - Att),
+          write(C), write(' menyebabkan '), write(Z), write(' damage pada '), write(X), nl, nl,   
+          retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),!. 
 life :- chosenToke(X,_), toke(X,HPM,_,_,TypeM), lawan(Y,HPL,_,_,TypeL),
         write(X), write('Health: '), write(HPM), nl,
         write('Type: '), write(TypeM), nl, nl,

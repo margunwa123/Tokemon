@@ -2,7 +2,7 @@
 :- dynamic(tinggiPeta/1).
 :- dynamic(player/2).
 :- dynamic(inbattle/0).
-:- include('tokemon.pl').
+:- include('battle.pl').
 
 gym(5,5). %gym fixed place
 
@@ -87,6 +87,7 @@ zoom(T,L) :-
     printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
     printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
 
+%tiap movement di cek kondisinya
 cekKondisi :- 
     cekToke(Byk),
     Byk < 3,
@@ -94,13 +95,15 @@ cekKondisi :-
     randomNum(X),
     id(Nama,X),
     tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
-    write('Kamu telah bertemu dengan sebuah pokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
     !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
+    cekToke(Byk),
+    Byk >= 3,
     get_random_number,
     randomNum(X),
     id(Nama,X),!,
