@@ -8,10 +8,10 @@
 Komposisi : (health/100) * (attack/100) = +- 20
 sp.attack : attack + health/10 */
 tokemon(zigzogaan,1500,130,280,water).      %1
-tokemon(bulbasaur,2000,100,300,leaf).        %2
+tokemon(bulbasaur,2000,100,300,leaf).       %2
 tokemon(vanila_bluemon,1700,115,285,fire).  %3
 tokemon(toketchur,1200,160,280,fire).       %4
-tokemon(momon,1300,150,280,leaf).             %5
+tokemon(momon,1300,150,280,leaf).           %5
 tokemon(engasmon,1269,169,269,water).       %6
 tokemon(santuymon,1500,120,270,fire).       %7
 tokemon(tankmon,2500,80,330,leaf).          %8
