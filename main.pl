@@ -163,6 +163,8 @@ map :-
 
 %Movement
 w :- 
+    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
+w :- 
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 w :- 
 	player(T,_),
@@ -175,6 +177,9 @@ w :-
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
     cekKondisi,!.
+
+s :- 
+    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
 s :-
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 s :- 
@@ -189,6 +194,9 @@ s :-
 	write([TBaru,L]),nl,
 	asserta(player(TBaru,L)),
     cekKondisi,!.
+
+a :- 
+    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
 a :-
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
@@ -201,7 +209,10 @@ a :-
 	LBaru is L-1,
 	write([T,LBaru]),nl,
 	asserta(player(T,LBaru)),
-    cekKondisi,!.	
+	cekKondisi,!.	
+	
+d :- 
+    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.	
 d :-
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
@@ -244,4 +255,4 @@ look :-
 
 /* PROSEDUR KELUAR/ RELOAD FILE */
 quit :- halt.
-restart :- consult('main.pl').
+restart :- halt, consult('main.pl').

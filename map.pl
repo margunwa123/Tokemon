@@ -2,6 +2,7 @@
 :- dynamic(tinggiPeta/1).
 :- dynamic(player/2).
 :- dynamic(inbattle/0).
+:- dynamic(onbattle/0).
 :- include('battle.pl').
 
 gym(5,5). %gym fixed place
@@ -98,7 +99,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Run.    - Melarikan diri dari tokemon'),nl,
+    write('2. Run.    - Melarikan diri dari tokemon'),nl, asserta(onbattle),
     !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
@@ -112,7 +113,7 @@ cekKondisi :-
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
-    asserta(inbattle),!.
+    asserta(onbattle),!.
 cekKondisi :-
     player(T,L),
     gym(T,L),
@@ -120,12 +121,13 @@ cekKondisi :-
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
-serang :- write('Tokemon yang ada : ['),
-          toke([H|T],_,_,_,_), write(H),
-          toke(T,_,_,_,_) -> (
-          forall(toke(A,_,_,_,_),
-            (
-            write(','), write(A)
-            ))
-          ), 
+serang :- onbattle, write('Tokemon yang ada : ['),
+          toke(H,_,_,_,_), write(H),
+        %   toke(T,_,_,_,_) -> (
+        %   forall(toke(A,_,_,_,_),
+        %     (
+        %     write(','), write(A)
+        %     ))
+        %   ), 
+          retract(onbattle),
           write(']'),nl,asserta(inbattle),!.  
