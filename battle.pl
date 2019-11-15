@@ -2,6 +2,7 @@
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
 :- dynamic(runorfight/0).
+:- dynamic(losing/0).
 :- include('tokemon.pl').
  
 pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
@@ -57,22 +58,23 @@ life :- chosenToke(X,_), toke(X,HPM,_,_,TypeM), lawan(Y,HPL,_,_,TypeL),
         write(Y), nl, write('Health: '), write(HPL), nl,
         write('Type: '), write(TypeL), nl, nl, !.
 
-cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM < 0, 
+cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM =< 0, 
               write(X), write(' meninggal!'),nl,nl,
               retract(inbattle), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
               cektokemon,!.
 cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM > 0, 
               life, !.        
 
-cekhealthL :- lawan(Y,HPL,_,_,_), HPL < 0, 
+cekhealthL :- lawan(Y,HPL,_,_,_), HPL =< 0, 
               write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
               retract(inbattle),!.        
 cekhealthL :- lawan(_,HPL,_,_,_), HPL > 0, 
               life, attacked, !.        
 
-cektokemon :- write('Kamu masih memiliki sisa Tokemon!'), nl,
+cektokemon :- cekToke(Banyak), Banyak > 0,
+              write('Kamu masih memiliki sisa Tokemon!'), nl,
               write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
-cektokemon :- \+toke(_,_,_,_,_), lose,!.
+cektokemon :- cekToke(Banyak), Banyak =:= 0, lose,!.
 
 change(A) :- inbattle, \+(toke(A,_,_,_,_)),
              write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
@@ -85,4 +87,3 @@ change(A) :- inbattle, toke(A,_,_,_,_),
              retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
              write('Maju, '), write(A), nl, !.
 change(_) :- \+inbattle, write('Kamu tidak sedang bertarung!'),nl,!.
-

@@ -121,13 +121,21 @@ cekKondisi :-
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
-serang :- onbattle, write('Tokemon yang ada : ['),
+serang :- onbattle, cekToke(Banyak), Banyak > 1,
+          write('Tokemon yang ada : ['),
+          toke(H,I,J,K,L), write(H),
+          retract(toke(H,I,J,K,L)), retract(onbattle),
+          toke(_,_,_,_,_) -> (
+            forall(toke(A,_,_,_,_),
+            (
+                write(','),
+                write(A)
+            ))
+          ),
+          write(']'),nl,asserta(inbattle), asserta(toke(H,I,J,K,L)), !.
+
+serang :- onbattle, cekToke(Banyak), Banyak =:= 1, 
+          write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
-        %   toke(T,_,_,_,_) -> (
-        %   forall(toke(A,_,_,_,_),
-        %     (
-        %     write(','), write(A)
-        %     ))
-        %   ), 
           retract(onbattle),
-          write(']'),nl,asserta(inbattle),!.  
+          write(']'),nl,asserta(inbattle), !.          
