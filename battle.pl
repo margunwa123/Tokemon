@@ -1,6 +1,7 @@
 /* File untuk saat pokemon bertarung */
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
+:- dynamic(runorfight/0).
 :- include('tokemon.pl').
  
 pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
@@ -73,7 +74,7 @@ cektokemon :- write('Kamu masih memiliki sisa Tokemon!'), nl,
               write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
 cektokemon :- \+toke(_,_,_,_,_), lose,!.
 
-change(A) :- inbattle, \+ toke(A,_,_,_,_),
+change(A) :- inbattle, \+(toke(A,_,_,_,_)),
              write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
 change(A) :- inbattle, toke(A,_,_,_,_),
              chosenToke(X,_), A =:= X, 
@@ -84,5 +85,4 @@ change(A) :- inbattle, toke(A,_,_,_,_),
              retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
              write('Maju, '), write(A), nl, !.
 change(_) :- \+inbattle, write('Kamu tidak sedang bertarung!'),nl,!.
-
 

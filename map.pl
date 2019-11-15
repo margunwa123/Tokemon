@@ -99,7 +99,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Run.    - Melarikan diri dari tokemon'),nl, asserta(onbattle),
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
     !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
@@ -112,8 +112,8 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Run.    - Melarikan diri dari tokemon'),nl,
-    asserta(onbattle),!.
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
+    asserta(inbattle),!.
 cekKondisi :-
     player(T,L),
     gym(T,L),
