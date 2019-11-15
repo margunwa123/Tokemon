@@ -98,7 +98,7 @@ cekKondisi :-
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
-    asserta(inbattle),!.
+    !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
     get_random_number,
@@ -107,7 +107,7 @@ cekKondisi :-
     tokemon(Nama,_,_,_,Type),
     write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
-    write('1. Attack. - Bertarung melawan tokemon liar'),nl,
+    write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
     asserta(inbattle),!.
 cekKondisi :-
@@ -116,3 +116,13 @@ cekKondisi :-
     write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
+
+serang :- write('Tokemon yang ada : ['),
+          toke([H|T],_,_,_,_), write(H),
+          toke(T,_,_,_,_) -> (
+          forall(toke(A,_,_,_,_),
+            (
+            write(','), write(A)
+            ))
+          ), 
+          write(']'),nl,asserta(inbattle),!.  
