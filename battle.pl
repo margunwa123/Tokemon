@@ -5,11 +5,25 @@
 :- dynamic(losing/0).
 :- include('tokemon.pl').
 
+% Pemilihan tokemon 
 pick(_) :- losing, lose, !.
-pick(X) :- \+ losing, inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
-           write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
-pick(X) :- \+ losing, inbattle, \+toke(X,_,_,_,_), write('Kamu tidak memiliki pokemon tersebut!'), nl, !.
-pick(_) :- \+ losing, \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.
+pick(X) :- 
+        toke(X,_,_,_,_), asserta(chosenToke(X,1)),
+        inbattle(0), retract(inbattle(0)),asserta(inbattle(1)), 
+        %battle stage ke 1 yaitu saat bertarung(attack dan attacked) 
+        write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
+pick(X) :- 
+        \+ losing, 
+        inbattle(0), 
+        \+toke(X,_,_,_,_), 
+        write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
+pick(_) :- 
+        \+ losing,
+        inbattle(1), 
+        write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
+pick(_) :- 
+        \+ losing, 
+        write('Kamu tidak sedang bertarung'),nl,!.
 
 attack :- losing, lose, !. 
 attack :- \+ losing, chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
@@ -64,14 +78,14 @@ life :- chosenToke(X,_), toke(X,HPM,_,_,TypeM), lawan(Y,HPL,_,_,TypeL),
 
 cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM =< 0, 
               write(X), write(' meninggal!'),nl,nl,
-              retract(inbattle), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
+              retract(inbattle(1)),asserta(inbattle(0)), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
               cektokemon,!.
 cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM > 0, 
               life, !.        
 
 cekhealthL :- lawan(Y,HPL,_,_,_), HPL =< 0, 
               write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
-              retract(inbattle),!.        
+              retract(inbattle(1)),asserta(inbattle(2)),!.        
 cekhealthL :- lawan(_,HPL,_,_,_), HPL > 0, 
               life, attacked, !.        
 
@@ -81,14 +95,15 @@ cektokemon :- cekToke(Banyak), Banyak > 0,
 cektokemon :- cekToke(Banyak), Banyak =:= 0, asserta(losing), lose,!.
 
 change(_) :- losing, lose, !.
-change(A) :- \+ losing, inbattle, \+(toke(A,_,_,_,_)),
+change(A) :- \+ losing, inbattle(1), \+(toke(A,_,_,_,_)),
              write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
-change(A) :- \+ losing, inbattle, toke(A,_,_,_,_),
+change(A) :- \+ losing, inbattle(1), toke(A,_,_,_,_),
              chosenToke(X,_), A =:= X, 
              write('Kamu sedang memakai Tokemon '), write(A), nl, !.
-change(A) :- \+ losing, inbattle, toke(A,_,_,_,_),
+change(A) :- \+ losing, inbattle(1), toke(A,_,_,_,_),
              chosenToke(X,_), A \= X,
              write('Kembalilah '), write(A), nl,
              retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
              write('Maju, '), write(A), nl, !.
-change(_) :- \+ losing, \+inbattle, write('Kamu tidak sedang bertarung!'),nl,!.
+change(_) :- \+ losing, \+inbattle(1), write('Kamu tidak sedang bertarung!'),nl,!.
+

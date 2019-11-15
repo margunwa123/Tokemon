@@ -1,8 +1,7 @@
 :- dynamic(lebarPeta/1).
 :- dynamic(tinggiPeta/1).
 :- dynamic(player/2).
-:- dynamic(inbattle/0).
-:- dynamic(onbattle/0).
+:- dynamic(inbattle/1).
 :- include('battle.pl').
 
 gym(5,5). %gym fixed place
@@ -99,7 +98,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.    - Melarikan diri dari tokemon'),nl, asserta(onbattle),
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl, asserta(inbattle(0)),
     !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
@@ -113,7 +112,7 @@ cekKondisi :-
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.    - Melarikan diri dari tokemon'),nl,
-    asserta(onbattle),!.
+    asserta(inbattle(0)),!.
 cekKondisi :-
     player(T,L),
     gym(T,L),
@@ -121,10 +120,10 @@ cekKondisi :-
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
-serang :- onbattle, cekToke(Banyak), Banyak > 1,
+serang :- inbattle(0), cekToke(Banyak), Banyak > 1,
           write('Tokemon yang ada : ['),
           toke(H,I,J,K,L), write(H),
-          retract(toke(H,I,J,K,L)), retract(onbattle),
+          retract(toke(H,I,J,K,L)),
           toke(_,_,_,_,_) -> (
             forall(toke(A,_,_,_,_),
             (
@@ -132,10 +131,10 @@ serang :- onbattle, cekToke(Banyak), Banyak > 1,
                 write(A)
             ))
           ),
-          write(']'),nl,asserta(inbattle), asserta(toke(H,I,J,K,L)), !.
+          write(']'),nl, asserta(toke(H,I,J,K,L)), !.
 
-serang :- onbattle, cekToke(Banyak), Banyak =:= 1, 
+serang :- inbattle(0), cekToke(Banyak), Banyak =:= 1, 
           write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
-          retract(onbattle),
+          retract(inbattle(0)),
           write(']'),nl,asserta(inbattle), !.          
