@@ -1,7 +1,7 @@
 /* File untuk saat pokemon bertarung */
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
-:- dynamic(runorfight).
+:- dynamic(runorfight/0).
 :- include('tokemon.pl').
  
 pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
