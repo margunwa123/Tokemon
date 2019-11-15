@@ -87,4 +87,45 @@ zoom(T,L) :-
     printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
     printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
 
+%tiap movement di cek kondisinya
+cekKondisi :- 
+    cekToke(Byk),
+    Byk < 3,
+    get_normal_number,
+    randomNum(X),
+    id(Nama,X),
+    tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
+    write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('Apa yang akan kamu lakukan???'),nl,
+    write('1. Serang. - Bertarung melawan tokemon liar'),nl,
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
+    !.
+%player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
+cekKondisi :- 
+    cekToke(Byk),
+    Byk >= 3,
+    get_random_number,
+    randomNum(X),
+    id(Nama,X),!,
+    tokemon(Nama,_,_,_,Type),
+    write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    write('Apa yang akan kamu lakukan???'),nl,
+    write('1. Serang. - Bertarung melawan tokemon liar'),nl,
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
+    asserta(inbattle),!.
+cekKondisi :-
+    player(T,L),
+    gym(T,L),
+    write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
+cekKondisi :-
+    write('Kamu tidak menemukan apa apa di petak ini'),!.
 
+serang :- write('Tokemon yang ada : ['),
+          toke([H|T],_,_,_,_), write(H),
+          toke(T,_,_,_,_) -> (
+          forall(toke(A,_,_,_,_),
+            (
+            write(','), write(A)
+            ))
+          ), 
+          write(']'),nl,asserta(inbattle),!.  

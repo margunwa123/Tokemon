@@ -3,12 +3,11 @@
 :- dynamic(chosenToke/2).
 :- dynamic(runorfight).
 :- include('tokemon.pl').
-
-%run :- inbattle,
-pick(X):- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
-         write('You : "Saya memilih kamu,'),write(X),write('."'),nl,nl,!.
-pick(X):- \+(toke(X,_,_,_,_)), write('Kamu tidak memiliki pokemon tersebut!'), nl.
-
+ 
+pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
+           write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
+pick(X) :- inbattle, \+toke(X,_,_,_,_), write('Kamu tidak memiliki pokemon tersebut!'), nl.
+pick(X) :- \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.
 
 attack:-chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeM, TypeL), Z is div((HP - Att) * 3, 2),
@@ -83,38 +82,5 @@ change(A) :- inbattle, chosenToke(X,_), A \= X,
              write('Kembalilah '), write(A), nl,
              retract(chosenToke(X,_)), asserta(chosenToke(A,_)),
              write('Maju, '), write(A), nl, !.
-change(A) :- write('Kamu tidak sedang bertarung!'),nl,!.
+change(A) :- \+inbattle, write('Kamu tidak sedang bertarung!'),nl,!.
 
-%tiap movement di cek kondisinya
-cekKondisi :-
-    player(T,L),
-    gym(T,L),
-    write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
-cekKondisi :- 
-    cekToke(Byk),
-    Byk < 3,
-    get_normal_number,
-    randomNum(X),
-    id(Nama,X),
-    tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
-    write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
-    write('Apa yang akan kamu lakukan???'),nl,
-    write('1. Lawan. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.  - Melarikan diri dari tokemon'),nl,
-    asserta(inbattle),!.
-%player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
-cekKondisi :- 
-    cekToke(Byk),
-    Byk >= 3,
-    get_random_number,
-    randomNum(X),
-    id(Nama,X),!,
-    tokemon(Nama,A,B,C,Type),
-    write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
-    write('Apa yang akan kamu lakukan???'),nl,
-    write('1. Lawan. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.  - Melarikan diri dari tokemon'),nl,
-    asserta(inbattle),
-    asserta(lawan(Nama,A,B,C,Type)),!.
-cekKondisi :-
-    write('Kamu tidak menemukan apa apa di petak ini'),!.
