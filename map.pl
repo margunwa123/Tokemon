@@ -97,7 +97,7 @@ cekKondisi :-
     tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
-    write('1. Attack. - Bertarung melawan tokemon liar'),nl,
+    write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Run.    - Melarikan diri dari tokemon'),nl,
     asserta(inbattle),!.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3

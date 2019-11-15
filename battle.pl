@@ -50,5 +50,37 @@ attacked:-chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,_),
           Z is (HP - Att),
           write(C), write(' menyebabkan '), write(Z), write(' damage pada '), write(X), nl, nl,   
           retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),!. 
-                 
+life :- chosenToke(X,_), toke(X,HPM,_,_,TypeM), lawan(Y,HPL,_,_,TypeL),
+        write(X), write('Health: '), write(HPM), nl,
+        write('Type: '), write(TypeM), nl, nl,
+        write(Y), write('Health: '), write(HPL), nl,
+        write('Type: '), write(TypeL), nl, nl, !.
+
+cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM < 0, 
+              write(X), write(' meninggal!'),nl,nl,
+              retract(inbattle), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
+              cektokemon,!.
+cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM > 0, 
+              life, !.        
+
+cekhealthL :- lawan(Y,HPL,_,_,_), HPL < 0, 
+              write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
+              retract(inbattle),!.        
+cekhealthL :- lawan(Y,HPL,_,_,_), HPL > 0, 
+              life, !, attacked.        
+
+cektokemon :- write('Kamu masih memiliki sisa Tokemon!'), nl,
+              write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
+cektokemon :- \+toke(X,_,_,_,_), lose,!.
+
+change(A) :- inbattle, /+ toke(A,_,_,_,_),
+             write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
+change(A) :- inbattle, chosenToke(X,_), A =:= X, 
+             write('Kamu sedang memakai Tokemon '), write(A), nl, !.
+change(A) :- inbattle, chosenToke(X,_), A =/= X,
+             write('Kembalilah '), write(A), nl,
+             retract(chosenToke(X,_)), asserta(chosenToke(A,_)),
+             write('Maju, '), write(A), nl, !.
+change(A) :- write('Kamu tidak sedang bertarung!'),nl,!.
+
 
