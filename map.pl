@@ -3,7 +3,7 @@
 :- dynamic(player/2).
 :- dynamic(inbattle/1).
 :- include('battle.pl').
-
+:- include('item.pl').
 gym(5,5). %gym fixed place
 
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */
@@ -71,26 +71,31 @@ printIdx(_,_) :- write('-'),!.
  1,0 1,1 1,2
  2,0 2,1 2,2
 */
-/*printToke(T,L) :-
-    item(_,T,L),
+
+printItem(T,L) :-
+    positem(_,T,L),
     write('I'),!.
-incoming : misal ada item, bakal ditulis I di peta
-*/
-printToke(T,L) :-
+
+printItem(T,L) :-
     printIdx(T,L),!.
 zoom(T,L) :-
     T1 is T-1,
     T2 is T+1,
     L1 is L-1,
     L2 is L+1,
-    printToke(T1,L1),printToke(T1,L),printToke(T1,L2),nl,
-    printToke(T,L1),printToke(T,L),printToke(T,L2),nl,
-    printToke(T2,L1),printToke(T2,L),printToke(T2,L2),nl.
+    printItem(T1,L1),printItem(T1,L),printItem(T1,L2),nl,
+    printItem(T,L1),printItem(T,L),printItem(T,L2),nl,
+    printItem(T2,L1),printItem(T2,L),printItem(T2,L2),nl.
 
+
+cekKondisi :-
+    player(T,L),
+    gym(T,L),
+    write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
 %tiap movement di cek kondisinya
 cekKondisi :- 
     cekToke(Byk),
-    Byk < 3,
+    Byk<3,
     get_normal_number,
     randomNum(X),
     id(Nama,X),
@@ -103,7 +108,7 @@ cekKondisi :-
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
     cekToke(Byk),
-    Byk >= 3,
+    Byk>=3,
     get_random_number,
     randomNum(X),
     id(Nama,X),!,
@@ -114,9 +119,11 @@ cekKondisi :-
     write('2. Lari.    - Melarikan diri dari tokemon'),nl,
     asserta(inbattle(0)),!.
 cekKondisi :-
-    player(T,L),
-    gym(T,L),
-    write('Kamu sekarang berada dalam Gym, ketik "heal." untuk menyembuhkan semua tokemonmu.'),!.
+    get_item_number,
+    item_number(ID),
+    mapitem(ID,Efek,Nama,Raise),
+    write('Kamu telah menemukan sebuah item bernama '),write(Nama),write(' dengan efek '), write(Efek), write(' sebanyak '), write(Raise),nl,
+    write('Cara menggunakan item adalah ketikan use(Nama_Item,Toke).'),asserta(item(Nama)),!.
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 

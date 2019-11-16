@@ -74,7 +74,7 @@ play :-
 	write('Professor :'),nl,
 	write('Kamu pasti penjelajah yang akan membantu kami menghilangkan wabah yang menyerang Tokemon-tokemon di sini, ya.'),nl,
 	write('Kalau memang benar, silahkan pilih satu dari ketiga Tokemon milikku untuk kamu bawa pergi.'),nl,nl,
-	write('Pilihlah satu pokemon dengan memberi perintah choose(NamaTokemon).'),nl,
+	write('Pilihlah satu tokemon dengan memberi perintah choose(NamaTokemon).'),nl,
 	write('1. wow'),nl,
 	write('2. mamet'),nl,
 	write('3. danlap'),nl,!,
@@ -84,22 +84,23 @@ play :-
 /* Help */
 help :-
 	write('Daftar Command: '),nl,
-	write('1. w            : Bergerak ke arah atas'),nl,
-	write('2. a            : Bergerak ke arah kiri'),nl,
-	write('3. s            : Bergerak ke arah bawah'),nl,
-	write('4. d            : Bergerak ke arah kanan'),nl,
-	write('5. map          : Menampilkan map'),nl,
-	write('6. heal         : Menyembuhkan Tokemon(hanya dapat dilakukan di Gym)'),nl,
-	write('7. load         : Melanjutkan permainan yang pernah disimpan'),nl,
-	write('8. save         : Menyimpan permainan'),nl,
-	write('9. status       : Menampilkan status player'),nl,
-	write('10.pick         : Memilih pokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
-	write('11.attack       : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl, 
-	write('12.specialAtack : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
-	write('13.run          : Memilih untuk lari dari bertanding(hanya dapat dilakukan pada battle)'),nl,
-	write('14.drop         : Menghilangkan pokemon dari inventory'),nl,
-	write('15.help         : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('16.quit         : Keluar dari permainan'),nl.
+	write('1. w              : Bergerak ke arah atas'),nl,
+	write('2. a              : Bergerak ke arah kiri'),nl,
+	write('3. s              : Bergerak ke arah bawah'),nl,
+	write('4. d              : Bergerak ke arah kanan'),nl,
+	write('5. map            : Menampilkan map'),nl,
+	write('6. heal           : Menyembuhkan tokemon(hanya dapat dilakukan di Gym)'),nl,
+	write('7. load           : Melanjutkan permainan yang pernah disimpan'),nl,
+	write('8. save           : Menyimpan permainan'),nl,
+	write('9. status         : Menampilkan status player'),nl,
+	write('10.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
+	write('11.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl, 
+	write('12.specialAtack   : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
+	write('13.run            : Memilih untuk lari dari bertanding(hanya dapat dilakukan pada battle)'),nl,
+	write('14.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
+	write('15.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
+	write('16.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
+	write('17.quit           : Keluar dari permainan'),nl.
 
 % checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
 %     toke(A,_,_,_,_), legendary(A),
@@ -131,14 +132,13 @@ status :- \+losing,
 			write('Basic Att : '),write(C),nl,
 			write('Skill Att : '),write(D),nl,
 			write('     Type : '),write(E),nl,nl
-		))
-	),
-	write('Ada '),
-	cekLegend(Y),
-	write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl
-	;(
+		)),
+        write('Ada '),
+        cekLegend(Y),
+        write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl
+	);(
 			write('Belum ada Tokemon yang dimiliki.')
-		),nl,!.
+	),!.
 		
 % Map
 map :- losing, lose,!.
@@ -165,17 +165,17 @@ map :- \+ (losing),
 
 %Movement
 w :- 
-    \+losing,inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
+    \+(losing),inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 w :- 
-    \+losing,inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    \+(losing),inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 w :- 
-	\+losing,
+	\+(losing),
 	player(T,_),
 	T=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 w :-
-	\+losing,
+	\+(losing),
 	retract(player(T,L)),
 	TBaru is T-1,
 	write([TBaru,L]),nl,
@@ -184,19 +184,17 @@ w :-
 
 s :-
 	losing, lose, !.
+s :- \+(losing),inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
+s :- \+(losing),inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 s :- 
-    \+losing,inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
-s :-
-    \+losing,inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
-s :- 
-	\+losing,
+	\+(losing),
 	player(T,_),
     tinggiPeta(TPeta),
 	T=:=TPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 s :-
-	\+losing,
+	\+(losing),
 	retract(player(T,L)),
 	TBaru is T+1,
 	write([TBaru,L]),nl,
@@ -204,17 +202,17 @@ s :-
     cekKondisi,!.
 
 a :- 
-    \+losing,inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
+	\+(losing),inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 a :-
-    \+losing,inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+	\+(losing),inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
-	\+losing,
+	\+(losing),
 	player(_,L),
 	L=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 a :-
-	\+losing,
+	\+(losing),
 	retract(player(T,L)),
 	LBaru is L-1,
 	write([T,LBaru]),nl,
@@ -222,18 +220,18 @@ a :-
 	cekKondisi,!.	
 	
 d :- 
-    \+losing,inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.	
+	\+(losing),inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.	
 d :-
-    \+losing,inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+	\+(losing),inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
-	\+losing,
+	\+(losing),
 	player(_,L),
     lebarPeta(LPeta),
 	L=:=LPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 d :-
-	\+losing,
+	\+(losing),
 	retract(player(T,L)),
 	LBaru is L+1,
 	write([T,LBaru]),nl,
@@ -243,13 +241,13 @@ d :-
 heal :-
 	losing, lose, !.
 heal :-
-	\+losing,
+	\+(losing),
     gym(T,L),
     player(T,L),
     healonce,
     write('Kamu hanya bisa menyembuhkan tokemonmu sekali dalam gym'),!.
 heal :-
-	\+losing,
+	\+(losing),
     gym(T,L),
     player(T,L),
     toke(Nama, _,C,D,E),
@@ -259,11 +257,11 @@ heal :-
     )),
     asserta(healonce),!.
 heal :-
-	\+losing,
+	\+(losing),
     avChoose,
     write('Kamu belum memilih tokemon!'),!.
 heal :-
-	\+losing,
+	\+(losing),
     write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan tokemonmu!').
 
 

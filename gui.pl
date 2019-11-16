@@ -36,7 +36,7 @@ start :-
 	write('1  play'),nl,
 	write('2  load'),nl,
 	write('3  save'),nl,
-	write('Perhatikan untuk selalu memberikan tanda titik( ) di akhir command '),nl,!. 
+	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command '),nl,!. 
 
 graphicbattle :-
     write('     ____________________________                           ____________________________  '),nl,
