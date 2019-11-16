@@ -103,8 +103,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.    - Melarikan diri dari tokemon'),nl, asserta(inbattle(0)),
-    !.
+    write('2. Lari.   - Melarikan diri dari tokemon'),nl, asserta(inbattle(0)), !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
     cekToke(Byk),
@@ -116,7 +115,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
+    write('2. Lari.   - Melarikan diri dari tokemon'),nl,
     asserta(inbattle(0)),!.
 cekKondisi :-
     get_item_number,
@@ -138,9 +137,14 @@ serang :- inbattle(0), cekToke(Banyak), Banyak > 1,
                 write(A)
             ))
           ),
-          write(']'),nl, asserta(toke(H,I,J,K,L)), !.
+          write(']'),nl, 
+          asserta(toke(H,I,J,K,L)), 
+          retract(inbattle(0)),
+          asserta(inbattle(1)), !. 
 
 serang :- inbattle(0), cekToke(Banyak), Banyak =:= 1, 
           write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
-          write(']'),nl, !.          
+          write(']'),nl,
+          retract(inbattle(0)),
+          asserta(inbattle(1)), !.          

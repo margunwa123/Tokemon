@@ -91,6 +91,8 @@ addToke(_,_,_,_,_) :-
 
 addToke(A,B,C,D,E) :-
 	/*Toke muat*/
+	cekToke(Banyak),
+	(Banyak+1) =< 6,
 	tokemon(A,B,C,D,E),
 	asserta(toke(A,B,C,D,E)),!,
 	write('Tokemon '),write(A),write(' berhasil kamu bawa'),
