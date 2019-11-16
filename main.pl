@@ -131,21 +131,20 @@ status :- \+(inGame),
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
-	toke(_,_,_,_,_) -> (
-		forall(toke(A,B,C,D,E),
-		(
-			write('    -'),write(A),nl,
-			write('       Hp : '),write(B),nl,
-			write('Basic Att : '),write(C),nl,
-			write('Skill Att : '),write(D),nl,
-			write('     Type : '),write(E),nl,nl
-		)),
-        write('Ada '),
-        cekLegend(Y),
-        write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl
-	);(
-			write('Belum ada Tokemon yang dimiliki.')
-	),!.
+    forall(toke(A,B,C,D,E),
+    (
+        write('    -'),write(A),nl,
+        write('       Hp : '),write(B),nl,
+        write('Basic Att : '),write(C),nl,
+        write('Skill Att : '),write(D),nl,
+        write('     Type : '),write(E),nl,nl
+    )),
+    write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
+    write('Item kamu : [ | '), 
+    forall(item(I),
+    (
+        write(I),write(' | ')
+    )),write(']'),!.
 		
 % Map
 map :- losing, lose,!.

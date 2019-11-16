@@ -21,6 +21,7 @@ pick(X) :-
 %         write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
 pick(_) :- 
         inbattle(1), 
+        chosenToke(X,_),
         write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
 pick(_) :- 
         \+ inbattle(1), 
