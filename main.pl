@@ -116,9 +116,9 @@ choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.')
 
 status :- losing, lose, !.
 
-status :- \+losing,
+status :- \+(losing),
 	      \+(inGame),
-    	  write('Kamu harus mmemilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
+    	  write('Kamu harus memilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
 
 status :- \+losing,
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
@@ -167,19 +167,19 @@ map :- \+ (losing),
 w :- 
 	losing, lose, !.
 w :-
-	\+ losing, 
+	\+losing, 
     inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 w :- 
-	\+ losing,
+	\+losing,
     inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 w :- 
-	\+ losing,
+	\+losing,
 	player(T,_),
 	T=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 w :-
-	\+ losing,
+	\+losing,
 	retract(player(T,L)),
 	TBaru is T-1,
 	write([TBaru,L]),nl,
@@ -189,20 +189,20 @@ w :-
 s :-
 	losing, lose, !.
 s :- 
-	\+ losing,
+	\+losing,
     inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 s :-
-	\+ losing,
+	\+losing,
     inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 s :- 
-	\+ losing,
+	\+losing,
 	player(T,_),
     tinggiPeta(TPeta),
 	T=:=TPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 s :-
-	\+ losing,
+	\+losing,
 	retract(player(T,L)),
 	TBaru is T+1,
 	write([TBaru,L]),nl,
@@ -212,21 +212,21 @@ s :-
 a :- 
 	losing, lose, !.
 a :- 
-	\+ losing,
+	\+losing,
 	inbattle(0),
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
+    write('Kamu harus memilih keputusan sekarang!'),!.
 a :-
-	\+ losing,
+	\+losing,
 	inbattle(1),
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
-	\+ losing,
+	\+losing,
 	player(_,L),
 	L=:=1,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 a :-
-	\+ losing,
+	\+losing,
 	retract(player(T,L)),
 	LBaru is L-1,
 	write([T,LBaru]),nl,
@@ -236,22 +236,22 @@ a :-
 d :- 
 	losing, lose, !.	
 d :- 
-	\+ losing,
+	\+(losing),
 	inbattle(0),
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.	
+    write('Kamu harus memilih keputusan sekarang!'),!.	
 d :-
-	\+ losing,
+	\+losing,
 	inbattle(1),
     inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
-	\+ losing,
+	\+losing,
 	player(_,L),
     lebarPeta(LPeta),
 	L=:=LPeta,
 	write('Kamu tidak dapat melewati batas.'),nl,
 	write('Silahkan ambil jalan lain'),nl,!.
 d :-
-	\+ losing,
+	\+losing,
 	retract(player(T,L)),
 	LBaru is L+1,
 	write([T,LBaru]),nl,
@@ -261,13 +261,13 @@ d :-
 heal :-
 	losing, lose, !.
 heal :-
-	\+ losing,
+	\+losing,
     gym(T,L),
     player(T,L),
     healonce,
     write('Kamu hanya bisa menyembuhkan tokemonmu sekali dalam gym'),!.
 heal :-
-	\+ losing,
+	\+losing,
     gym(T,L),
     player(T,L),
     toke(Nama, _,C,D,E),
@@ -277,11 +277,11 @@ heal :-
     )),
     asserta(healonce),!.
 heal :-
-	\+ losing,
+	\+losing,
     avChoose,
     write('Kamu belum memilih tokemon!'),!.
 heal :-
-	\+ losing,
+	\+losing,
     write('Kamu tidak berada dalam gym sekarang, tidak bisa menyembuhkan tokemonmu!').
 
 

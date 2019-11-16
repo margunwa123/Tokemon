@@ -24,9 +24,9 @@ tokemon(mariomon,5000,350,700,fire).
 tokemon(ajimon,6000,300,600,leaves).
 tokemon(danmon,6500,250,700,water).
 
-tokemon(wow,2000,100,100,fire).
-tokemon(mamet,2000,100,100,water).
-tokemon(danlap,2000,100,100,leaves).
+tokemon(wow,2000,100,300,fire).
+tokemon(mamet,2000,100,300,water).
+tokemon(danlap,2000,100,300,leaves).
 /* Legendary Tokemon */
 legendary(hadimon).
 legendary(mariomon).
@@ -85,6 +85,8 @@ addToke(_,_,_,_,_) :-
 
 addToke(A,B,C,D,E) :-
 	/*Toke muat*/
+	cekToke(Banyak),
+	(Banyak+1) =< 6,
 	tokemon(A,B,C,D,E),
 	asserta(toke(A,B,C,D,E)),!,
 	write('Tokemon '),write(A),write(' berhasil kamu bawa'),

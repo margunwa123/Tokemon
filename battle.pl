@@ -14,7 +14,7 @@ pick(X) :-
         %battle stage ke 1 yaitu saat bertarung(attack dan attacked) 
         write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
 pick(X) :- 
-        \+ (losing),
+        \+ losing,
         inbattle(1),
         \+toke(X,_,_,_,_), 
         write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
@@ -23,13 +23,15 @@ pick(_) :-
         inbattle(1), 
         write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
 pick(_) :- 
-        \+ (losing, inbattle(1)), 
+        \+ losing,
+        \+ inbattle(1), 
         write('Kamu tidak sedang bertarung'),nl,!.
 
 attack :- 
         losing, lose, !.
 attack :- 
-        \+ (losing, inbattle(1)), 
+        \+ losing,
+        \+ inbattle(1), 
         write('Kamu tidak sedang bertarung'),nl,!.
 attack :- 
         \+ losing,
@@ -48,7 +50,7 @@ attack :-
 attack :- 
         \+ losing, 
         inbattle(1),
-        ,chosenToke(X,_), toke(X,_,Att,_,_), lawan(A,HP,B,C,TypeL),
+        chosenToke(X,_), toke(X,_,Att,_,_), lawan(A,HP,B,C,TypeL),
         Z is (HP - Att), 
         write('Kamu menyebabkan '), write(Att), write(' damage pada '), write(A),nl,nl,
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)), cekhealthL, !.
@@ -56,7 +58,8 @@ attack :-
 specialAttack :- 
         losing, lose, !.
 specialAttack :-
-        \+ (losing, inbattle(1)), 
+        \+ losing,
+        \+ inbattle(1), 
         write('Kamu tidak sedang bertarung'),nl,!.
 specialAttack :- 
         \+ losing,
@@ -121,26 +124,59 @@ cekhealthP :-
 cekhealthL :- 
         lawan(Y,HPL,_,_,_), HPL =< 0, 
         write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
+        write('Jika ingin menangkapnya, berikan perintah capture.'),nl,
+        write('Jika tidak ingin, berikan perintah nope.'), nl,
         retract(inbattle(1)),asserta(inbattle(2)),!.        
 cekhealthL :- 
         lawan(_,HPL,_,_,_), HPL > 0, 
         life, attacked, !.        
 
-cektokemon :- cekToke(Banyak), Banyak > 0,
-              write('Kamu masih memiliki sisa Tokemon!'), nl,
-              write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
-cektokemon :- cekToke(Banyak), Banyak =:= 0, asserta(losing), lose,!.
+capture :-
+        \+ losing,
+        inbattle(2),
+        lawan(X,_,_,_,_), tokemon(X,B,C,D,E), asserta(avChoose), 
+        addToke(X,B,C,D,E), retract(lawan(X,_,_,_,_)), !.
 
-change(_) :- losing, lose, !.
-change(A) :- \+ losing, inbattle(1), \+(toke(A,_,_,_,_)),
-             write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
-change(A) :- \+ losing, inbattle(1), toke(A,_,_,_,_),
-             chosenToke(X,_), A =:= X, 
-             write('Kamu sedang memakai Tokemon '), write(A), nl, !.
-change(A) :- \+ losing, inbattle(1), toke(A,_,_,_,_),
-             chosenToke(X,_), A \= X,
-             write('Kembalilah '), write(A), nl,
-             retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
-             write('Maju, '), write(A), nl, !.
-change(_) :- \+ losing, \+inbattle(1), write('Kamu tidak sedang bertarung!'),nl,!.
+nope :- 
+        \+ losing,
+        inbattle(2),
+        lawan(X,_,_,_,_), 
+        write(X), write(' pun sadar'), nl,
+        write(X), write('(dalam bahasa Tokemon) : Dasar belagu'), nl,
+        write(X), write(' meninggalkan kamu'), nl,
+        retract(lawan(X,_,_,_,_)), !.
 
+cektokemon :- 
+        cekToke(Banyak), Banyak > 0,
+        write('Kamu masih memiliki sisa Tokemon!'), nl,
+        write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
+cektokemon :- 
+        cekToke(Banyak), Banyak =:= 0, asserta(losing), lose,!.
+
+change(_) :- 
+        losing, lose, !.
+change(_) :- 
+        \+ losing,
+        \+ inbattle(1), 
+        write('Kamu tidak sedang bertarung!'),nl,!.
+change(A) :- 
+        \+ losing, 
+        inbattle(1), 
+        \+(toke(A,_,_,_,_)),
+        write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
+change(A) :- 
+        \+ losing, 
+        inbattle(1), 
+        toke(A,_,_,_,_),
+        chosenToke(X,_), 
+        A =:= X, 
+        write('Kamu sedang memakai Tokemon '), write(A), nl, !.
+change(A) :- 
+        \+ losing, 
+        inbattle(1), 
+        toke(A,_,_,_,_),
+        chosenToke(X,_), 
+        A \= X,
+        write('Kembalilah '), write(A), nl,
+        retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
+        write('Maju, '), write(A), nl, !.
