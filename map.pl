@@ -100,9 +100,11 @@ cekKondisi :-
     get_normal_number,
     randomNum(X),
     id(Nama,X),
-    tokemon(Nama,A,B,C,Type),asserta(lawan(Nama,A,B,C,Type)),
-    write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
-    write('Apa yang akan kamu lakukan???'),nl,
+    tokemon(Nama,A,B,C,Type,Level),asserta(lawan(Nama,A,B,C,Type,Level)),
+    write('Kamu telah bertemu dengan sebuah tokemon bernama '), write(Nama), nl,
+    write('dengan tipe '), write(Type), 
+    write(' dan berlevel '), write(Level), nl, nl,
+    write('Apa yang akan kamu lakukan???'), nl, 
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.   - Melarikan diri dari tokemon'),nl, 
     asserta(inbattle(0)), asserta(mungkinRun), !.
@@ -113,8 +115,11 @@ cekKondisi :-
     get_random_number,
     randomNum(X),
     id(Nama,X),!,
-    tokemon(Nama,_,_,_,Type),
-    write('Kamu telah bertemu dengan sebuah'),legendary(Nama) -> (write(' legendary ')),write(' tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
+    tokemon(Nama,A,B,C,Type,Level),asserta(lawan(Nama,A,B,C,Type,Level)),
+    write('Kamu telah bertemu dengan sebuah'), (legendary(Nama) -> write(' legendary ')),
+    write(' tokemon bernama '), write(Nama), nl,
+    write('dengan tipe '), write(Type), 
+    write(' dan berlevel '), write(Level), nl, nl, 
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.   - Melarikan diri dari tokemon'),nl,
@@ -133,25 +138,27 @@ serang :-
 serang :- 
     inbattle(0), cekToke(Banyak), Banyak > 1,
     write('Tokemon yang ada : ['),
-    toke(H,I,J,K,L), write(H),
-    retract(toke(H,I,J,K,L)),
-    toke(_,_,_,_,_) -> (
-        forall(toke(A,_,_,_,_),
+    toke(H,I,J,K,L,M,N), write(H),
+    retract(toke(H,I,J,K,L,M,N)),
+    toke(_,_,_,_,_,_,_) -> (
+        forall(toke(A,_,_,_,_,_,_),
         (
             write(','),
             write(A)
         ))
     ),
-    write(']'),nl, 
-    asserta(toke(H,I,J,K,L)), 
+    write(']'),nl,nl, 
+    asserta(toke(H,I,J,K,L,M,N)),
+    write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
     retract(inbattle(0)),
     asserta(inbattle(1)), !. 
 
 serang :- 
     inbattle(0), cekToke(Banyak), Banyak =:= 1, 
     write('Tokemon yang ada : ['),
-    toke(H,_,_,_,_), write(H),
+    toke(H,_,_,_,_,_,_), write(H),
     write(']'),nl,
+    write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
     retract(inbattle(0)),
     asserta(inbattle(1)), !.  
 
@@ -166,7 +173,7 @@ lari :-
     get_random_number,
     randomNum(X),
     (X > 35 
-    ->  retract(lawan(_,_,_,_,_)),
+    ->  retract(lawan(_,_,_,_,_,_)),
         write('Anda berhasil kabur'),
         retract(inbattle(1));
         write('Anda tidak berhasil kabur'), nl,

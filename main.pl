@@ -62,13 +62,17 @@ play :-
     write('Kamu tidak bisa memulai game yang sudah dimulai'),!.
 play :- 
 	write('Sudah sejak dulu, tokemon hidup berdampingan dengan manusia secara baik.'),nl,
-	write('Hingga pada suatu waktu, sebuah desa terserang wabah aneh yang menyebabkan para Tokemon mendadak menjadi liar dan tak terkendali.'),nl,
+	write('Hingga pada suatu waktu, sebuah desa terserang wabah aneh yang menyebabkan para Tokemon mendadak'), nl, 
+	write('menjadi liar dan tak terkendali.'),nl,
 	write('Tokemon-tokemon tersebut sering menyerang warga dan menimbulkan ketidaknyamanan dalam desa tersebut.'),nl,
 	write('Kemudian datanglah seorang penjelajah yang bertemu dengan seorang Kepala Desa.'),nl,nl,
+	sleep(2),
 	write('Kepala Desa :'),nl,
 	write('Selamat datang, anak muda.'),nl,
-	write('Saya di sini selaku Kepala Desa sangat mengaharapkan bantuan dari kamu dalam mengatasi wabah yang menyerang Tokemon-tokemon di desa ini.'),nl,
-	write('Ada satu cara untuk mengentikan wabah ini, yaitu dengan menghancurkan sebuah kristal biru yang dijaga oleh 2 Tokemon legendary.'),nl,
+	write('Saya di sini selaku Kepala Desa sangat mengaharapkan bantuan dari kamu dalam mengatasi wabah '), nl, 
+	write('menyerang Tokemon-tokemon di desa ini.'),nl,
+	write('Ada satu cara untuk mengentikan wabah ini, yaitu dengan menghancurkan sebuah kristal biru yang'), nl, 
+	write('dijaga oleh 2 Tokemon legendary.'),nl,
 	write('Setelah ini kamu akan bertemu dengan Professor Tokemon untuk memilih satu Tokemon yang akan menemanimu memerangi wabah ini.'),nl,nl,
 	write('Tidak lama setelah itu, Kepala Desa mengajak penjelajah ke GYM, tempat professor Tokemon bekerja.'),nl,nl,
 	write('Professor :'),nl,
@@ -111,7 +115,11 @@ help :-
 %     cekToke(X), X =:= 0,
 %     loseGame.
 
-choose(X) :- avChoose, tokemon(X,A,B,C,D), awal(X), firstPick(X,A,B,C,D),!.
+choose(_) :- 
+	inbattle(1),
+	write('Salah perintah !'), nl,
+	write('Ketik pick(NamaTokemon)'), nl, !.
+choose(X) :- avChoose, tokemon(X,A,B,C,D,E), awal(X), firstPick(X,A,B,C,D,E),!.
 choose(X) :- avChoose, \+(awal(X)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
