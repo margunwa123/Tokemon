@@ -18,13 +18,15 @@ tokemon(santuymon,1500,120,270,fire).       %7
 tokemon(tankmon,2500,80,330,leaves).        %8
 tokemon(konakmon,800,250,330,water).        %9
 tokemon(jonatan_jostar,2100,100,300,fire).  %10
+
 /* Legendary Tokemon 
 Komposisi : (health/100) * (attack/100) = +- 50
 sp.attack : attack + health/10 */
-tokemon(hadimon,3000,170,470,water).
-tokemon(mariomon,4000,120,520,fire).
-tokemon(ajimon,2500,200,450,leaves).
-tokemon(danmon,5000,100,600,water).
+tokemon(hadimon,7000,250,950,water).
+tokemon(mariomon,5000,350,850,fire).
+tokemon(ajimon,6000,300,900,leaves).
+tokemon(danmon,6500,250,900,water).
+
 /* TOKEMON AWAL 
 Komposisi : (health/100) * (attack/100) = +- 40
 sp.attack : attack + health/10 */
@@ -32,6 +34,13 @@ tokemon(wow,2000,200,400,fire).
 tokemon(mamet,2000,200,400,water).
 tokemon(danlap,2000,200,400,leaves).
 tokemon(cheatmon,3000,10000,10000,leaves).
+
+/* Nama Attack & Skill Attack tiap Tokemon */
+nama(zigzogaan, bebola_air).
+nama(bulbasaur, bebola_daun).
+nama(vanila_bluemon, bebola_api).
+nama(toketchur, smash_api).
+
 /* Legendary Tokemon */
 legendary(hadimon).
 legendary(mariomon).
@@ -95,7 +104,7 @@ addToke(A,B,C,D,E) :-
 	(Banyak+1) =< 6,
 	tokemon(A,B,C,D,E),
 	asserta(toke(A,B,C,D,E)),!,
-	write('Tokemon '),write(A),write(' berhasil kamu bawa'),
+	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),
 	retract(avChoose).
 /*
 addToke(A,B,C,D,E) :-

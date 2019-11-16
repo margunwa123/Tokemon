@@ -13,11 +13,13 @@ pick(X) :-
         toke(X,_,_,_,_), asserta(chosenToke(X,1)),
         %battle stage ke 1 yaitu saat bertarung(attack dan attacked) 
         write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
-pick(X) :- 
-        \+ losing,
-        inbattle(1),
-        \+toke(X,_,_,_,_), 
-        write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
+
+/* Bingung ini mau digimanain */
+% pick(X) :- 
+%         \+ losing,
+%         inbattle(1),
+%         \+toke(X,_,_,_,_), 
+%         write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
 pick(_) :- 
         \+ losing,
         inbattle(1), 
@@ -30,6 +32,10 @@ pick(_) :-
 
 attack :- 
         losing, lose, !.
+attack :-
+        \+ losing,
+        inbattle(2),
+        write('Tokemonnya sudah pingsan!'), nl,!.
 attack :- 
         \+ losing,
         \+ inbattle(1), 
@@ -39,6 +45,7 @@ attack :-
         inbattle(1), 
         chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeM, TypeL), D is div(Att * 3, 2), Z is HP - D,
+        write('Serangannya sangat efektif!'), nl,
         write('Kamu menyebabkan '), write(D), write(' damage pada '), write(A),nl,nl,   
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)), cekhealthL, !.
 attack :- 
@@ -46,18 +53,23 @@ attack :-
         inbattle(1),
         chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeL, TypeM), D is div(Att, 2), Z is HP - D, 
+        write('Serangannya tidak efektif!'), nl, 
         write('Kamu menyebabkan '), write(D), write(' damage pada '), write(A),nl,nl,
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)), cekhealthL, !.   
 attack :- 
         \+ losing, 
         inbattle(1),
         chosenToke(X,_), toke(X,_,Att,_,_), lawan(A,HP,B,C,TypeL),
-        Z is (HP - Att), 
+        Z is (HP - Att),
         write('Kamu menyebabkan '), write(Att), write(' damage pada '), write(A),nl,nl,
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)), cekhealthL, !.
 
 specialAttack :- 
         losing, lose, !.
+specialAttack :-
+        \+ losing,
+        inbattle(2),
+        write('Tokemonnya sudah pingsan!'), nl,!.
 specialAttack :-
         \+ losing,
         \+ inbattle(1), 
@@ -67,6 +79,7 @@ specialAttack :-
         inbattle(1), 
         chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeM, TypeL), D is div(Skill * 3, 2), Z is HP - D,
+        write('Serangannya sangat efektif!'), nl,
         write('Kamu menyebabkan '), write(D), write(' damage pada '), write(A),nl,nl,   
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
         retract(chosenToke(X,1)), asserta(chosenToke(X,0)), cekhealthL, !.              
@@ -75,6 +88,7 @@ specialAttack :-
         inbattle(1), 
         chosenToke(X,1), toke(X,_,_,Skill,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeL, TypeM), D is div(Skill, 2), Z is HP - D,
+        write('Serangannya tidak efektif!'), nl, 
         write('Kamu menyebabkan '), write(D), write(' damage pada '), write(A),nl,nl,   
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
         retract(chosenToke(X,1)), asserta(chosenToke(X,0)), cekhealthL, !.
@@ -88,16 +102,18 @@ specialAttack :-
         retract(chosenToke(X,1)), asserta(chosenToke(X,0)), cekhealthL, !.
 specialAttack :- 
         \+ losing, 
-        chosenToke(X,1) , write(X), write(' sudah memakai Skill Attack!'), nl.
+        chosenToke(X,N), N =< 1, write(X), write(' sudah memakai Skill Attack!'), nl.
 
 attacked :- 
         chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
         strong(TypeM, TypeL), D is div(Att, 2), Z is HP - D,
+        write('Serangannya tidak efektif!'), nl, 
         write(C), write(' menyebabkan '), write(D), write(' damage pada '), write(X), nl, nl,
         retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)), cekhealthP, !.            
 attacked :- 
         chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
         strong(TypeL, TypeM), D is div(Att * 3, 2), Z is HP - D,
+        write('Serangannya sangat efektif!'), nl,
         write(C), write(' menyebabkan '), write(D), write(' damage pada '), write(X), nl, nl,   
         retract(toke(X,_,_,_,_)), asserta(toke(X,Z,A,B,TypeM)),cekhealthP, !.
 attacked :- 
@@ -136,7 +152,9 @@ capture :-
         \+ losing,
         inbattle(2),
         lawan(X,_,_,_,_), tokemon(X,B,C,D,E), asserta(avChoose), 
-        addToke(X,B,C,D,E), retract(lawan(X,_,_,_,_)), !.
+        addToke(X,B,C,D,E), retract(lawan(X,_,_,_,_)), 
+        retract(inbattle(2)), 
+        nl, map, !.
 
 nope :- 
         \+ losing,
@@ -145,12 +163,32 @@ nope :-
         write(X), write(' pun sadar'), nl,
         write(X), write('(dalam bahasa Tokemon) : Dasar belagu'), nl,
         write(X), write(' meninggalkan kamu'), nl,
-        retract(lawan(X,_,_,_,_)), !.
+        retract(lawan(X,_,_,_,_)), 
+        retract(inbattle(2)), 
+        nl, map, !.
 
 cektokemon :- 
-        cekToke(Banyak), Banyak > 0,
+        cekToke(Banyak), Banyak > 1, !,
         write('Kamu masih memiliki sisa Tokemon!'), nl,
-        write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
+        write('Sisa Tokemon : ['),
+        toke(H,I,J,K,L), write(H),
+        retract(toke(H,I,J,K,L)),
+        toke(_,_,_,_,_) -> (
+                forall(toke(A,_,_,_,_),
+                (
+                write(','),
+                write(A)
+                ))
+        ),
+        write(']'),nl, 
+        asserta(toke(H,I,J,K,L)),
+        write('Pilih Tokemon sekarang dengan berikan perintah pick(NamaTokemon)'), asserta(inbattle(1)), !.
+cektokemon :- 
+        cekToke(Banyak), Banyak =:= 1, 
+        write('Sisa Tokemon : ['),
+        toke(H,_,_,_,_), write(H),
+        write(']'),nl,
+        asserta(inbattle(1)), !. 
 cektokemon :- 
         cekToke(Banyak), Banyak =:= 0, asserta(losing), lose,!.
 
