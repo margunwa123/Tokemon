@@ -116,11 +116,11 @@ choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.')
 
 status :- losing, lose, !.
 
-status :- \+ losing,
+status :- \+losing,
 	      \+(inGame),
     	  write('Kamu harus mmemilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
 
-status :- \+ losing,
+status :- \+losing,
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
 	toke(_,_,_,_,_) -> (

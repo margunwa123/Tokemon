@@ -1,4 +1,4 @@
-/* File untuk saat pokemon bertarung */
+/* File untuk saat tokemon bertarung */
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
 :- dynamic(runorfight/0).
