@@ -9,24 +9,31 @@
 Komposisi : (health/100) * (attack/100) = +- 20
 sp.attack : attack + health/10 */
 tokemon(zigzogaan,1500,130,280,water).      %1
-tokemon(bulbasaur,2000,100,300,leaves).       %2
+tokemon(bulbasaur,2000,100,300,leaves).     %2
 tokemon(vanila_bluemon,1700,115,285,fire).  %3
 tokemon(toketchur,1200,160,280,fire).       %4
-tokemon(momon,1300,150,280,leaves).           %5
+tokemon(momon,1300,150,280,leaves).         %5
 tokemon(engasmon,1269,169,269,water).       %6
 tokemon(santuymon,1500,120,270,fire).       %7
-tokemon(tankmon,2500,80,330,leaves).          %8
+tokemon(tankmon,2500,80,330,leaves).        %8
 tokemon(konakmon,800,250,330,water).        %9
 tokemon(jonatan_jostar,2100,100,300,fire).  %10
 
+/* Legendary Tokemon 
+Komposisi : (health/100) * (attack/100) = +- 50
+sp.attack : attack + health/10 */
 tokemon(hadimon,7000,250,950,water).
 tokemon(mariomon,5000,350,850,fire).
 tokemon(ajimon,6000,300,900,leaves).
 tokemon(danmon,6500,250,900,water).
 
-tokemon(wow,2000,100,300,fire).
-tokemon(mamet,2000,100,300,water).
-tokemon(danlap,2000,100,300,leaves).
+/* TOKEMON AWAL 
+Komposisi : (health/100) * (attack/100) = +- 40
+sp.attack : attack + health/10 */
+tokemon(wow,2000,200,400,fire).
+tokemon(mamet,2000,200,400,water).
+tokemon(danlap,2000,200,400,leaves).
+tokemon(cheatmon,3000,10000,10000,leaves).
 
 /* Nama Attack & Skill Attack tiap Tokemon */
 nama(zigzogaan, bebola_air).
@@ -39,11 +46,11 @@ legendary(hadimon).
 legendary(mariomon).
 legendary(ajimon).
 legendary(danmon).
-/* Tokemon Awal */
+/* TOKEMON AWAL*/
 awal(wow).
 awal(mamet).
 awal(danlap).
-
+awal(cheatmon).
 /* Type Tokemon */
 strong(fire,leaves).
 strong(leaves,water).
@@ -57,7 +64,7 @@ cekToke(Banyak) :-
 cekLegend(Banyak) :-
 	legendary(X),
 	findall(X,toke(X,_,_,_,_),ListBanyak),
-	length(ListBanyak,Banyak).
+	length(ListBanyak,Banyak),!.
 
 firstPick(A,B,C,D,E) :-
     asserta(toke(A,B,C,D,E)),
@@ -65,7 +72,8 @@ firstPick(A,B,C,D,E) :-
     write('Game telah dimulai'), 
     retract(avChoose),
     initialize_map,
-    initialize_tokemon.
+    initialize_tokemon,
+    initialize_mapitem.
 
 dropToke(X) :-
 	\+(toke(X,_,_,_,_)),
@@ -120,7 +128,7 @@ initialize_tokemon :-
     asserta(id(mariomon,48)),
     asserta(id(ajimon,49)),
     asserta(id(danmon,50)).  
-/* ID dari tokeemon normal 1-15, yg legendary 46-50 */
+/* ID dari tokeemon normal 1-10, yg legendary 46-50 */
 
 /* mendapatkan random number, bila number sama dengan ID, maka akan ketemu tokemon */
 get_random_number :- randomNum(X),retract(randomNum(X)),get_random_number,!.
