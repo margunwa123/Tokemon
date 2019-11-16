@@ -98,7 +98,7 @@ cekKondisi :-
     write('Kamu telah bertemu dengan sebuah tokemon bernama '),write(Nama),write(' dengan tipe '),write(Type),nl,
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
-    write('2. Lari.    - Melarikan diri dari tokemon'),nl,
+    write('2. Lari.    - Melarikan diri dari tokemon'),nl, asserta(inbattle(0)),
     !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
@@ -120,15 +120,21 @@ cekKondisi :-
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
-%inbattle 0 berarti saat memilih tokemon
-serang :- inbattle(0), write('Tokemon yang ada : ['),
+serang :- inbattle(0), cekToke(Banyak), Banyak > 1,
+          write('Tokemon yang ada : ['),
+          toke(H,I,J,K,L), write(H),
+          retract(toke(H,I,J,K,L)),
+          toke(_,_,_,_,_) -> (
+            forall(toke(A,_,_,_,_),
+            (
+                write(','),
+                write(A)
+            ))
+          ),
+          write(']'),nl, asserta(toke(H,I,J,K,L)), !.
+
+serang :- inbattle(0), cekToke(Banyak), Banyak =:= 1, 
+          write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
-        %   toke(T,_,_,_,_) -> (
-        %   forall(toke(A,_,_,_,_),
-        %     (
-        %     write(','), write(A)
-        %     ))
-        %   ), 
           retract(inbattle(0)),
-          write(']'),nl,asserta(inbattle(1)),
-          write('Harap memilih Tokemon dengan format pick(NamaToke).'),!.  
+          write(']'),nl,asserta(inbattle), !.          

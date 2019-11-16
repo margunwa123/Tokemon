@@ -4,7 +4,6 @@
 :- dynamic(winGame/0).
 :- dynamic(loseGame/0).
 :- dynamic(healonce/0).
-:- include('gui.pl').
 :- include('map.pl').
 :- initialization(start).
 

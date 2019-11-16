@@ -45,4 +45,6 @@ graphicbattle :-
     write('    |  TYPE      :               | (O O)       \\   \\       |  TYPE      :               | '),nl,
     write('    |  SP.ATTACK :               |  \\ /          |   |___  |  SP.ATTACK :               | '),nl,
     write('    |____________________________|  / \\          \\______|  |____________________________| '),nl.
-    
+
+lose :- write('Anda Kalah!'), nl,
+        write('Ketik restart. untuk mengulang permainan!'),!.   
