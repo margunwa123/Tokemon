@@ -3,15 +3,23 @@
 :- dynamic(chosenToke/2).
 :- dynamic(runorfight/0).
 :- include('tokemon.pl').
- 
-pick(X) :- inbattle, toke(X,_,_,_,_), asserta(chosenToke(X,1)), 
-           write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
-pick(X) :- inbattle, \+toke(X,_,_,_,_), write('Kamu tidak memiliki pokemon tersebut!'), nl, !.
-pick(_) :- \+ inbattle, write('Kamu tidak sedang bertarung'),nl,!.
+
+% Pemilihan tokemon 
+pick(X) :- 
+    toke(X,_,_,_,_), asserta(chosenToke(X,1)),
+    inbattle(0), retract(inbattle(0)),asserta(inbattle(1)), 
+    %battle stage ke 1 yaitu saat bertarung(attack dan attacked) 
+    write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
+pick(X) :- 
+    inbattle(0), 
+    \+toke(X,_,_,_,_), 
+    write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
+pick(_) :- inbattle(1), write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
+pick(_) :- write('Kamu tidak sedang bertarung'),nl,!.
 
 attack:-chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeM, TypeL), Z is div((HP - Att) * 3, 2),
-        write('Kamu menyebabkan '), write(div(Att * 3, 2)), write(' damage pada '), write(A),nl,nl,   
+        write('Kamu menyebabkan '), write(div(Att * 3, 2)), write(' damage pada '), write(A),nl,nl,
         retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)), cekhealthL, !.
 attack:-chosenToke(X,_), toke(X,_,Att,_,TypeM), lawan(A,HP,B,C,TypeL),
         strong(TypeL, TypeM), Z is div((HP - Att), 2), 
@@ -59,30 +67,30 @@ life :- chosenToke(X,_), toke(X,HPM,_,_,TypeM), lawan(Y,HPL,_,_,TypeL),
 
 cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM < 0, 
               write(X), write(' meninggal!'),nl,nl,
-              retract(inbattle), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
+              retract(inbattle(1)),asserta(inbattle(0)), retract(chosenToke(X,_)), retract(toke(X,_,_,_,_)),
               cektokemon,!.
 cekhealthP :- chosenToke(X,_), toke(X,HPM,_,_,_), HPM > 0, 
               life, !.        
 
 cekhealthL :- lawan(Y,HPL,_,_,_), HPL < 0, 
               write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
-              retract(inbattle),!.        
+              retract(inbattle(1)),asserta(inbattle(2)),!.        
 cekhealthL :- lawan(_,HPL,_,_,_), HPL > 0, 
-              life, attacked, !.        
-
-cektokemon :- write('Kamu masih memiliki sisa Tokemon!'), nl,
-              write('Pilih Tokemon sekarang!'), asserta(inbattle),!.                             
+              life, attacked, !.   
+     
 cektokemon :- \+toke(_,_,_,_,_), lose,!.
+cektokemon :- write('Kamu masih memiliki sisa Tokemon!'), nl,
+              write('Pilih Tokemon sekarang!'), asserta(inbattle(1)),!.                             
 
-change(A) :- inbattle, \+(toke(A,_,_,_,_)),
+change(A) :- inbattle(1), \+(toke(A,_,_,_,_)),
              write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
-change(A) :- inbattle, toke(A,_,_,_,_),
+change(A) :- inbattle(1), toke(A,_,_,_,_),
              chosenToke(X,_), A =:= X, 
              write('Kamu sedang memakai Tokemon '), write(A), nl, !.
-change(A) :- inbattle, toke(A,_,_,_,_),
+change(A) :- inbattle(1), toke(A,_,_,_,_),
              chosenToke(X,_), A \= X,
              write('Kembalilah '), write(A), nl,
              retract(chosenToke(X,_)), asserta(chosenToke(A,1)),
              write('Maju, '), write(A), nl, !.
-change(_) :- \+inbattle, write('Kamu tidak sedang bertarung!'),nl,!.
+change(_) :- \+inbattle(1), write('Kamu tidak sedang bertarung!'),nl,!.
 

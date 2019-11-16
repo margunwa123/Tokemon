@@ -1,8 +1,7 @@
 :- dynamic(lebarPeta/1).
 :- dynamic(tinggiPeta/1).
 :- dynamic(player/2).
-:- dynamic(inbattle/0).
-:- dynamic(onbattle/0).
+:- dynamic(inbattle/1).
 :- include('battle.pl').
 
 gym(5,5). %gym fixed place
@@ -113,7 +112,7 @@ cekKondisi :-
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.    - Melarikan diri dari tokemon'),nl,
-    asserta(inbattle),!.
+    asserta(inbattle(0)),!.
 cekKondisi :-
     player(T,L),
     gym(T,L),
@@ -121,7 +120,8 @@ cekKondisi :-
 cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
-serang :- onbattle, write('Tokemon yang ada : ['),
+%inbattle 0 berarti saat memilih tokemon
+serang :- inbattle(0), write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
         %   toke(T,_,_,_,_) -> (
         %   forall(toke(A,_,_,_,_),
@@ -129,5 +129,6 @@ serang :- onbattle, write('Tokemon yang ada : ['),
         %     write(','), write(A)
         %     ))
         %   ), 
-          retract(onbattle),
-          write(']'),nl,asserta(inbattle),!.  
+          retract(inbattle(0)),
+          write(']'),nl,asserta(inbattle(1)),
+          write('Harap memilih Tokemon dengan format pick(NamaToke).'),!.  
