@@ -21,6 +21,7 @@ pick(X) :-
 pick(_) :- 
         \+ losing,
         inbattle(1), 
+        chosenToke(X,_),
         write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
 pick(_) :- 
         \+ losing,
@@ -87,7 +88,7 @@ specialAttack :-
         retract(chosenToke(X,1)), asserta(chosenToke(X,0)), cekhealthL, !.
 specialAttack :- 
         \+ losing, 
-        \+(chosenToke(X,1)) , write(X), write(' sudah memakai Skill Attack!'), nl.
+        chosenToke(X,1) , write(X), write(' sudah memakai Skill Attack!'), nl.
 
 attacked :- 
         chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
