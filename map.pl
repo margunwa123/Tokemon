@@ -136,5 +136,4 @@ serang :- inbattle(0), cekToke(Banyak), Banyak > 1,
 serang :- inbattle(0), cekToke(Banyak), Banyak =:= 1, 
           write('Tokemon yang ada : ['),
           toke(H,_,_,_,_), write(H),
-          retract(inbattle(0)),
-          write(']'),nl,asserta(inbattle), !.          
+          write(']'),nl, !.          

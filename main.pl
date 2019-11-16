@@ -162,9 +162,9 @@ map :-
 
 %Movement
 w :- 
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
+    inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 w :- 
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 w :- 
 	player(T,_),
 	T=:=1,
@@ -178,9 +178,9 @@ w :-
     cekKondisi,!.
 
 s :- 
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
+    inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 s :-
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 s :- 
 	player(T,_),
     tinggiPeta(TPeta),
@@ -195,9 +195,9 @@ s :-
     cekKondisi,!.
 
 a :- 
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.
+    inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.
 a :-
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
 	player(_,L),
 	L=:=1,
@@ -211,9 +211,9 @@ a :-
 	cekKondisi,!.	
 	
 d :- 
-    onbattle,write('Kamu harus memilih keputusan sekarang!'),!.	
+    inbattle(0),write('Kamu harus memilih keputusan sekarang!'),!.	
 d :-
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    inbattle(1),write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
 	player(_,L),
     lebarPeta(LPeta),
@@ -254,4 +254,4 @@ look :-
 
 /* PROSEDUR KELUAR/ RELOAD FILE */
 quit :- halt.
-restart :- halt, consult('main.pl').
+restart :- consult('main.pl').

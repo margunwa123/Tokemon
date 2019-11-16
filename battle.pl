@@ -1,4 +1,4 @@
-/* File untuk saat pokemon bertarung */
+/* File untuk saat tokemon bertarung */
 :- dynamic(lawan/5).
 :- dynamic(chosenToke/2).
 :- dynamic(runorfight/0).
@@ -14,7 +14,7 @@ pick(X) :-
 pick(X) :- 
     inbattle(0), 
     \+toke(X,_,_,_,_), 
-    write('Kamu tidak memiliki pokemon tersebut!, Harap memilih ulang!'), nl, !.
+    write('Kamu tidak memiliki tokemon tersebut!, Harap memilih ulang!'), nl, !.
 pick(_) :- inbattle(1), write('Kamu tidak bisa memilih ulang saat bertarung, harap gunakan "change(X)."'),!.
 pick(_) :- write('Kamu tidak sedang bertarung'),nl,!.
 
@@ -46,7 +46,7 @@ specialAttack:-chosenToke(X,1), toke(X,_,_,Skill,_), lawan(A,HP,B,C,TypeL),
                write('Kamu menyebabkan '), write(Skill), write(' damage pada '), write(A),nl,nl,   
                retract(lawan(_,_,_,_,_)), asserta(lawan(A,Z,B,C,TypeL)),
                retract(chosenToke(X,1)), asserta(chosenToke(X,0)), cekhealthL, !.
-specialAttack: - \+(chosenToke(X,1)) , write(X), write(' sudah memakai Skill Attack!'), nl.
+specialAttack:- \+(chosenToke(X,1)), write(X), write(' sudah memakai Skill Attack!'), nl.
 
 attacked:-chosenToke(X,_), toke(X,HP,A,B,TypeM), lawan(C,_,Att,_,TypeL),
           strong(TypeM, TypeL), D is div(Att, 2), Z is HP - D,
