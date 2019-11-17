@@ -104,7 +104,7 @@ addToke(A,B,C,D,E,F) :-
 	(Banyak+1) =< 6,
 	tokemon(A,B,C,D,E,F),
 	asserta(toke(A,B,C,D,E,F,0)),!,
-	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),
+	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'), nl,
 	retract(avChoose).
 /*
 addToke(A,B,C,D,E) :-

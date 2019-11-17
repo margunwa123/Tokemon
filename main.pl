@@ -137,12 +137,14 @@ status :-
 	write('Dengan rincian: '),nl,nl,
     forall(toke(A,B,C,D,E,F,G),
     (
+		H is (F + 1) * 50,
         write('    -'),write(A),nl,
         write('       Hp : '),write(B),nl,
         write('Basic Att : '),write(C),nl,
         write('Skill Att : '),write(D),nl,
-        write('     Type : '),write(E),nl,
-        write('    Level : '),write(F),nl,nl
+		write('     Type : '),write(E),nl,
+		write('    Level : '),write(F),nl,
+		write('		 Exp : '),write(G),write(' dari '),write(H),nl
     )),
     write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
     write('Item kamu : [ | '), 
