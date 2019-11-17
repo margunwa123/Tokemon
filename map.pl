@@ -150,6 +150,7 @@ serang :-
     write(']'),nl,nl, 
     asserta(toke(H,I,J,K,L,M,N)),
     write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
+    cadangan,
     retract(inbattle(0)),
     asserta(inbattle(1)), !. 
 
@@ -159,6 +160,7 @@ serang :-
     toke(H,_,_,_,_,_,_), write(H),
     write(']'),nl,
     write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
+    cadangan,
     retract(inbattle(0)),
     asserta(inbattle(1)), !.  
 
@@ -180,3 +182,12 @@ lari :-
         write('Berusahalah!'), nl
     ),
     retract(mungkinRun), !.
+
+cadangan :- 
+    toke(_,_,_,_,_,_,_) -> (
+        forall(toke(A,B,C,D,E,F,G),
+        (
+            asserta(tokeT(A,B,C,D,E,F,0,1)),
+            asserta(exp(A,G))
+        ))
+    ), !.
