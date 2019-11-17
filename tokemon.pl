@@ -4,7 +4,7 @@
 :- dynamic(id/2).
 :- include('gui.pl').
 /* ************* FAKTA *************** */
-/* Nama Tokemon (Nama, Hp, Basic Att, Skill Att, Type, Level, EXP) */
+/* Nama Tokemon (Nama, Hp, Basic Att, Skill Att, Type, Level) */
 /* Normal Tokemon 
 Komposisi : (health/100) * (attack/100) = +- 20
 sp.attack : attack + health/10 */
@@ -102,9 +102,8 @@ addToke(A,B,C,D,E,F) :-
 	/*Toke muat*/
 	cekToke(Banyak),
 	(Banyak+1) =< 6,
-	tokemon(A,B,C,D,E,F),
 	asserta(toke(A,B,C,D,E,F,0)),!,
-	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'), nl,
+	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),
 	retract(avChoose).
 /*
 addToke(A,B,C,D,E) :-
