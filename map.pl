@@ -128,7 +128,7 @@ cekKondisi :-
     write('Kamu tidak menemukan apa apa di petak ini'),!.
 
 serang :-
-    losing, lose, !.
+    loseGame, lose, !.
 serang :- 
     inbattle(0), cekToke(Banyak), Banyak > 1,
     write('Tokemon yang ada : ['),
@@ -157,9 +157,9 @@ serang :-
     asserta(inbattle(1)), !.  
 
 lari :-
-    losing, lose, !.
+    loseGame, lose, !.
 lari :- 
-    \+ losing,
+    \+ loseGame,
     \+ mungkinRun,
     write('Anda sudah mencoba lari tetapi tidak bisa!'), nl,
     write('Berusahalah!'), nl, !.           

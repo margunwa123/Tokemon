@@ -128,7 +128,7 @@ choose(X) :- avChoose, tokemon(X,A,B,C,D,E), awal(X), firstPick(X,A,B,C,D,E),!.
 choose(X) :- avChoose, \+(awal(X)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
 choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
-status :- losing, lose, !.
+status :- loseGame, lose, !.
 
 status :- \+(inGame),
     	  write('Kamu harus memilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
@@ -139,7 +139,7 @@ status :-
 	write('Dengan rincian: '),nl,nl,
     forall(tokeT(A,B,C,D,E,F,G,_),
     (
-		H is F * 50,
+		H is F * 30,
         write('    -'),write(A),nl,
         write('       Hp : '),write(B),nl,
         write('Basic Att : '),write(C),nl,
@@ -162,7 +162,7 @@ status :-
 	write('Dengan rincian: '),nl,nl,
     forall(toke(A,B,C,D,E,F,G),
     (
-		H is F * 50,
+		H is F * 30,
         write('    -'),write(A),nl,
         write('       Hp : '),write(B),nl,
         write('Basic Att : '),write(C),nl,
@@ -179,7 +179,7 @@ status :-
     )),write(']'),!.
 		
 % Map
-map :- losing, lose,!.
+map :- loseGame, lose,!.
 map :- \+(inGame), write('Harap memulai game terlebih dahulu'),!.
 map :- avChoose, write('Pilih tokemon awal terlebih dahulu!'),!.
 map :- 
@@ -203,7 +203,7 @@ map :-
 
 %Movement
 w :- 
-	losing, lose, !.
+	loseGame, lose, !.
 w :-
 	inbattle(2),
 	write('Tokemonnya lagi pingsan dan kamu harus mengambil keputusan!'), nl, !.
@@ -224,7 +224,7 @@ w :-
     cekKondisi,!.
 
 s :-
-	losing, lose, !.
+	loseGame, lose, !.
 s :-
 	inbattle(2),
 	write('Tokemonnya lagi pingsan dan kamu harus mengambil keputusan!'), nl, !.
@@ -246,7 +246,7 @@ s :-
     cekKondisi,!.
 
 a :- 
-	losing, lose, !.
+	loseGame, lose, !.
 a :-
 	inbattle(2),
 	write('Tokemonnya lagi pingsan dan kamu harus mengambil keputusan!'), nl, !.
@@ -269,7 +269,7 @@ a :-
 	cekKondisi,!.	
 	
 d :- 
-	losing, lose, !.	
+	loseGame, lose, !.	
 d :-
 	inbattle(2),
 	write('Tokemonnya lagi pingsan dan kamu harus mengambil keputusan!'), nl, !.	
@@ -293,7 +293,7 @@ d :-
     cekKondisi,!.
 
 heal :-
-	losing, lose, !.
+	loseGame, lose, !.
 heal :-
     gym(T,L),
     player(T,L),

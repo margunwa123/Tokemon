@@ -2,11 +2,10 @@
 :- dynamic(lawan/6).
 :- dynamic(chosenToke/1).
 :- dynamic(runorfight/0).
-:- dynamic(losing/0).
 :- include('tokemon.pl').
 
 % Pemilihan tokemon 
-pick(_) :- losing, lose, !.
+pick(_) :- loseGame, lose, !.
 pick(X) :- 
         inbattle(1),
         tokeT(X,_,_,_,_,_,_,_), asserta(chosenToke(X)),
@@ -27,7 +26,7 @@ pick(_) :-
 
 /* Tokemon sendiri menyerang lawan */
 attack :- 
-        losing, /* jika sudah kalah */ 
+        loseGame, /* jika sudah kalah */ 
         lose, !.
 attack :- 
         inbattle(2), /* jika sudah mengalahkan tokemon lawan */
@@ -72,7 +71,7 @@ attack :-
 
 /* Tokemon sendiri menyerang lawan dengan Special Attack */
 specialAttack :- 
-        losing, /* jika sudah kalah */ 
+        loseGame, /* jika sudah kalah */ 
         lose, !.
 specialAttack :-
         inbattle(2), /* jika sudah mengalahkan tokemon lawan */
@@ -126,7 +125,7 @@ specialAttack :-
 specialAttack :-  
         chosenToke(X), 
         tokeT(X,_,_,_,_,_,_,0), /* jika jumlah Special Attack Tokemon-nya udah habis */
-        write(X), write(' sudah memakai Skill Attack!'), nl.
+        write(X), write(' sudah memakai Special Attack!'), nl.
 
 attacked :- 
         chosenToke(X), tokeT(X,HP,A,B,TypeM,E,F,G), lawan(C,_,Att,_,TypeL,_),
@@ -177,7 +176,7 @@ cekhealthP :-
         chosenToke(X), tokeT(X,HPP,_,_,_,_,_,_), 
         HPP =< 0, /* jika HP-nya sudah <= 0 */
         write(X), write(' meninggal!'),nl,nl,
-        retract(inbattle(1)),asserta(inbattle(0)), 
+        retract(inbattle(1)),
         retract(chosenToke(X)), /* menhapus tokemon X dari list-list */ 
         retract(tokeT(X,_,_,_,_,_,_,_)),
         retract(toke(X,_,_,_,_,_,_)),
@@ -210,22 +209,24 @@ cekhealthL :-
 
 /* Menangkap Tokemon liar */
 capture :-
-        \+ losing, /* jika belum kalah Game */
+        \+ loseGame, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose), 
         addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
+        retract(chosenToke(Y)),
         retract(inbattle(2)), naikexp, retract(id(X,_)),
         nl, map, !.
 
 /* Menolak untuk menangkap Tokemon Liar */
 nope :- 
-        \+ losing, /* jika belum kalah Game */
+        \+ loseGame, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), /* ini bisa dingertiin sendiri lah ya */
         write(X), write(' pun sadar'), nl,
         write(X), write('(dalam bahasa Tokemon) : Dasar belagu'), nl,
         write(X), write(' meninggalkan kamu'), nl,
         retract(lawan(X,_,_,_,_,_)), 
+        retract(chosenToke(Y)),
         retract(inbattle(2)), naikexp,
         nl, map, !.
 
@@ -253,22 +254,22 @@ cektokemon :-
         write(']'),nl,
         asserta(inbattle(1)), !. 
 cektokemon :- 
-        cekToke(Banyak), Banyak =:= 0, asserta(losing), lose,!.
+        cekToke(Banyak), Banyak =:= 0, asserta(loseGame), lose,!.
 
 /* Mengganti Tokemon di tengah pertarungan */
 change(_) :- 
-        losing, lose, !.
+        loseGame, lose, !.
 change(_) :- 
-        \+ losing,
+        \+ loseGame,
         \+ inbattle(1), 
         write('Kamu tidak sedang bertarung!'),nl,!.
 change(A) :- 
-        \+ losing, 
+        \+ loseGame, 
         inbattle(1), 
         \+(toke(A,_,_,_,_,_,_)),
         write('Kamu tidak memiliki Tokemon tersebut!'), nl, !.
 change(A) :- 
-        \+ losing, 
+        \+ loseGame, 
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
         chosenToke(X), 
@@ -277,7 +278,7 @@ change(A) :-
         retract(chosenToke(X)), asserta(chosenToke(A)),
         write('Maju, '), write(A), nl, !.
 change(A) :- 
-        \+ losing, 
+        \+ loseGame, 
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
         chosenToke(X), 
@@ -290,20 +291,21 @@ naikexp :-
                 forall(tokeT(A,B,C,D,E,F,G,_),
                 (
                 exp(A,L),
+                tokemon(A,R,_,_,_,_),
                 
                 (L > 0 
                 ->
                 write(A), write(' bertambah exp sebesar '), write(L), nl,
                 M is G + L,
-                N is F * 50,
+                N is F * 30,
                         (N =< M
                         -> P is F + 1,
                            Q is M - N,
-                           R is div(B * 11, 10),
+                           V is div(R * 11, 10),
                            S is div(C * 11, 10),
                            T is div(D * 11, 10),
                            write(A), write(' level up menjadi '), write(P), nl,
-                           asserta(toke(A,R,S,T,E,P,Q));
+                           asserta(toke(A,V,S,T,E,P,Q));
                            asserta(toke(A,B,C,D,E,F,M))
                         );
                 M is G + L,
@@ -311,11 +313,11 @@ naikexp :-
                         (N =< M
                         -> P is F + 1,
                            Q is M - N,
-                           R is div(B * 11, 10),
+                           V is div(R * 11, 10),
                            S is div(C * 11, 10),
                            T is div(D * 11, 10),
                            write(A), write(' level up menjadi '), write(P), nl,
-                           asserta(toke(A,R,S,T,E,P,Q));
+                           asserta(toke(A,V,S,T,E,P,Q));
                            asserta(toke(A,B,C,D,E,F,M))
                         )        
                 )       
