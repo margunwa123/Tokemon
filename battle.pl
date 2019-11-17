@@ -71,7 +71,7 @@ specialAttack :-
         write('Tokemonnya sudah pingsan!'), nl,!.
 specialAttack :-
         \+ inbattle(1), 
-        write('Kamu tidak sedang bertarung'),nl,!.
+        write('Kamu tidak sedang bertarung'), nl,!.
 specialAttack :- 
         inbattle(1), 
         chosenToke(X), tokeT(X,P,Q,Skill,TypeM,R,S,1), lawan(A,HP,B,C,TypeL,E),

@@ -226,7 +226,7 @@ a :-
     write('Kamu harus memilih keputusan sekarang!'),!.
 a :-
 	inbattle(1),
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+	write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 a :- 
 	player(_,L),
 	L=:=1,
@@ -249,7 +249,7 @@ d :-
     write('Kamu harus memilih keputusan sekarang!'),!.	
 d :-
 	inbattle(1),
-    inbattle,write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
+    write('Kamu tidak bisa bergerak saat dalam pertarungan'),!.
 d :- 
 	player(_,L),
     lebarPeta(LPeta),
