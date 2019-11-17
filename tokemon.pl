@@ -1,6 +1,5 @@
-:- dynamic(toke/5).
-:- dynamic(avChoose/0).
 :- dynamic(toke/7).
+:- dynamic(avChoose/0).
 :- dynamic(randomNum/1).
 :- dynamic(id/2).
 :- include('gui.pl').
