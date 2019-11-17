@@ -144,7 +144,7 @@ status :-
         write('Skill Att : '),write(D),nl,
 		write('     Type : '),write(E),nl,
 		write('    Level : '),write(F),nl,
-		write('		 Exp : '),write(G),write(' dari '),write(H),nl
+		write('      Exp : '),write(G),write(' dari '),write(H),nl
     )),
     write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
     write('Item kamu : [ | '), 
