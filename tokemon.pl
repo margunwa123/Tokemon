@@ -4,7 +4,7 @@
 :- dynamic(id/2).
 :- include('gui.pl').
 /* ************* FAKTA *************** */
-/* Nama Tokemon (Nama, Hp, Basic Att, Skill Att, Type, Level) */
+/* Nama Tokemon (Nama, Hp, Basic Att, Skill Att, Type, Level, EXP) */
 /* Normal Tokemon 
 Komposisi : (health/100) * (attack/100) = +- 20
 sp.attack : attack + health/10 */

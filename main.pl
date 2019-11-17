@@ -135,13 +135,14 @@ status :- \+(inGame),
 status :- 
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
-    forall(toke(A,B,C,D,E),
+    forall(toke(A,B,C,D,E,F,G),
     (
         write('    -'),write(A),nl,
         write('       Hp : '),write(B),nl,
         write('Basic Att : '),write(C),nl,
         write('Skill Att : '),write(D),nl,
-        write('     Type : '),write(E),nl,nl
+        write('     Type : '),write(E),nl,
+        write('    Level : '),write(F),nl,nl
     )),
     write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
     write('Item kamu : [ | '), 
