@@ -216,7 +216,7 @@ capture :-
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose), 
         addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
-        retract(inbattle(2)), naikexp,
+        retract(inbattle(2)), naikexp, retract(id(X,_)),
         nl, map, !.
 
 /* Menolak untuk menangkap Tokemon Liar */
