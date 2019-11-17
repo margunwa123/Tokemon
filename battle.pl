@@ -164,7 +164,7 @@ cektokemon :-
         cekToke(Banyak), Banyak > 1, !,
         write('Kamu masih memiliki sisa Tokemon!'), nl,
         write('Sisa Tokemon : ['),
-        toke(H,I,J,K,L,M,N), write(H),
+        toke(H,I,J,K,L,M), write(H),
         retract(toke(H,I,J,K,L,M)),
         toke(_,_,_,_,_,_,_) -> (
                 forall(toke(A,_,_,_,_,_,_),
@@ -174,7 +174,7 @@ cektokemon :-
                 ))
         ),
         write(']'),nl, 
-        asserta(toke(H,I,J,K,L,M,N)),
+        asserta(toke(H,I,J,K,L,M)),
         write('Pilih Tokemon sekarang dengan berikan perintah pick(NamaTokemon)'), asserta(inbattle(1)), !.
 cektokemon :- 
         cekToke(Banyak), Banyak =:= 1, 

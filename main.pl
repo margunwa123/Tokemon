@@ -97,14 +97,15 @@ help :-
 	write('7. load           : Melanjutkan permainan yang pernah disimpan'),nl,
 	write('8. save           : Menyimpan permainan'),nl,
 	write('9. status         : Menampilkan status player'),nl,
-	write('10.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
-	write('11.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl, 
-	write('12.specialAtack   : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
-	write('13.run            : Memilih untuk lari dari bertanding(hanya dapat dilakukan pada battle)'),nl,
-	write('14.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
-	write('15.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
-	write('16.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('17.quit           : Keluar dari permainan'),nl.
+	write('10.serang         : Memilih untuk bertarung dari bertanding(hanya dapat dilakukan saat bertemu tokemon)'),nl,
+	write('11.run            : Memilih untuk lari dari bertanding(hanya dapat dilakukan saat bertemu tokemon)'),nl,
+	write('12.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
+	write('13.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl,
+	write('14.specialAttack  : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
+	write('15.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
+	write('16.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
+	write('17.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
+	write('18.quit           : Keluar dari permainan'),nl.
 
 % checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
 %     toke(A,_,_,_,_), legendary(A),
