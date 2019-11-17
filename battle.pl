@@ -1,8 +1,6 @@
 /* File untuk saat tokemon bertarung */
 :- dynamic(lawan/6).
 :- dynamic(chosenToke/1).
-:- dynamic(tokeT/8).
-:- dynamic(exp/2).
 :- dynamic(runorfight/0).
 :- dynamic(losing/0).
 :- include('tokemon.pl').
@@ -274,7 +272,7 @@ change(A) :-
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
         chosenToke(X), 
-        A =:= X, 
+        A = X, 
         write('Kamu sedang memakai Tokemon '), write(A), nl, !.
 change(A) :- 
         \+ losing, 
@@ -293,17 +291,30 @@ naikexp :-
                 forall(tokeT(A,B,C,D,E,F,G,_),
                 (
                 exp(A,L),
-                (L > 0
-                -> write(A), write(' bertambah exp sebesar '), write(L), nl),
+                
+                (L > 0 
+                ->
+                write(A), write(' bertambah exp sebesar '), write(L), nl,
                 M is G + L,
-                N is (F + 1) * 50,
-                (N =< M 
-                -> P is F + 1,
-                   Q is M - N,
-                   write(A), write(' level up menjadi '), write(P), nl,
-                   asserta(toke(A,B,C,D,E,P,Q));
-                   asserta(toke(A,B,C,D,E,F,M)) 
-                ) 
+                N is F * 50,
+                        (N =< M
+                        -> P is F + 1,
+                           Q is M - N,
+                           write(A), write(' level up menjadi '), write(P), nl,
+                           asserta(toke(A,B,C,D,E,P,Q));
+                           asserta(toke(A,B,C,D,E,F,M))
+                        );
+                M is G + L,
+                N is F * 50,        
+                        (N =< M
+                        -> P is F + 1,
+                           Q is M - N,
+                           write(A), write(' level up menjadi '), write(P), nl,
+                           asserta(toke(A,B,C,D,E,P,Q));
+                           asserta(toke(A,B,C,D,E,F,M))
+                        )        
+                )       
                 ))
-        ),!.
+        ),
+        retractall(exp(_,_)), retractall(tokeT(_,_,_,_,_,_,_,_)), !.
         

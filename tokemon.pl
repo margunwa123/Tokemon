@@ -1,4 +1,6 @@
 :- dynamic(toke/7).
+:- dynamic(tokeT/8).
+:- dynamic(exp/2).
 :- dynamic(avChoose/0).
 :- dynamic(randomNum/1).
 :- dynamic(id/2).
@@ -98,16 +100,17 @@ dropToke(X) :-
 
 addToke(_,_,_,_,_,_) :-
 	cekToke(Banyak),
-	(Banyak+1) > 6,!,
+	(Banyak+1) > 6, !,
 	write('Tokemon kamu sudah mencapai batas maksimal.'),fail.
 
 addToke(A,B,C,D,E,F) :-
 	/*Toke muat*/
 	cekToke(Banyak),
 	(Banyak+1) =< 6,
-	asserta(toke(A,B,C,D,E,F,0)),!,
-	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),
-	retract(avChoose).
+	asserta(tokeT(A,B,C,D,E,F,0,1)),
+	asserta(exp(A,0)),
+	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),nl,
+	retract(avChoose), !.
 /*
 addToke(A,B,C,D,E) :-
 	tokemon(A,B,C,D,E),
