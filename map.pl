@@ -3,7 +3,6 @@
 :- dynamic(player/2).
 :- dynamic(inbattle/1).
 :- dynamic(mungkinRun/0).
-:- include('battle.pl').
 :- include('item.pl').
 gym(5,5). %gym fixed place
 
@@ -100,6 +99,7 @@ cekKondisi :-
     write('Apa yang akan kamu lakukan???'), nl, 
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.   - Melarikan diri dari tokemon'),nl, 
+    cadangan,
     asserta(inbattle(0)), asserta(mungkinRun), !.
 %player tidak bisa menemukan legendary tokemon bila tokemonnya < 3
 cekKondisi :- 
@@ -109,13 +109,14 @@ cekKondisi :-
     randomNum(X),
     id(Nama,X),!,
     tokemon(Nama,A,B,C,Type,Level),asserta(lawan(Nama,A,B,C,Type,Level)),
-    write('Kamu telah bertemu dengan sebuah'), (legendary(Nama) -> write(' legendary ')),
+    write('Kamu telah bertemu dengan sebuah'), (legendary(Nama) -> write(' legendary '); write('')),
     write(' tokemon bernama '), write(Nama), nl,
     write('dengan tipe '), write(Type), 
     write(' dan berlevel '), write(Level), nl, nl, 
     write('Apa yang akan kamu lakukan???'),nl,
     write('1. Serang. - Bertarung melawan tokemon liar'),nl,
     write('2. Lari.   - Melarikan diri dari tokemon'),nl,
+    cadangan,
     asserta(inbattle(0)), asserta(mungkinRun),!.
 cekKondisi :-
     get_item_number,
@@ -143,7 +144,6 @@ serang :-
     write(']'),nl,nl, 
     asserta(toke(H,I,J,K,L,M,N)),
     write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
-    cadangan,
     retract(inbattle(0)),
     asserta(inbattle(1)), !. 
 
@@ -153,7 +153,6 @@ serang :-
     toke(H,_,_,_,_,_,_), write(H),
     write(']'),nl,
     write('Untuk memilih Tokemon, berikan perintah pick(NamaTokemon).'),nl,
-    cadangan,
     retract(inbattle(0)),
     asserta(inbattle(1)), !.  
 
@@ -169,9 +168,14 @@ lari :-
     randomNum(X),
     (X > 35 
     ->  retract(lawan(_,_,_,_,_,_)),
-        write('Anda berhasil kabur'),
-        retract(inbattle(1));
-        write('Anda tidak berhasil kabur'), nl,
+        write('Anda berhasil kabur.'),
+        naikexp,
+        % retract(inbattle(1))
+        (inbattle(0)
+        ->  retract(inbattle(0));
+            retract(inbattle(1))
+        );
+        write('Anda tidak berhasil kabur.'), nl,
         write('Berusahalah!'), nl
     ),
     retract(mungkinRun), !.
@@ -180,7 +184,7 @@ cadangan :-
     toke(_,_,_,_,_,_,_) -> (
         forall(toke(A,B,C,D,E,F,G),
         (
-            asserta(tokeT(A,B,C,D,E,F,0,1)),
-            asserta(exp(A,G))
+            asserta(tokeT(A,B,C,D,E,F,G,1)),
+            asserta(exp(A,0))
         ))
     ), !.

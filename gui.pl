@@ -39,11 +39,11 @@ start :-
 	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command '),nl,!. 
 
 graphicbattle :-
-    write('     ____________________________                           ____________________________  '),nl,
-    write('    | YOUR TOKEMON               |             ____        | ENEMY TOKEMON              | '),nl,
-    write('    |  HP        :               |  ^-^       (o o )       |  HP        :               | '),nl,
+    write('     ____________________________                             ____________________________  '),nl,
+    write('    | YOUR TOKEMON               |             ____          | ENEMY TOKEMON              | '),nl,
+    write('    |  HP        :               |  ^-^       (o o )         |  HP        :               | '),nl,
     write('    |  TYPE      :               | (O O)       \\   \\       |  TYPE      :               | '),nl,
-    write('    |  SP.ATTACK :               |  \\ /          |   |___  |  SP.ATTACK :               | '),nl,
+    write('    |  SP.ATTACK :               |  \\ /          |   |___   |  SP.ATTACK :               | '),nl,
     write('    |____________________________|  / \\          \\______|  |____________________________| '),nl.
 
 lose :- write('Anda Kalah!'), nl,

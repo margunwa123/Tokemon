@@ -1,8 +1,6 @@
 /* File untuk saat tokemon bertarung */
 :- dynamic(lawan/6).
 :- dynamic(chosenToke/1).
-:- dynamic(tokeT/8).
-:- dynamic(exp/2).
 :- dynamic(runorfight/0).
 :- dynamic(losing/0).
 :- include('tokemon.pl').
@@ -274,35 +272,53 @@ change(A) :-
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
         chosenToke(X), 
-        A =:= X, 
-        write('Kamu sedang memakai Tokemon '), write(A), nl, !.
+        A \= X,
+        write('Kembalilah '), write(X), nl,
+        retract(chosenToke(X)), asserta(chosenToke(A)),
+        write('Maju, '), write(A), nl, !.
 change(A) :- 
         \+ losing, 
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
         chosenToke(X), 
-        A \= X,
-        write('Kembalilah '), write(A), nl,
-        retract(chosenToke(X)), asserta(chosenToke(A)),
-        write('Maju, '), write(A), nl, !.
+        write('Kamu sedang memakai Tokemon '), write(A), nl, !.
 
 /* Setelah pertarungan selesai, tiap tokemon akan bertambah exp dan mungkin level up */
 naikexp :- 
         toke(_,_,_,_,_,_,_) -> (
                 forall(toke(A,B,C,D,E,F,G),
                 (
-                exp(A,L),retract(toke(A,_,_,_,_,_,_)),
-                (L > 0
-                -> write(A), write(' bertambah exp sebesar '), write(L), nl),
+                exp(A,L),
+                
+                (L > 0 
+                ->
+                write(A), write(' bertambah exp sebesar '), write(L), nl,
                 M is G + L,
-                N is (F + 1) * 50,
-                (N =< M 
-                -> P is F + 1,
-                   Q is M - N,
-                   write(A), write(' level up menjadi '), write(P), nl,
-                   asserta(toke(A,B,C,D,E,P,Q));
-                   asserta(toke(A,B,C,D,E,F,M)) 
-                ) 
+                N is F * 50,
+                        (N =< M
+                        -> P is F + 1,
+                           Q is M - N,
+                           R is div(B * 11, 10),
+                           S is div(C * 11, 10),
+                           T is div(D * 11, 10),
+                           write(A), write(' level up menjadi '), write(P), nl,
+                           asserta(toke(A,R,S,T,E,P,Q));
+                           asserta(toke(A,B,C,D,E,F,M))
+                        );
+                M is G + L,
+                N is F * 50,        
+                        (N =< M
+                        -> P is F + 1,
+                           Q is M - N,
+                           R is div(B * 11, 10),
+                           S is div(C * 11, 10),
+                           T is div(D * 11, 10),
+                           write(A), write(' level up menjadi '), write(P), nl,
+                           asserta(toke(A,R,S,T,E,P,Q));
+                           asserta(toke(A,B,C,D,E,F,M))
+                        )        
+                )       
                 ))
-        ),!.
+        ),
+        retractall(exp(_,_)), retractall(tokeT(_,_,_,_,_,_,_,_)), !.
         
