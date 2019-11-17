@@ -214,8 +214,8 @@ cekhealthL :-
 capture :-
         \+ losing, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
-        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F,G), asserta(avChoose), 
-        addToke(X,B,C,D,E,F,G), retract(lawan(X,_,_,_,_,_)), 
+        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose), 
+        addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
         retract(inbattle(2)), naikexp,
         nl, map, !.
 
@@ -290,7 +290,7 @@ change(A) :-
 naikexp :- 
         retractall(toke(_,_,_,_,_,_,_)),
         tokeT(_,_,_,_,_,_,_,_) -> (
-                forall(tokeT(A,B,C,D,E,F,G,H),
+                forall(tokeT(A,B,C,D,E,F,G,_),
                 (
                 exp(A,L),
                 (L > 0
