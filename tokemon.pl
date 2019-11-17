@@ -16,7 +16,7 @@ tokemon(momon,1300,150,280,leaves,20).         %5
 tokemon(engasmon,1269,169,269,water,20).       %6
 tokemon(santuymon,1500,120,270,fire,20).       %7
 tokemon(tankmon,2500,80,330,leaves,20).        %8
-tokemon(konakmon,800,250,330,water,20).        %9
+tokemon(konakmon,1000,200,300,water,20).        %9
 tokemon(jonatan_jostar,2100,100,300,fire,20).  %10
 
 /* Legendary Tokemon 

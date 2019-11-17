@@ -246,7 +246,7 @@ cektokemon :-
                 ))
         ),
         write(']'),nl, 
-        asserta(toke(H,I,J,K,L,M,N)),
+        asserta(toke(H,I,J,K,L,M)),
         write('Pilih Tokemon sekarang dengan berikan perintah pick(NamaTokemon)'), asserta(inbattle(1)), !.
 cektokemon :- 
         cekToke(Banyak), Banyak =:= 1, 

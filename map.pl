@@ -73,21 +73,14 @@ printIdx(_,_) :- write('-'),!.
  2,0 2,1 2,2
 */
 
-printItem(T,L) :-
-    positem(_,T,L),
-    write('I'),!.
-
-printItem(T,L) :-
-    printIdx(T,L),!.
 zoom(T,L) :-
     T1 is T-1,
     T2 is T+1,
     L1 is L-1,
     L2 is L+1,
-    printItem(T1,L1),printItem(T1,L),printItem(T1,L2),nl,
-    printItem(T,L1),printItem(T,L),printItem(T,L2),nl,
-    printItem(T2,L1),printItem(T2,L),printItem(T2,L2),nl.
-
+    printIdx(T1,L1),printIdx(T1,L),printIdx(T1,L2),nl,
+    printIdx(T,L1),printIdx(T,L),printIdx(T,L2),nl,
+    printIdx(T2,L1),printIdx(T2,L),printIdx(T2,L2),nl.
 
 cekKondisi :-
     player(T,L),
