@@ -7,9 +7,10 @@ save(_):-
 	write('Silahkan masukkan perintah play. untuk dapat memulai permainan.'),nl,!.
 	
 save(FileName):-
+	healonce,
 	tell(FileName),
-		healonce,
 		write('asserta(healonce).'),nl,
+		write('initialize_tokemon'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
@@ -22,6 +23,7 @@ save(FileName):-
 	
 save(FileName):-
 	tell(FileName),
+		write('initialize_tokemon'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
