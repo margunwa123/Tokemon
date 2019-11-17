@@ -69,7 +69,10 @@ cekLegend(Banyak) :-
 firstPick(A,B,C,D,E,F) :-
     asserta(toke(A,B,C,D,E,F,0)),
     write('Kamu telah berhasil memilih '),write(A),write(' sebagai tokemon pertamamu'),nl,
-    write('Game telah dimulai'),
+    write('Game telah dimulai, ada 2 item yang kamu dapatkan : '),nl,
+    write('super_attackup - meningkatkan attack tokemon sebanyak 80'),nl,
+    write('lemonade - meningkatkan darah tokemon sebanyak 900'),nl,
+    write('efek dari item adalah permanen, cara menggunakan: use(namaItem, namaTokemon).'),
     retract(avChoose),
     initialize_map,
     initialize_tokemon,
