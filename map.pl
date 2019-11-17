@@ -176,7 +176,8 @@ lari :-
             retract(inbattle(1))
         );
         write('Anda tidak berhasil kabur.'), nl,
-        write('Berusahalah!'), nl
+        write('Berusahalah!'), nl,
+        serang
     ),
     retract(mungkinRun), !.
 

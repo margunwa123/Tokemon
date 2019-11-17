@@ -38,6 +38,7 @@ initialize_mapitem :-
 
 use(Nama,Toke) :-
     \+ inbattle(1),
+    \+ inbattle(0),
     toke(Toke,Hp,Att,Sp,Type,Lvl,Exp),
     item(Nama),
     mapitem(_,Effect,Nama,Num),
@@ -55,6 +56,7 @@ use(Nama,Toke) :-
     asserta(tokeT(Toke,X,Att,Sp,Type,Lvl,Exp,_)),!.
 use(Nama,Toke) :-
     \+ inbattle(1),
+    \+ inbattle(0),
     toke(Toke,Hp,Att,Sp,Type,Lvl,Exp),
     item(Nama),
     mapitem(_,Effect,Nama,Num),
@@ -72,6 +74,7 @@ use(Nama,Toke) :-
     asserta(tokeT(Toke,Hp,X,Sp,Type,Lvl,Exp,_)),!.
 use(Nama,Toke) :-
     \+ inbattle(1),
+    \+ inbattle(0),
     toke(Toke,Hp,Att,Sp,Type,Lvl,Exp),
     item(Nama),
     mapitem(_,Effect,Nama,Num),

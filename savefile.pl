@@ -59,7 +59,7 @@ writeToke :-
 	)), !.
 
 writeItem :-
-	\+item(X),
+	\+item(_),
 	!.
 
 writeItem :-

@@ -213,7 +213,7 @@ capture :-
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose), 
         addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
-        retract(chosenToke(Y)),
+        retract(chosenToke(_)),
         retract(inbattle(2)), naikexp, retract(id(X,_)),
         nl, map, !.
 
@@ -226,7 +226,7 @@ nope :-
         write(X), write('(dalam bahasa Tokemon) : Dasar belagu'), nl,
         write(X), write(' meninggalkan kamu'), nl,
         retract(lawan(X,_,_,_,_,_)), 
-        retract(chosenToke(Y)),
+        retract(chosenToke(_)),
         retract(inbattle(2)), naikexp,
         nl, map, !.
 
@@ -281,13 +281,14 @@ change(A) :-
         \+ loseGame, 
         inbattle(1), 
         toke(A,_,_,_,_,_,_),
-        chosenToke(X), 
+        chosenToke(_), 
         write('Kamu sedang memakai Tokemon '), write(A), nl, !.
 
 /* Setelah pertarungan selesai, tiap tokemon akan bertambah exp dan mungkin level up */
 naikexp :- 
-        toke(_,_,_,_,_,_,_) -> (
-                forall(toke(A,B,C,D,E,F,G),
+        retractall(toke(_,_,_,_,_,_,_)),
+        tokeT(_,_,_,_,_,_,_,_) -> (
+                forall(tokeT(A,B,C,D,E,F,G,_),
                 (
                 exp(A,L),
                 tokemon(A,R,_,_,_,_),

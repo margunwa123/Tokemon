@@ -302,11 +302,28 @@ heal :-
 heal :-
     gym(T,L),
     player(T,L),
-    toke(Nama, _,C,D,E),
-    forall(tokemona(Nama, Hil,C,D,E),(
-        toke(Nama,Hil,C,D,E),
-        write('Tokemon '),write(Nama),write(' telah berhasil kamu sembuhkan'),nl
-    )),
+    % toke(Nama,_,C,D,E,F,G),
+    % forall(tokemon(Nama,Hil,C,D,E,F),(
+    %     toke(Nama,Hil,C,D,E),
+    %     write('Tokemon '),write(Nama),write(' telah berhasil kamu sembuhkan'),nl
+    % )),
+	toke(_,_,_,_,_,_,_) -> (
+		forall(toke(A,B,C,D,E,F,G),
+		(
+			asserta(tokeT(A,B,C,D,E,F,G))
+		))
+	),
+	retractall(toke(_,_,_,_,_,_,_)),
+	tokeT(_,_,_,_,_,_,_) -> (
+		forall(tokeT(A,_,C,D,E,F,G),
+		(
+			tokemon(A,B,_,_,_,H),
+			J is div(B * (F - H + 10), 10),
+			asserta(toke(A,J,C,D,E,F,G)),
+			write('Tokemon '),write(A),write(' telah berhasil kamu sembuhkan'),nl
+		))
+	),
+	retractall(tokeT(_,_,_,_,_,_,_,_)),
     asserta(healonce),!.
 heal :-
     avChoose,
