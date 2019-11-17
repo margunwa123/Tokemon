@@ -51,8 +51,8 @@ use(Nama,Toke) :-
     mapitem(_,Effect,Nama,Num),
     Effect = raiseHP,
     X is Hp + Num,
-    retract(toke(Toke,_,_,_,_,_,_)),retract(item(Nama)),
-    asserta(toke(Toke,X,Att,Sp,Type,Lvl,Exp)),!.
+    retract(tokeT(Toke,_,_,_,_,_,_,_)),retract(item(Nama)),
+    asserta(tokeT(Toke,X,Att,Sp,Type,Lvl,Exp,_)),!.
 use(Nama,Toke) :-
     \+ inbattle(1),
     toke(Toke,Hp,Att,Sp,Type,Lvl,Exp),
@@ -68,8 +68,8 @@ use(Nama,Toke) :-
     mapitem(_,Effect,Nama,Num),
     Effect = raiseAttack,
     X is Att + Num,
-    retract(toke(Toke,_,_,_,_,Lvl,Exp)),retract(item(Nama)),
-    asserta(toke(Toke,Hp,X,Sp,Type,Lvl,Exp)),!.
+    retract(tokeT(Toke,_,_,_,_,Lvl,Exp,_)),retract(item(Nama)),
+    asserta(tokeT(Toke,Hp,X,Sp,Type,Lvl,Exp,_)),!.
 use(Nama,Toke) :-
     \+ inbattle(1),
     toke(Toke,Hp,Att,Sp,Type,Lvl,Exp),
@@ -85,11 +85,11 @@ use(Nama,Toke) :-
     mapitem(_,Effect,Nama,Num),
     Effect = raiseSpAttack,
     X is Sp + Num,
-    retract(toke(Toke,_,_,_,_,_,_)),retract(item(Nama)),
-    asserta(toke(Toke,Hp,Att,X,Type,Lvl,Exp)),!.
+    retract(tokeT(Toke,_,_,_,_,_,_,_)),retract(item(Nama)),
+    asserta(tokeT(Toke,Hp,Att,X,Type,Lvl,Exp,_)),!.
 use(_,Nama) :-
     \+(item(Nama)),
     write('Kamu tidak memiliki item tersebut'),nl,!.
 use(Toke,_) :-
-    \+(toke(Toke,_,_,_,_)),
+    \+(toke(Toke,_,_,_,_,_,_)),
     write('Kamu tidak memiliki toke tersebut'),nl,!.
