@@ -286,9 +286,8 @@ change(A) :-
 
 /* Setelah pertarungan selesai, tiap tokemon akan bertambah exp dan mungkin level up */
 naikexp :- 
-        retractall(toke(_,_,_,_,_,_,_)),
-        tokeT(_,_,_,_,_,_,_,_) -> (
-                forall(tokeT(A,B,C,D,E,F,G,_),
+        toke(_,_,_,_,_,_,_) -> (
+                forall(toke(A,B,C,D,E,F,G),
                 (
                 exp(A,L),
                 tokemon(A,R,_,_,_,_),

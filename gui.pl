@@ -31,7 +31,6 @@ start :-
 	tab,tab,tab,write('        :::|_  _||  _  || |/ || ___||  \\/  ||  _  || \\| | ::::::::::'),nl,
 	tab,tab,tab,write('         ::  ||   ||_|| |   | | __|  |    | | |_| |  |  |  ::::::::::'),nl,    
     tab,tab,tab,write('            |__| |_____||_|\\_||____||_/\\/\\_||_____||_|\\_| ::::::::::'),nl,nl,
-    sleep(1.5),
 	write('Selamat Datang di Game Tokemon!'),nl,
 	write('Silahkan ketikkan command berikut untuk memberi perintah'),nl,
 	write('1  play'),nl,

@@ -10,7 +10,6 @@ save(FileName):-
 	healonce,
 	tell(FileName),
 		write('asserta(healonce).'),nl,
-		write('initialize_tokemon'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
@@ -23,7 +22,6 @@ save(FileName):-
 	
 save(FileName):-
 	tell(FileName),
-		write('initialize_tokemon'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
@@ -47,7 +45,8 @@ loads(FileName):-
     read_file_lines(Str,Lines),
     close(Str),
     assertaList(Lines),
-	asserta(inGame),!.
+	asserta(inGame),
+	initialize_tokemon,nl,!.
 
 /* Write */
 writeToke:-
