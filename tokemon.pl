@@ -1,5 +1,6 @@
 :- dynamic(toke/5).
 :- dynamic(avChoose/0).
+:- dynamic(toke/7).
 :- dynamic(randomNum/1).
 :- dynamic(id/2).
 :- include('gui.pl').
@@ -69,7 +70,7 @@ cekLegend(Banyak) :-
 firstPick(A,B,C,D,E,F) :-
     asserta(toke(A,B,C,D,E,F,0)),
     write('Kamu telah berhasil memilih '),write(A),write(' sebagai tokemon pertamamu'),nl,
-    write('Game telah dimulai'), 
+    write('Game telah dimulai'),
     retract(avChoose),
     initialize_map,
     initialize_tokemon,
