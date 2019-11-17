@@ -6,6 +6,7 @@
 :- dynamic(healonce/0).
 :- include('map.pl').
 :- initialization(start).
+:- include('savefile.pl').
 
 /* Tampilan Awal */
 
