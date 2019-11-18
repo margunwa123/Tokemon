@@ -159,16 +159,21 @@ attacked :-
         retract(tokeT(X,_,_,_,_,_,_,_)), asserta(tokeT(X,Z,A,B,TypeM,E,F,G)),cekhealthP, !.
 
 /* Menghasilkan status pertarungan ke layar */
-life :- 
-        chosenToke(X), tokeT(X,HPP,_,_,TypeP,LevelP,_,_), lawan(Y,HPL,_,_,TypeL,LevelL),
-        write(X), nl, 
-        write('Health: '), write(HPP), nl,
-        write('Type  : '), write(TypeP), nl, 
-        write('Level : '), write(LevelP), nl, nl,
-        write(Y), nl, 
-        write('Health: '), write(HPL), nl,
-        write('Type  : '), write(TypeL), nl, 
-        write('Level : '), write(LevelL), nl, nl, !.
+/* Jaga-jaga doang */
+% life :- 
+%         chosenToke(X), tokeT(X,HPP,_,_,TypeP,LevelP,_,_), lawan(Y,HPL,_,_,TypeL,LevelL),
+%         write(X), nl, 
+%         write('Health: '), write(HPP), nl,
+%         write('Type  : '), write(TypeP), nl, 
+%         write('Level : '), write(LevelP), nl, nl,
+%         write(Y), nl, 
+%         write('Health: '), write(HPL), nl,
+%         write('Type  : '), write(TypeL), nl, 
+%         write('Level : '), write(LevelL), nl, nl, !.
+
+life :-
+        chosenToke(X), tokeT(X,HPP,AttP,SkillP,TypeP,LevelP,_,_), lawan(Y,HPL,AttL,SkillL,TypeL,LevelL),
+        graphicbattle(X,HPP,AttP,SkillP,TypeP,LevelP,Y,HPL,AttL,SkillL,TypeL,LevelL), !.
 
 /* Mengecek HP Player */
 cekhealthP :- 
@@ -205,9 +210,9 @@ cekhealthL :-
         lawan(X,HPL,_,_,_,_), 
         HPL > 0, /* Jika HP Lawan masih > 0 */ 
         life,
-        tab,tab,tab,write('       . . .'), nl, sleep(0.5), /* menampilkan efek loading */
-        tab,tab,tab,write('       . . .'), nl, sleep(0.5),
-        tab,tab,tab,write('       . . .'), sleep(0.5), nl, nl,
+        tab,tab,tab,tab,tab,tab,tab,tab,tab,write('       . . .'), nl, sleep(0.5), /* menampilkan efek loading */
+        tab,tab,tab,tab,tab,tab,tab,tab,tab,write('       . . .'), nl, sleep(0.5),
+        tab,tab,tab,tab,tab,tab,tab,tab,tab,write('       . . .'), sleep(0.5), nl, nl,
         write(X), write(' menyerang!'), nl, 
         attacked, !.        
 
