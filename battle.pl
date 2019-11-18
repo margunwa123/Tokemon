@@ -9,7 +9,8 @@ pick(X) :-
         inbattle(1),
         tokeT(X,_,_,_,_,_,_,_), asserta(chosenToke(X)),
         %battle stage ke 1 yaitu saat bertarung(attack dan attacked) 
-        write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, life, !.
+        write('You : Saya memilih kamu,"'),write(X),write('"'),nl,nl, 
+        asserta(inbattle(3)), life, !.
 pick(X) :- 
         inbattle(1),
         \+tokeT(X,_,_,_,_,_,_,_), 
@@ -159,21 +160,21 @@ attacked :-
         retract(tokeT(X,_,_,_,_,_,_,_)), asserta(tokeT(X,Z,A,B,TypeM,E,F,G)),cekhealthP, !.
 
 /* Menghasilkan status pertarungan ke layar */
-/* Jaga-jaga doang */
-% life :- 
-%         chosenToke(X), tokeT(X,HPP,_,_,TypeP,LevelP,_,_), lawan(Y,HPL,_,_,TypeL,LevelL),
-%         write(X), nl, 
-%         write('Health: '), write(HPP), nl,
-%         write('Type  : '), write(TypeP), nl, 
-%         write('Level : '), write(LevelP), nl, nl,
-%         write(Y), nl, 
-%         write('Health: '), write(HPL), nl,
-%         write('Type  : '), write(TypeL), nl, 
-%         write('Level : '), write(LevelL), nl, nl, !.
-
 life :-
+        inbattle(3),
         chosenToke(X), tokeT(X,HPP,AttP,SkillP,TypeP,LevelP,_,_), lawan(Y,HPL,AttL,SkillL,TypeL,LevelL),
-        graphicbattle(X,HPP,AttP,SkillP,TypeP,LevelP,Y,HPL,AttL,SkillL,TypeL,LevelL), !.
+        graphicbattle(X,HPP,AttP,SkillP,TypeP,LevelP,Y,HPL,AttL,SkillL,TypeL,LevelL), 
+        retract(inbattle(3)), !.
+life :- 
+        chosenToke(X), tokeT(X,HPP,_,_,TypeP,LevelP,_,_), lawan(Y,HPL,_,_,TypeL,LevelL),
+        write(X), nl, 
+        write('Health: '), write(HPP), nl,
+        write('Type  : '), write(TypeP), nl, 
+        write('Level : '), write(LevelP), nl, nl,
+        write(Y), nl, 
+        write('Health: '), write(HPL), nl,
+        write('Type  : '), write(TypeL), nl, 
+        write('Level : '), write(LevelL), nl, nl, !.
 
 /* Mengecek HP Player */
 cekhealthP :- 

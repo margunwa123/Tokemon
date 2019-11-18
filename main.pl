@@ -1,71 +1,30 @@
 
-:- dynamic(player/2).
+:- dynamic(player/2). 
+/* player(A,B) : A adalah posisi dalam sumbu X dan B adalah posisi dalam sumbu Y. */
 :- dynamic(inGame/0).
+/* inGame : inGame ada ketika si pemain memberi perintah play. di awal permainan. */
 :- dynamic(winGame/0).
+/* winGame : winGame ada ketika si pemain sudah menangkap semua Tokemon Legendaris. */
 :- dynamic(loseGame/0).
+/* loseGame : loseGame ada ketika si pemain sudah tidak memiliki Tokemon lagi */
 :- dynamic(healonce/0).
+/* healonce : healonce muncul ketika si pemain sudah memberi perintah heal. di lokasi Gym */
+
 :- include('map.pl').
 :- include('battle.pl').
 :- include('item.pl').
 :- include('tokemon.pl').
 :- include('gui.pl').
-:- initialization(start).
 :- include('savefile.pl').
-
-/* Tampilan Awal */
-
-%Command
-/* Belum kelar
-loads(_) :-
-	gameMain(_),
-	write('Kamu sedang berada dalam permainan, silahkan keluar dulu untuk dapat memulai permainan yang lain.'),nl,!.
-loads(FileName):-
-	\+file_exists(FileName),
-	write('File yang dimaksud tidak ada, ketikkan nama file dengan benar.'),nl,!.
-loads(FileName):-
-	open(FileName, read, Str),
-    read_file_lines(Str,Lines),
-    close(Str),
-    assertaList(Lines), !.
-
-save(_):-
-	\+gameMain(_),
-	write('Kamu belum memulai permainan.'),nl,
-	write('Silahkan masukkan perintah play. untuk dapat memulai permainan.'),nl,!.
-save(FileName):-
-	tell(FileName),
-		player(X,Y),
-		write(player(X,Y)),write('.'),nl,
-		healthpoint(HP),
-		write(healthpoint(HP)),write('.'), nl,
-		writeSenjata,
-		armor(Arm),
-		write(armor(Arm)),write('.'), nl,
-		maxHealth(Maxh),
-		write(maxHealth(Maxh)),write('.'), nl,
-		maxInventory(Maxi),
-		write(maxInventory(Maxi)),write('.'),nl,
-		maxArmor(Maxa),
-		write(maxArmor(Maxa)),write('.'), nl,
-		gameMain(GM),
-		write(gameMain(GM)),write('.'), nl,
-		deadzone(DZ),
-		write(deadzone(DZ)),write('.'), nl,
-		tick(Det),
-		write(tick(Det)),write('.'), nl,
-		lebarPeta(Le),
-		write(lebarPeta(Le)),write('.'), nl,
-		tinggiPeta(Ti),
-		write(tinggiPeta(Ti)),write('.'), nl,
-		writeMusuh, writeBarang, writeInventory, writeTerrain,
-	told, !.
-*/
+:- initialization(start). /* menginisialisasi prosedur start yang ada di file 'gui.pl' */
 
 %Opening
+/* Command dari si pemain untuk memulai permainan */
 play :-
-    inGame,
+    inGame, /* Jika sudah ada inGame (inGame) */
     write('Kamu tidak bisa memulai game yang sudah dimulai'),!.
 play :- 
+	/* Alur cerita awal */
 	write('Sudah sejak dulu, tokemon hidup berdampingan dengan manusia secara baik.'),nl,
 	write('Hingga pada suatu waktu, sebuah desa terserang wabah aneh yang menyebabkan para Tokemon mendadak'), nl, 
 	write('menjadi liar dan tak terkendali.'),nl,
@@ -90,7 +49,7 @@ play :-
 	write('1. wow'),nl,
 	write('2. mamet'),nl,
 	write('3. danlap'),nl,!,
-	asserta(nLegend(4)),
+	asserta(nLegend(4)), /* menginisialisasi jumlah Tokemon Legendary yang masih liar */
     asserta(inGame),
 	asserta(avChoose),!. %player memilih tokemon
 
