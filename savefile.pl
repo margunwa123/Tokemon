@@ -81,7 +81,7 @@ writeItem :-
 	)), !.
 
 writeID :-
-	\+id(X,Y),
+	\+id(_,_),
 	!.
 
 writeID :-
