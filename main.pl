@@ -62,7 +62,7 @@ help :-
 	write('4. d              : Bergerak ke arah kanan'),nl,
 	write('5. map            : Menampilkan map'),nl,
 	write('6. heal           : Menyembuhkan tokemon(hanya dapat dilakukan di Gym)'),nl,
-	write('7. load           : Melanjutkan permainan yang pernah disimpan'),nl,
+	write('7. loads          : Melanjutkan permainan yang pernah disimpan'),nl,
 	write('8. save           : Menyimpan permainan'),nl,
 	write('9. status         : Menampilkan status player'),nl,
 	write('10.serang         : Memilih untuk bertarung dari bertanding(hanya dapat dilakukan saat bertemu tokemon)'),nl,
