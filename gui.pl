@@ -48,3 +48,7 @@ graphicbattle :-
 
 lose :- write('Anda Kalah!'), nl,
         write('Ketik restart. untuk mengulang permainan!'),!.   
+
+win :-
+    write('Kamu sudah mengalahkan 4 Tokemon Legendary dan kristal birunya sudah dihancurkan.'), nl,
+    write('Ketik restart. untuk mengulang permainan!'),!.        

@@ -3,7 +3,6 @@
 :- dynamic(player/2).
 :- dynamic(inbattle/1).
 :- dynamic(mungkinRun/0).
-:- include('item.pl').
 gym(5,5). %gym fixed place
 
 /* indeks (T,L) merepresentasikan indeks dari suatu matrix (baris,kolom) */

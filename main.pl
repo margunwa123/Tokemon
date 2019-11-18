@@ -5,6 +5,10 @@
 :- dynamic(loseGame/0).
 :- dynamic(healonce/0).
 :- include('map.pl').
+:- include('battle.pl').
+:- include('item.pl').
+:- include('tokemon.pl').
+:- include('gui.pl').
 :- initialization(start).
 :- include('savefile.pl').
 
@@ -73,7 +77,7 @@ play :-
 	write('Saya di sini selaku Kepala Desa sangat mengaharapkan bantuan dari kamu dalam mengatasi wabah'), nl, 
 	write('menyerang Tokemon-tokemon di desa ini.'),nl,
 	write('Ada satu cara untuk mengentikan wabah ini, yaitu dengan menghancurkan sebuah kristal biru yang'), nl, 
-	write('dijaga oleh 2 Tokemon legendary.'),nl,
+	write('dijaga oleh 4 Tokemon legendary.'),nl,
 	write('Setelah ini kamu akan bertemu dengan Professor Tokemon untuk memilih satu Tokemon yang akan'), nl, 
 	write('menemanimu memerangi wabah ini.'),nl,nl,
 	sleep(2),
@@ -106,10 +110,12 @@ help :-
 	write('12.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
 	write('13.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl,
 	write('14.specialAttack  : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
-	write('15.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
-	write('16.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
-	write('17.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('18.quit           : Keluar dari permainan'),nl.
+	write('15.capture		 : Menangkap Tokemon liar yang pingsan'),nl,
+	write('16.nope			 : Menolak untuk menangkap Tokemon liar yang pingsan'),nl,
+	write('17.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
+	write('18.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
+	write('19.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
+	write('20.quit           : Keluar dari permainan'),nl.
 
 % checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
 %     toke(A,_,_,_,_), legendary(A),

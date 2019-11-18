@@ -1,4 +1,3 @@
-:- include('battle.pl').
 :- dynamic(item/1).
 /*item(Nama) merupakan item milik player*/
 :- dynamic(item_number/1).

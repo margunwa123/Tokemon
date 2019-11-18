@@ -4,7 +4,7 @@
 :- dynamic(avChoose/0).
 :- dynamic(randomNum/1).
 :- dynamic(id/2).
-:- include('gui.pl').
+
 /* ************* FAKTA *************** */
 /* Nama Tokemon (Nama, Hp, Basic Att, Skill Att, Type, Level) */
 /* Normal Tokemon 
