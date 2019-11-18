@@ -90,6 +90,7 @@ play :-
 	write('1. wow'),nl,
 	write('2. mamet'),nl,
 	write('3. danlap'),nl,!,
+	asserta(nLegend(4)),
     asserta(inGame),
 	asserta(avChoose),!. %player memilih tokemon
 
@@ -110,8 +111,8 @@ help :-
 	write('12.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
 	write('13.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl,
 	write('14.specialAttack  : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
-	write('15.capture		 : Menangkap Tokemon liar yang pingsan'),nl,
-	write('16.nope			 : Menolak untuk menangkap Tokemon liar yang pingsan'),nl,
+	write('15.capture        : Menangkap Tokemon liar yang pingsan'),nl,
+	write('16.nope           : Menolak untuk menangkap Tokemon liar yang pingsan'),nl,
 	write('17.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
 	write('18.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
 	write('19.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
@@ -154,7 +155,7 @@ status :-
 		write('    Level : '),write(F),nl,
 		write('      Exp : '),write(G),write(' / '),write(H),nl,nl
     )),
-    write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
+    write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl,
     write('Item kamu : [ | '), 
     forall(item(I),
     (
@@ -177,7 +178,7 @@ status :-
 		write('    Level : '),write(F),nl,
 		write('      Exp : '),write(G),write(' / '),write(H),nl,nl
     )),
-    write('Ada '), cekLegend(Y), write(Y),write(' Tokemon Legendary yang sudah kamu tangkap.'),nl,
+    write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl,
     write('Item kamu : [ | '), 
     forall(item(I),
     (
@@ -321,12 +322,15 @@ heal :-
 	),
 	retractall(toke(_,_,_,_,_,_,_)),
 	tokeT(_,_,_,_,_,_,_) -> (
-		forall(tokeT(A,_,C,D,E,F,G),
+		forall(tokeT(A,HP,C,D,E,F,G),
 		(
 			tokemon(A,B,_,_,_,H),
 			J is div(B * (F - H + 10), 10),
+			( HP >= J 
+			-> asserta(toke(A,HP,C,D,E,F,G));
 			asserta(toke(A,J,C,D,E,F,G)),
 			write('Tokemon '),write(A),write(' telah berhasil kamu sembuhkan'),nl
+			)
 		))
 	),
 	retractall(tokeT(_,_,_,_,_,_,_,_)),

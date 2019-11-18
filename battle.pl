@@ -191,6 +191,11 @@ cekhealthL :-
         lawan(Y,HPL,_,_,_,_), 
         HPL =< 0, /* Jika HP Lawan sudah <= 0 */
         write(Y), write(' pingsan! Apakah kamu mau menangkapnya?'),nl,nl,
+        (legendary(Y)
+        -> write('Tokemon ini adalah Tokemon Legendary!'), nl,
+           write('Kamu harus menangkapnya agar dia tidak menjadi liar lagi!'),nl,nl;
+           write('')    
+        ),
         write('Jika ingin menangkapnya, berikan perintah capture.'),nl,
         write('Jika tidak ingin, berikan perintah nope.'), nl,
         retract(inbattle(1)),
@@ -210,11 +215,22 @@ cekhealthL :-
 capture :-
         \+ loseGame, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
-        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose), 
-        addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
-        retract(chosenToke(_)),
-        retract(inbattle(2)), naikexp, retract(id(X,_)),
-        nl, map, !.
+        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose),
+        (legendary(X)
+        ->      nLegend(N),
+                M is N - 1,
+                retract(nLegend(N)), asserta(nLegend(M)),
+                cekWin;
+                nLegend(_)
+        ),
+        (winGame 
+                ->
+                write('');
+                addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
+                retract(chosenToke(_)),
+                retract(inbattle(2)), naikexp, retract(id(X,_)),
+                nl, map
+        ),!. 
 
 /* Menolak untuk menangkap Tokemon Liar */
 nope :- 
@@ -222,8 +238,9 @@ nope :-
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), /* ini bisa dingertiin sendiri lah ya */
         write(X), write(' pun sadar.'), nl,
-        write(X), write('(dalam bahasa Tokemon) : Dasar belagu.'), nl,
-        write(X), write(' meninggalkan kamu.'), nl,
+        write(X), write('(dalam bahasa Tokemon) :'), nl,
+        write('Dasar belagu.'),nl,
+        write(X), write(' meninggalkan kamu dan akan menjadi liar kembali.'), nl,
         retract(lawan(X,_,_,_,_,_)), 
         retract(chosenToke(_)),
         retract(inbattle(2)), naikexp,
@@ -294,7 +311,7 @@ naikexp :-
                 
                 (L > 0 
                 ->
-                write(A), write(' bertambah exp sebesar '), write(L), nl,
+                write(A), write(' bertambah exp sebesar '), write(L), write('.'),nl,
                 M is G + L,
                 N is F * 30,
                         (N =< M
@@ -323,4 +340,13 @@ naikexp :-
                 ))
         ),
         retractall(exp(_,_)), retractall(tokeT(_,_,_,_,_,_,_,_)), !.
+
+cekWin :- 
+        nLegend(N),
+        (N =:= 0 
+        -> 
+        asserta(winGame),
+        win;
+        write('')
+        ), !.
         

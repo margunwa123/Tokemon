@@ -1,6 +1,7 @@
 :- dynamic(toke/7).
 :- dynamic(tokeT/8).
 :- dynamic(exp/2).
+:- dynamic(nLegend/1).
 :- dynamic(avChoose/0).
 :- dynamic(randomNum/1).
 :- dynamic(id/2).
@@ -62,16 +63,6 @@ strong(water,fire).
 cekToke(Banyak) :-
 	findall(T,toke(T,_,_,_,_,_,_),ListBanyak),
 	length(ListBanyak,Banyak).
-
-cekLegend(Banyak) :-
-	\+ inbattle(1),
-	legendary(X),
-	findall(X,toke(X,_,_,_,_,_,_),ListBanyak),
-	length(ListBanyak,Banyak),!.
-cekLegend(Banyak) :-
-	legendary(X),
-	findall(X,tokeT(X,_,_,_,_,_,_,_),ListBanyak),
-	length(ListBanyak,Banyak),!.
 
 firstPick(A,B,C,D,E,F) :-
     asserta(toke(A,B,C,D,E,F,0)),

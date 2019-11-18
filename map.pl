@@ -128,6 +128,9 @@ cekKondisi :-
 
 serang :-
     loseGame, lose, !.
+serang :-
+    inbattle(1),
+    write('Kamu sudah membuat keputusan untuk menyerang!'), nl, !.
 serang :- 
     inbattle(0), cekToke(Banyak), Banyak > 1,
     write('Tokemon yang ada : ['),
