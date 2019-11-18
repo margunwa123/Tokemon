@@ -25,12 +25,12 @@ tokemon(pikacrot,1500,133,283,lightning,20).   %11
 tokemon(elsa,1800,115,285,ice,20).             %12
 
 /* Legendary Tokemon 
-Komposisi : (health/100) * (attack/100) = +- 100
+Komposisi : (health/100) * (attack/100) = +- 150
 sp.attack : attack + health/10 */
-tokemon(hadimon,7000,150,850,ground,20).
-tokemon(mariomon,5000,200,750,fire,20).
-tokemon(ajimon,4000,230,630,water,20).
-tokemon(danmon,3000,330,630,lightning,20).
+tokemon(hadimon,7000,210,910,ground,20).
+tokemon(mariomon,5000,300,800,fire,20).
+tokemon(ajimon,4000,375,775,water,20).
+tokemon(danmon,3000,500,800,lightning,20).
 
 /* TOKEMON AWAL 
 Komposisi : (health/100) * (attack/100) = +- 40
@@ -89,7 +89,6 @@ drop(X) :-
 drop(X) :-
 	cekToke(Y),
 	Y > 1,
-	toke(X,_,_,_,_,_,_),
 	retract(toke(X,_,_,_,_,_,_)),
 	write('Tokemon '),write(X),write(' berhasil didrop.'),nl,!.
 	
@@ -112,8 +111,7 @@ addToke(A,B,C,D,E,F) :-
 	(Banyak+1) =< 6,
 	asserta(tokeT(A,B,C,D,E,F,0,1)),
 	asserta(exp(A,0)),
-	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),nl,
-	retract(avChoose), !.
+	write(A),write(' berhasil kamu bawa dan HP-nya kembali full secara ajaib!'),nl,!.
 /*
 addToke(A,B,C,D,E) :-
 	tokemon(A,B,C,D,E),

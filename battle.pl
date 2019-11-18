@@ -228,7 +228,7 @@ capture :-
 capture :-
         \+ loseGame, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
-        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose),
+        lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F),
         (legendary(X)
         ->      nLegend(N),
                 M is N - 1,
