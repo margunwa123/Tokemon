@@ -318,12 +318,12 @@ heal :-
 	toke(_,_,_,_,_,_,_) -> (
 		forall(toke(A,B,C,D,E,F,G),
 		(
-			asserta(tokeT(A,B,C,D,E,F,G))
+			asserta(tokeT(A,B,C,D,E,F,G,_))
 		))
 	),
 	retractall(toke(_,_,_,_,_,_,_)),
-	tokeT(_,_,_,_,_,_,_) -> (
-		forall(tokeT(A,HP,C,D,E,F,G),
+	tokeT(_,_,_,_,_,_,_,_) -> (
+		forall(tokeT(A,HP,C,D,E,F,G,_),
 		(
 			tokemon(A,B,_,_,_,H),
 			J is div(B * (F - H + 10), 10),
