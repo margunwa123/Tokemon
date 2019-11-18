@@ -213,6 +213,14 @@ cekhealthL :-
 
 /* Menangkap Tokemon liar */
 capture :-
+        \+ loseGame,
+        inbattle(2),
+        cekToke(N),
+        N =:= 6,
+        write('Kamu sudah tidak bisa menangkap Tokemon lagi!'), nl,
+        write('Kamu harus membuang satu Tokemon untuk menangkap Tokemon yang baru.'),nl,
+        write('Berikan perintah drop(namaToke) untuk melakukan aksi ini.'),nl, !. 
+capture :-
         \+ loseGame, /* jika belum kalah Game */
         inbattle(2), /* jika dalam situasi menang dalam pertarungan */
         lawan(X,_,_,_,_,_), tokemon(X,B,C,D,E,F), asserta(avChoose),
@@ -230,7 +238,7 @@ capture :-
                 retract(chosenToke(_)),
                 retract(inbattle(2)), naikexp, retract(id(X,_)),
                 nl, map
-        ),!. 
+        ),!.         
 
 /* Menolak untuk menangkap Tokemon Liar */
 nope :- 

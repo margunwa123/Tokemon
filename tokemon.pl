@@ -96,8 +96,9 @@ dropToke(X) :-
 
 addToke(_,_,_,_,_,_) :-
 	cekToke(Banyak),
-	(Banyak+1) > 6, !,
-	write('Tokemon kamu sudah mencapai batas maksimal.'),fail.
+	(Banyak+1) > 6, 
+    write('Tokemon kamu sudah mencapai batas maksimal.'), nl,
+    write('Kamu harus menge-drop satu Tokemon untuk menangkap Tokemon ini'), nl, !.
 
 addToke(A,B,C,D,E,F) :-
 	/*Toke muat*/

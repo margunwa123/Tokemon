@@ -9,7 +9,9 @@ save(_):-
 save(FileName):-
 	healonce,
 	tell(FileName),
-		write('asserta(healonce).'),nl,
+		nLegend(N),
+		write(nLegend(N)),write('.'),nl,
+		write(healonce),write('.'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
@@ -22,6 +24,8 @@ save(FileName):-
 	
 save(FileName):-
 	tell(FileName),
+		nLegend(N),
+		write(nLegend(N)),write('.'),nl,
 		player(X,Y),
 		write(player(X,Y)),write('.'),nl,
 		lebarPeta(A),
