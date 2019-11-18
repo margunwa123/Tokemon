@@ -1,3 +1,10 @@
+/* Tugas Besar Logika Komutasional - IF 2121 */
+/* Kelas 03 (Kelompok 02) */
+/* Akhmad Aji Permadi      10118030 */
+/* Fikra Hadi Ramadhan     13518036 */
+/* Daniel Riyanto          13518075 */
+/* Mario Gunawan           13518114 */
+
 tab :- write('    ').
 
 start :-
