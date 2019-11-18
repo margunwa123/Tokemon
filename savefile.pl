@@ -7,6 +7,7 @@ save(_):-
 	write('Silahkan masukkan perintah play. untuk dapat memulai permainan.'),nl,!.
 	
 save(FileName):-
+	write('Kamu berhasil menyimpan dengan nama file: '),write(FileName),
 	healonce,
 	tell(FileName),
 		nLegend(N),
@@ -20,7 +21,8 @@ save(FileName):-
 		write(tinggiPeta(B)),write('.'),nl,
 		writeToke,
 		writeItem,
-	told, !.
+		writeID,
+	told,!.
 	
 save(FileName):-
 	tell(FileName),
@@ -34,6 +36,7 @@ save(FileName):-
 		write(tinggiPeta(B)),write('.'),nl,
 		writeToke,
 		writeItem,
+		writeID,
 	told, !.
 
 %load(Filename).
@@ -50,7 +53,7 @@ loads(FileName):-
     close(Str),
     assertaList(Lines),
 	asserta(inGame),
-	initialize_tokemon,nl,!.
+	write('File '),write(FileName),write(' berhasil di-load'),nl,!.
 
 /* Write */
 writeToke:-
@@ -71,6 +74,14 @@ writeItem :-
 		write(item(X)),write('.'),nl
 	)), !.
 
+writeID :-
+	\+id(X,Y),
+	!.
+
+writeID :-
+	forall(id(X,Y), (
+		write(id(X,Y)),write('.'),nl
+	)),!.
 
 /* Membaca file menjadi list of lines */
 read_file_lines(Stream,[]) :-
