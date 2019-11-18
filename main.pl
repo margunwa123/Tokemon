@@ -70,43 +70,44 @@ help :-
 	write('12.pick           : Memilih tokemon untuk digunakan(hanya dapat dilakukan pada battle)'),nl,
 	write('13.attack         : Melakukan normal attack(hanya dapat dilakukan pada battle)'),nl,
 	write('14.specialAttack  : Melakukan Special Attack pada musuh(hanya dapat dilakukan pada battle)'),nl,
-	write('15.capture        : Menangkap Tokemon liar yang pingsan'),nl,
-	write('16.nope           : Menolak untuk menangkap Tokemon liar yang pingsan'),nl,
-	write('17.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
-	write('18.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
-	write('19.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('20.quit           : Keluar dari permainan'),nl,
-    write('21.type           : Melihat kekuatan masing-masing tokemon').
+	write('15.change(toke2)  : Mengganti toke yang sedang bertarung dengan toke2'), nl,
+	write('16.capture        : Menangkap Tokemon liar yang pingsan'),nl,
+	write('17.nope           : Menolak untuk menangkap Tokemon liar yang pingsan'),nl,
+	write('18.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
+	write('19.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
+	write('20.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
+	write('21.quit           : Keluar dari permainan'),nl,
+    write('22.type           : Melihat kekuatan masing-masing tokemon').
 
-% checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
-%     toke(A,_,_,_,_), legendary(A),
-%     toke(B,_,_,_,_), legendary(B),
-%     A \= B,
-%     winGame.
-% checkLose :-
-%     cekToke(X), X =:= 0,
-%     loseGame.
-
+/* Memilih Tokemon awal */
 choose(_) :- 
-	inbattle(1),
+	inbattle(1), /* Ketika dalam pertarungan dan memberi perintah choose(Toke) */
 	write('Salah perintah !'), nl,
 	write('Ketik pick(NamaTokemon)'), nl, !.
-choose(X) :- avChoose, tokemon(X,A,B,C,D,E), awal(X), firstPick(X,A,B,C,D,E),!.
-choose(X) :- avChoose, \+(awal(X)), write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
-choose(_) :- write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
+choose(X) :- 
+	avChoose, /* variabel ini menandai si pemain boleh memilih Tokemon awal */
+	tokemon(X,A,B,C,D,E), awal(X), firstPick(X,A,B,C,D,E),!.
+choose(X) :- 
+	avChoose, /* variabel ini menandai si pemain boleh memilih Tokemon awal */
+	\+(awal(X)), /* Tokemon yang dipilih bukan Tokemon yang ditawarkan */
+	write('Mohon pilih salah satu diantara 3 opsi '),nl,!.
+choose(_) :- 
+	/* jika sudah tidak memenuhi semua pernyataan di atas */
+	write('Kamu hanya dapat memilih Tokemon sekali di awal permainan.'),!.
 
-status :- loseGame, lose, !.
-
-status :- \+(inGame),
+/* Menampilkan status si pemain ke layar */
+status :- 
+	loseGame, /* si pemain sudah kalah Game */
+	lose, !.
+status :- \+(inGame), /* si pemain belum memulai Game atau memberi perintah play. */
     	  write('Kamu harus memilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
-
 status :-
-	inbattle(1),
+	(inbattle(1); inbattle(2)), /* si pemain sedang dalam kondisi bertarung */
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
-    forall(tokeT(A,B,C,D,E,F,G,_),
+    forall(tokeT(A,B,C,D,E,F,G,_), /* menampilkan semua Tokemon yang dimiliki si Pemain */
     (
-		H is F * 30,
+		H is F * 30, /* H adalah exp maksimal suatu Toke untuk naik ke level selanjutnya */
         write('    -'),write(A),nl,
         write('       Hp : '),write(B),nl,
         write('Basic Att : '),write(C),nl,
@@ -115,15 +116,16 @@ status :-
 		write('    Level : '),write(F),nl,
 		write('      Exp : '),write(G),write(' / '),write(H),nl,nl
     )),
-    write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl,
-    write('Item kamu : [ | '), 
+	write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl, 
+	/* menampilkan jumlah Tokemon Legendary yang perlu ditangkap */
+    write('Item kamu : [ | '), /* menampilkan semua item yang dimiliki si Pemain */
     forall(item(I),
     (
         write(I),write(' | ')
     )),write(']'),!.
 
 status :- 
-	\+ inbattle(1),
+	\+ inbattle(1), /* jika sedang dalam kondisi bertarung */
 	\+ inbattle(2),
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
