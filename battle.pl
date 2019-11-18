@@ -283,7 +283,7 @@ cektokemon :-
         write(']'),nl,
         asserta(inbattle(1)), !. 
 cektokemon :- 
-        cekToke(Banyak), Banyak =:= 0, asserta(loseGame), lose,!.
+        cekToke(Banyak), Banyak =:= 0, asserta(loseGame), gui_lose, lose,!.
 
 /* Mengganti Tokemon di tengah pertarungan */
 change(_) :- 
@@ -359,6 +359,7 @@ cekWin :-
         (N =:= 0 
         -> 
         asserta(winGame),
+        gui_win,
         win;
         write('')
         ), !.

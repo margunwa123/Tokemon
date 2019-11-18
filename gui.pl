@@ -38,12 +38,23 @@ start :-
 	write('3  save'),nl,
 	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command '),nl,!. 
 
-lose :- write('Anda Kalah!'), nl,
-    write('Ketik restart. untuk mengulang permainan!'),!.   
+gui_lose :-
+  write('Anda sudah tidak mempunyai Tokemon!'), nl,
+  write('Desa menjadi hancur dan wabahnya tersebar ke dunia.'), nl, nl, !.
+
+lose :- 
+  write('Anda Kalah!'), nl,
+  write('Ketik restart. untuk mengulang permainan!'),nl,!.   
+
+gui_win :-
+  write('Kamu sudah mengalahkan 4 Tokemon Legendary dan kristal birunya sudah dihancurkan.'), nl,
+  write('Tokemon-tokemon secara tiba-tiba tidak menjadi liar lagi.'), nl,
+  write('Kepala Desa dan warga-warga pun datang untuk berterima kasih.'), nl,
+  write('Kehidupan di desa ini menjadi kehidupan yang membahagiakan.'), nl, nl, !.
 
 win :-
-    write('Kamu sudah mengalahkan 4 Tokemon Legendary dan kristal birunya sudah dihancurkan.'), nl,
-    write('Ketik restart. untuk mengulang permainan!'),!.   
+  write('Anda Menang!'), nl,
+  write('Ketik restart. untuk mengulang permainan!'),nl,!.   
 
 % graphicbattle :-
 %     write('     ____________________________                             ____________________________  '),nl,

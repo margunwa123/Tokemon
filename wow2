@@ -1,0 +1,11 @@
+nLegend(4).
+healonce.
+player(4,11).
+lebarPeta(14).
+tinggiPeta(12).
+toke(vanila_bluemon,1700,115,285,fire,20,0).
+toke(wow,2000,280,400,fire,20,526).
+toke(zigzogaan,1325,130,280,water,20,341).
+toke(zigzogaan,1500,330,640,water,20,0).
+toke(tankmon,1327,80,330,leaves,20,361).
+toke(engasmon,1269,169,269,water,20,0).
