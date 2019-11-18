@@ -99,10 +99,11 @@ choose(_) :-
 status :- 
 	loseGame, /* si pemain sudah kalah Game */
 	lose, !.
-status :- \+(inGame), /* si pemain belum memulai Game atau memberi perintah play. */
-    	  write('Kamu harus memilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
+status :- 
+	\+(inGame), /* si pemain belum memulai Game atau memberi perintah play. */
+    write('Kamu harus memilih tokemon terlebih dahulu untuk dapat mengecek status.'),!.
 status :-
-	(inbattle(1); inbattle(2)), /* si pemain sedang dalam kondisi bertarung */
+	(inbattle(1); inbattle(2)), /* si pemain sedang dalam situasi bertarung */
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
     forall(tokeT(A,B,C,D,E,F,G,_), /* menampilkan semua Tokemon yang dimiliki si Pemain */
@@ -123,13 +124,11 @@ status :-
     (
         write(I),write(' | ')
     )),write(']'),!.
-
 status :- 
-	\+ inbattle(1), /* jika sedang dalam kondisi bertarung */
-	\+ inbattle(2),
+	/* jika si Pemain tidak dalam situasi bertarung */
 	write('Kamu memiliki '),cekToke(X),write(X),write(' Tokemon.'),nl,nl,
 	write('Dengan rincian: '),nl,nl,
-    forall(toke(A,B,C,D,E,F,G),
+    forall(toke(A,B,C,D,E,F,G), /* menampilkan semua Tokemon yang dimiliki si Pemain */
     (
 		H is F * 30,
         write('    -'),write(A),nl,
@@ -140,18 +139,26 @@ status :-
 		write('    Level : '),write(F),nl,
 		write('      Exp : '),write(G),write(' / '),write(H),nl,nl
     )),
-    write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl,
-    write('Item kamu : [ | '), 
+	write('Ada '), nLegend(Y), write(Y),write(' Tokemon Legendary yang masih liar.'),nl, 
+	/* menampilkan jumlah Tokemon Legendary yang perlu ditangkap */
+    write('Item kamu : [ | '), /* menampilkan semua item yang dimiliki si Pemain */
     forall(item(I),
     (
         write(I),write(' | ')
     )),write(']'),!.
 		
 % Map
-map :- loseGame, lose,!.
-map :- \+(inGame), write('Harap memulai game terlebih dahulu'),!.
-map :- avChoose, write('Pilih tokemon awal terlebih dahulu!'),!.
 map :- 
+	loseGame, /* si Pemain sudah kalah permainan */
+	lose,!.
+map :- 
+	\+(inGame), /* si Pemain belum memulai permainan atau belum memberi perintah play. */
+	write('Harap memulai game terlebih dahulu'),!.
+map :- 
+	avChoose, /* variabel ini menandai si Pemilih belum memilih Tokemon awal */
+	write('Pilih tokemon awal terlebih dahulu!'),!.
+map :- 
+	/* jika tidak memenuhi pernyataan di atas */
 	TMin is 0,
 	LMin is 0,
     lebarPeta(L),
