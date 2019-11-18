@@ -348,4 +348,5 @@ look :-
 
 /* PROSEDUR KELUAR/ RELOAD FILE */
 quit :- halt.
-restart :- consult('main.pl').
+restart :- inbattle(_),write('Selesaikan pertaruganmu dahulu!').
+restart :- [main].

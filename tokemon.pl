@@ -36,7 +36,8 @@ sp.attack : attack + health/10 */
 tokemon(wow,2000,200,400,fire,20).
 tokemon(mamet,2000,200,400,water,20).
 tokemon(danlap,2000,200,400,leaves,20).
-tokemon(cheatmon,3000,10000,10000,leaves,20).
+/* TOKEMON DEBUGER */
+tokemon(cheatmon,3000,20000,10000,leaves,20).
 
 /* Nama Attack & Skill Attack tiap Tokemon */
 nama(zigzogaan, bebola_air).
@@ -76,19 +77,19 @@ firstPick(A,B,C,D,E,F) :-
     initialize_tokemon,
     initialize_mapitem.
 
-dropToke(X) :-
+drop(X) :-
 	\+(toke(X,_,_,_,_,_,_)),
 	write('Tidak ada Tokemon '),write(X),write(' dalam daftar Tokemon kamu.'),nl,
 	write('Pastikan nama Tokemon yang kamu masukkan benar.'),nl,!.
 
-dropToke(X) :-
+drop(X) :-
 	cekToke(Y),
 	Y > 1,
 	toke(X,_,_,_,_,_,_),
 	retract(toke(X,_,_,_,_,_,_)),
 	write('Tokemon '),write(X),write(' berhasil didrop.'),nl,!.
 	
-dropToke(X) :-
+drop(X) :-
 	cekToke(Y),
 	Y =:= 1,
 	toke(X,_,_,_,_,_,_),
@@ -125,6 +126,10 @@ initialize_tokemon :-
     asserta(id(tankmon,8)),
     asserta(id(konakmon,9)),
     asserta(id(jonatan_jostar,10)),
+    asserta(id(hadimon,43)),
+    asserta(id(mariomon,44)),
+    asserta(id(ajimon,45)),
+    asserta(id(danmon,46)),
     asserta(id(hadimon,47)),
     asserta(id(mariomon,48)),
     asserta(id(ajimon,49)),
