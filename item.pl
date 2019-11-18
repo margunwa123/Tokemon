@@ -52,7 +52,7 @@ use(Nama,Toke) :-
     X is Hp + Num,
     retract(toke(Toke,_,_,_,_,_,_)),retract(item(Nama)),
     asserta(toke(Toke,X,Att,Sp,Type,Lvl,Exp)),
-    write(Toke),write(' telah bertambah HP sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah HP sebanyak '),write(Num),nl,!.
 use(Nama,Toke) :-
     tokeT(Toke,Hp,Att,Sp,Type,Lvl,Exp,_),
     item(Nama),
@@ -61,7 +61,7 @@ use(Nama,Toke) :-
     X is Hp + Num,
     retract(tokeT(Toke,_,_,_,_,_,_,_)),retract(item(Nama)),
     asserta(tokeT(Toke,X,Att,Sp,Type,Lvl,Exp,_)),
-    write(Toke),write(' telah bertambah HP sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah HP sebanyak '),write(Num),nl,!.
 use(Nama,Toke) :-
     \+ inbattle(1),
     \+ inbattle(0),
@@ -72,7 +72,7 @@ use(Nama,Toke) :-
     X is Att + Num,
     retract(toke(Toke,_,_,_,_,Lvl,Exp)),retract(item(Nama)),
     asserta(toke(Toke,Hp,X,Sp,Type,Lvl,Exp)),
-    write(Toke),write(' telah bertambah Attack sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah Attack sebanyak '),write(Num),nl,!.
 use(Nama,Toke) :-
     tokeT(Toke,Hp,Att,Sp,Type,Lvl,Exp,_),
     item(Nama),
@@ -81,7 +81,7 @@ use(Nama,Toke) :-
     X is Att + Num,
     retract(tokeT(Toke,_,_,_,_,Lvl,Exp,_)),retract(item(Nama)),
     asserta(tokeT(Toke,Hp,X,Sp,Type,Lvl,Exp,_)),
-    write(Toke),write(' telah bertambah Attack sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah Attack sebanyak '),write(Num),nl,!.
 use(Nama,Toke) :-
     \+ inbattle(1),
     \+ inbattle(0),
@@ -92,7 +92,7 @@ use(Nama,Toke) :-
     X is Sp + Num,
     retract(toke(Toke,_,_,_,_,_,_)),retract(item(Nama)),
     asserta(toke(Toke,Hp,Att,X,Type,Lvl,Exp)),
-    write(Toke),write(' telah bertambah Special Attack sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah Special Attack sebanyak '),write(Num),nl,!.
 use(Nama,Toke) :-
     tokeT(Toke,Hp,Att,Sp,Type,Lvl,Exp,_),
     item(Nama),
@@ -101,7 +101,7 @@ use(Nama,Toke) :-
     X is Sp + Num,
     retract(tokeT(Toke,_,_,_,_,_,_,_)),retract(item(Nama)),
     asserta(tokeT(Toke,Hp,Att,X,Type,Lvl,Exp,_)),
-    write(Toke),write(' telah bertambah Special Attack sebanyak '),write(Num),!.
+    write(Toke),write(' telah bertambah Special Attack sebanyak '),write(Num),nl,!.
 
 use(Nama,_) :-
     \+(item(Nama)),
