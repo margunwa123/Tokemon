@@ -274,6 +274,7 @@ d :-
 	asserta(player(T,LBaru)),
     cekKondisi,!.
 
+/* Heal */
 heal :-
 	loseGame, lose, !.
 heal :-

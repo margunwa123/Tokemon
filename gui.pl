@@ -137,7 +137,7 @@ spasi_nama(N) :-
                                     N = wow
                                       -> spasi(23);
                                       N = mamet
-                                        -> spasi(22);
+                                        -> spasi(21);
                                         N = danlap
                                           -> spasi(20);
                                           spasi(18) /* N = cheatmon */  
