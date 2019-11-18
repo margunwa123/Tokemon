@@ -34,7 +34,7 @@ start :-
 	write('Selamat Datang di Game Tokemon!'),nl,
 	write('Silahkan ketikkan command berikut untuk memberi perintah'),nl,
 	write('1  play'),nl,
-	write('2  load'),nl,
+	write('2  loads'),nl,
 	write('3  save'),nl,
 	write('Perhatikan untuk selalu memberikan tanda titik(.) di akhir command '),nl,!. 
 
