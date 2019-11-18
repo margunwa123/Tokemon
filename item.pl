@@ -2,24 +2,24 @@
 /*item(Nama) merupakan item milik player*/
 :- dynamic(item_number/1).
 /* mapitem(ID,raiseAttack,Nama,UpAttack). */
-mapitem(11,raiseAttack,choice_band,40).
-mapitem(12,raiseAttack,attackup,60).
-mapitem(13,raiseAttack,super_attackup,80).
-mapitem(14,raiseAttack,hyper_attackup,100).
+mapitem(1,raiseAttack,choice_band,40).
+mapitem(2,raiseAttack,attackup,60).
+mapitem(3,raiseAttack,super_attackup,80).
+mapitem(4,raiseAttack,hyper_attackup,100).
 /*------------------------------------------*/
 
 /* mapitem(ID,raiseSpAttack,Nama,UpSpAttack). */
-mapitem(21,raiseSpAttack,calcium,80).
-mapitem(22,raiseSpAttack,spattackup,120).
-mapitem(23,raiseSpAttack,super_spattackup,160).
-mapitem(24,raiseSpAttack,hyper_spattackup,200).
+mapitem(5,raiseSpAttack,calcium,80).
+mapitem(6,raiseSpAttack,spattackup,120).
+mapitem(7,raiseSpAttack,super_spattackup,160).
+mapitem(8,raiseSpAttack,hyper_spattackup,200).
 /*------------------------------------------*/
 
 /* mapitem(ID,raiseHP,Nama,UpHP). */
-mapitem(31,raiseHP,potion,200).
-mapitem(32,raiseHP,super_potion,600).
-mapitem(33,raiseHP,lemonade,900).
-mapitem(34,raiseHP,hyper_potion,1200).
+mapitem(9,raiseHP,potion,200).
+mapitem(43,raiseHP,super_potion,600).
+mapitem(47,raiseHP,lemonade,900).
+mapitem(23,raiseHP,hyper_potion,1200).
 /*------------------------------------------*/
 
 get_item_number :-
@@ -89,9 +89,17 @@ use(Nama,Toke) :-
     X is Sp + Num,
     retract(tokeT(Toke,_,_,_,_,_,_,_)),retract(item(Nama)),
     asserta(tokeT(Toke,Hp,Att,X,Type,Lvl,Exp,_)),!.
-use(_,Nama) :-
+use(Nama,_) :-
     \+(item(Nama)),
     write('Kamu tidak memiliki item tersebut'),nl,!.
-use(Toke,_) :-
+use(_,Toke) :-
     \+(toke(Toke,_,_,_,_,_,_)),
     write('Kamu tidak memiliki toke tersebut'),nl,!.
+
+useall(_) :- \+(item(_)),write('Kamu tidak memiliki item saat ini!'),!.
+useall(Toke) :-
+    forall(item(A), 
+    (
+        toke(Toke,_,_,_,_,_,_),
+        use(A,Toke)
+    )),!.

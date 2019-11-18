@@ -116,7 +116,8 @@ help :-
 	write('17.use(item,toke) : Menggunakan item dengan nama "item" dari dalam inventory'),nl,
 	write('18.drop(toke)     : Menghilangkan tokemon "toke" dari inventory'),nl,
 	write('19.help           : Menampilkan semua perintah yang dapat dijalankan'),nl,
-	write('20.quit           : Keluar dari permainan'),nl.
+	write('20.quit           : Keluar dari permainan'),nl,
+    write('21.type           : Melihat kekuatan masing-masing tokemon').
 
 % checkWin :- /* Mengecek kondisi apakah pemain sudah menang */
 %     toke(A,_,_,_,_), legendary(A),
@@ -348,4 +349,5 @@ look :-
 
 /* PROSEDUR KELUAR/ RELOAD FILE */
 quit :- halt.
-restart :- consult('main.pl').
+restart :- inbattle(_),write('Selesaikan pertaruganmu dahulu!').
+restart :- [main].

@@ -236,7 +236,7 @@ capture :-
                 write('');
                 addToke(X,B,C,D,E,F), retract(lawan(X,_,_,_,_,_)), 
                 retract(chosenToke(_)),
-                retract(inbattle(2)), naikexp, retract(id(X,_)),
+                retract(inbattle(2)), naikexp, retractall(id(X,_)),
                 nl, map
         ),!.         
 
