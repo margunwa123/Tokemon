@@ -11,24 +11,26 @@
 /* Normal Tokemon 
 Komposisi : (health/100) * (attack/100) = +- 20
 sp.attack : attack + health/10 */
-tokemon(zigzogaan,1500,130,280,water,20).      %1
-tokemon(bulbasaur,2000,100,300,leaves,20).     %2
-tokemon(vanila_bluemon,1700,115,285,fire,20).  %3
-tokemon(toketchur,1200,160,280,fire,20).       %4
+tokemon(zigzagur,1500,130,280,ground,20).      %1
+tokemon(bulbalul,2000,100,300,leaves,20).      %2
+tokemon(vanila_bluemon,1700,115,285,ice,20).   %3
+tokemon(toketchur,1200,160,280,lightning,20).  %4
 tokemon(momon,1300,150,280,leaves,20).         %5
 tokemon(engasmon,1269,169,269,water,20).       %6
 tokemon(santuymon,1500,120,270,fire,20).       %7
-tokemon(tankmon,2500,80,330,leaves,20).        %8
-tokemon(konakmon,1000,200,300,water,20).        %9
+tokemon(tankmon,2500,80,330,ground,20).        %8
+tokemon(konakmon,1000,200,300,water,20).       %9
 tokemon(jonatan_jostar,2100,100,300,fire,20).  %10
+tokemon(pikacrot,1500,133,283,lightning,20).   %11
+tokemon(elsa,1800,115,285,ice,20).             %12
 
 /* Legendary Tokemon 
-Komposisi : (health/100) * (attack/100) = +- 50
+Komposisi : (health/100) * (attack/100) = +- 100
 sp.attack : attack + health/10 */
-tokemon(hadimon,7000,250,950,water,20).
-tokemon(mariomon,5000,350,850,fire,20).
-tokemon(ajimon,6000,300,900,leaves,20).
-tokemon(danmon,6500,250,900,water,20).
+tokemon(hadimon,7000,150,850,ground,20).
+tokemon(mariomon,5000,200,750,fire,20).
+tokemon(ajimon,4000,230,630,water,20).
+tokemon(danmon,3000,330,630,lightning,20).
 
 /* TOKEMON AWAL 
 Komposisi : (health/100) * (attack/100) = +- 40
@@ -38,12 +40,6 @@ tokemon(mamet,2000,200,400,water,20).
 tokemon(danlap,2000,200,400,leaves,20).
 /* TOKEMON DEBUGER */
 tokemon(cheatmon,3000,20000,10000,leaves,20).
-
-/* Nama Attack & Skill Attack tiap Tokemon */
-nama(zigzogaan, bebola_air).
-nama(bulbasaur, bebola_daun).
-nama(vanila_bluemon, bebola_api).
-nama(toketchur, smash_api).
 
 /* Legendary Tokemon */
 legendary(hadimon).
@@ -57,8 +53,16 @@ awal(danlap).
 awal(cheatmon).
 /* Type Tokemon */
 strong(fire,leaves).
+strong(fire,ice).
 strong(leaves,water).
+strong(leaves,ground).
 strong(water,fire).
+strong(water,ground).
+strong(ice,ground).
+strong(ice,leaves).
+strong(ground,lightning).
+strong(ground,fire).
+strong(lightning,water).
 
 /* *************** RULES **************** */
 cekToke(Banyak) :-
@@ -116,8 +120,8 @@ addToke(A,B,C,D,E) :-
 */
 
 initialize_tokemon :-
-    asserta(id(zigzogaan,1)),
-    asserta(id(bulbasaur,2)),
+    asserta(id(zigzagur,1)),
+    asserta(id(bulbalul,2)),
     asserta(id(vanila_bluemon,3)),
     asserta(id(toketchur,4)),
     asserta(id(momon,5)),
@@ -126,6 +130,8 @@ initialize_tokemon :-
     asserta(id(tankmon,8)),
     asserta(id(konakmon,9)),
     asserta(id(jonatan_jostar,10)),
+    asserta(id(pikacrot,11)),
+    asserta(id(elsa,12)),
     asserta(id(hadimon,43)),
     asserta(id(mariomon,44)),
     asserta(id(ajimon,45)),
@@ -148,3 +154,11 @@ get_normal_number :- random(1,47,X),asserta(randomNum(X)),!.
    Ga ketemu apa apa : 66% */
 % Syntax IF ELSE  ::  Y =:= 2 -> (write('hehe'));write('y adl 1').
 % Baca : if Y = 2 then write hehe, else write y adl 1
+
+type :-
+    write('Tokemon fire kuat melawan leaves dan ice'),nl,
+    write('Tokemon leaves kuat melawan water dan ground'),nl,
+    write('Tokemon water kuat melawan ground dan fire'),nl,
+    write('Tokemon ice kuat melawan ground dan leaves'),nl,
+    write('Tokemon ground kuat melawan lightning dan fire'),nl,
+    write('Tokemon lightning kuat melawan water'),nl.
